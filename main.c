@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/06/11 18:32:17 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/06/18 18:52:49 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void  sig_c(int c)
     //execve(cmd[0], cmd_args, NULL);
     rl_replace_line("", 0);
     rl_redisplay();
+
     //rl_redisplay();
     //rl_on_new_line();
   }
@@ -119,6 +120,8 @@ void  get_path(t_data *data)
   while (data->env[i][j] && data->env[i][j])
     j++;
   data->w_path = malloc(sizeof(char) * j + 1);
+  if (!data->w_path)
+    return ;
   //ft_strdup(data->env[i]);
   j = 5;
   k = 0;
@@ -170,6 +173,59 @@ void  execute_cmd(t_data *data)
   }
 }
 
+int check_builtin(t_data *data)
+{
+  t_token *trav;
+  int   i;
+  char  **sp;
+  char  cmd[] = "cd echo pwd export unset env exit";
+
+  i = 0;
+  trav = data->t_token;
+  sp = ft_split(cmd, ' ');
+  //while (trav)
+  //{
+  //get the commad u want to check
+  //this var of trav should be in struct so i can rememver the value
+  while (trav)
+  {
+    if (trav->type == WRD)
+      break ;
+    trav = trav->next;
+  }
+  i = 0;
+  while (sp[i])
+  {
+    if (!strncmp(trav->value, sp[i], ft_strlen(sp[i])))
+      return (1);
+    i++;
+  }
+  return (0);
+  //}
+  //while (trav->type != WRD)
+  //  trav = trav->next;
+  //if (ft_strncmp(trav->value, "cd", 2))
+  //  cd_cmd(data);
+  //else if (ft_strncmp(trav->value, "echo", 4))
+  //  echo_cmd(data);
+  //else if (ft_strncmp(trav->value, "pwd", 3))
+  //  pwd_cmd(data);
+  //else if (ft_strncmp(trav->value, "export", 6))
+  //  export_cmd(data);
+  //else if (ft_strncmp(trav->value, "unset", 5))
+  //  unset_cmd(data);
+  //else if (ft_strncmp(trav->value, "env", 3))
+  //  env_cmd(data);
+  //else if (ft_strncmp(trav->value, "exit", 4))
+  //  exit_cmd(data);
+  //return (0);
+}
+
+//void  exec_buil_cmd(t_data *data)
+//{
+//  if ()
+//}
+
 int main(int ac, char **av, char **envp)
 {
   t_data  data;
@@ -190,15 +246,32 @@ int main(int ac, char **av, char **envp)
     data.line = readline(prompt);
     if (!data.line)
       return (0);
-    if (!ft_strncmp(data.line, "exit", 4))
-    {
-      free(data.line);
-      exit(0);
-    }
-    if (!ft_strncmp(data.line, "cd", 4))
-      chdir("/Users/hkaddour/");
+    //if (!ft_strncmp(data.line, "exit", 4))
+    //{
+    //  free(data.line);
+    //  exit(0);
+    //}
+    //if (!ft_strncmp(data.line, "cd", 2))
+    //  chdir("/Users/hkaddour/");
+    //if (!ft_strncmp(data.line, "$", 1))
     //get_env(&data);
-    execute_cmd(&data);
+    //tokenizer(&data);
+    //execute_cmd(&data);
+    tokenizer(&data);
+    lexer(&data);
+    //builtin cmd
+    //env
+    //unset
+    //export for variables
+    if (check_builtin(&data))
+      exec_buil_cmd(&data);
+      //printf("yes\n");
+    else
+      //here exec 3adi
+      printf("nah\n");
+
+    //**Before exuting the command check if it builtin or not
+    //execute_cmd(&data);
     //excute(&data);
     //get_path(&data);
     //printf("%s\n", data.w_path);
