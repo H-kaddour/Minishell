@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/06/18 18:52:49 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/06/19 18:00:15 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void  get_env(t_data *data)
 
   i = 0;
   env = (t_env *)malloc(sizeof(t_env));
+  //data->l_env = env;
   trav = env;
   while (data->env[i])
   {
@@ -100,11 +101,12 @@ void  get_env(t_data *data)
     i++;
   }
   env = trav;
-  while (trav->next)
-  {
-    printf("%s=%s\n", trav->sec, trav->value);
-    trav = trav->next;
-  }
+  data->l_env = env;
+  //while (trav->next)
+  //{
+  //  printf("%s=%s\n", trav->sec, trav->value);
+  //  trav = trav->next;
+  //}
 }
 
 void  get_path(t_data *data)
@@ -180,26 +182,46 @@ int check_builtin(t_data *data)
   char  **sp;
   char  cmd[] = "cd echo pwd export unset env exit";
 
-  i = 0;
+  //i = 0;
   trav = data->t_token;
   sp = ft_split(cmd, ' ');
   //while (trav)
   //{
   //get the commad u want to check
   //this var of trav should be in struct so i can rememver the value
+  //while (trav)
+  //{
+  //  if (trav->type == WRD)
+  //    break ;
+  //  trav = trav->next;
+  //}
+  //i = 0;
   while (trav)
   {
+    i = 0;
     if (trav->type == WRD)
-      break ;
+    {
+      while (sp[i])
+      {
+        if (!strncmp(trav->value, sp[i], ft_strlen(sp[i]) + 1))
+        {
+          data->built_cmd = trav;
+          return (1);
+        }
+        i++;
+      }
+    }
     trav = trav->next;
   }
-  i = 0;
-  while (sp[i])
-  {
-    if (!strncmp(trav->value, sp[i], ft_strlen(sp[i])))
-      return (1);
-    i++;
-  }
+  //while (sp[i])
+  //{
+  //  if (!strncmp(trav->value, sp[i], ft_strlen(sp[i])))
+  //  {
+  //    data->built_cmd = data->t_token;
+  //    return (1);
+  //  }
+  //  i++;
+  //}
   return (0);
   //}
   //while (trav->type != WRD)
@@ -221,10 +243,138 @@ int check_builtin(t_data *data)
   //return (0);
 }
 
-//void  exec_buil_cmd(t_data *data)
-//{
-//  if ()
-//}
+void  exit_cmd(t_data *data)
+{
+  //(void)data;
+  free(data->line);
+  //free other shiit
+  exit(0);
+}
+
+void  *put_str(char *str, int len)
+{
+  int   i;
+  char  *ptr;
+
+  //if (!str)
+  //  str = "/";
+  i = 0;
+  //if (len < i)
+  //{
+  //  ptr = malloc(2);
+  //  ptr[i++] = '/';
+  //  ptr[i] = 0;
+  //}
+  ptr = malloc(sizeof(char) * len + 1);
+  if (!ptr)
+    return (NULL);
+  while (i <= len)
+  {
+    ptr[i] = str[i];
+    i++;
+  }
+  ptr[i] = 0;
+  return (ptr);
+}
+
+void  cd_cmd(t_data *data)
+{
+  //(void)data;
+  t_env *trav;
+  //char  *path;
+
+  //trav = data->l_env;
+  //maybe i have to put get env here cuz everytime i change the path the PWD change
+  //get_env(data);
+  trav = data->l_env;
+  if (data->built_cmd->next == NULL)
+  {
+    //just use HOME
+    while (ft_strncmp(trav->sec, "HOME", 4))
+      trav = trav->next;
+    data->cd_path = trav->value;
+    if (chdir(trav->value) != 0)
+      error("minishell: no command found", 1);
+    reinit_env(data);
+    return ;
+  }
+  while (ft_strncmp(trav->sec, "PWD", 3))
+    trav = trav->next;
+  //gad blan just cd only
+  if (data->built_cmd->next->type != W_SPACE)
+    error(data->built_cmd->value, 2);
+  else if (data->built_cmd->next->type == W_SPACE)
+  {
+    //printf("ok");
+    //check if there are more spaces or empty
+    data->built_cmd = data->built_cmd->next->next;
+    if (data->built_cmd->type == WRD)
+    {
+      if (!ft_strncmp(data->built_cmd->value, "..", 2))
+      {
+        int i;
+
+        i = ft_strlen(trav->value) - 1;
+        //check if trav->value equal to '/'
+        while (trav->value[i] != '/')
+          i--;
+        if (i > 0)
+          i--;
+        data->cd_path = put_str(trav->value, i);
+        chdir(data->cd_path);
+        //data->cd_path = ft_strjoin(ft_strjoin(trav->value, "/"), data->built_cmd->value);
+      }
+      //path = ft_strjoin(ft_strjoin(trav->value, "/"), data->built_cmd->value);
+      else
+      {
+        data->cd_path = ft_strjoin(ft_strjoin(trav->value, "/"), data->built_cmd->value);
+        //printf("%s\n", data->cd_path);
+        //chdir(path);
+        //check error of chdir
+        chdir(data->cd_path);
+        //if (chdir(path) != 0)
+        //  error("minishell: no command found", 1);
+      }
+    }
+    //chdir("/Users");
+    //printf("ok");
+    //here change the PWD in the env and add the old PWD
+    //here reinit the env
+    //here free all env i open
+    reinit_env(data);
+    //setenv("PWD", "/Users/hkaddour", 1);
+    //printf("%s\n", trav->value);
+  }
+  //printf("done");
+  //printf("%s\n", data->built_cmd->next->next->value);
+  //path = ft_strjoin("/Users/hkaddour/", data->built_cmd->next->next->value);
+  //printf("%s\n", path);
+  //get_env(data);
+  //printf("%s\n", data->l_env->sec);
+  //chdir(path);
+  //chdir(data->built_cmd->next->value);
+  //chdir("~/");
+  //chdir("/Users/hkaddour/");
+}
+
+void  exec_buil_cmd(t_data *data)
+{
+  if (!ft_strncmp(data->built_cmd->value, "cd", 2))
+    cd_cmd(data);
+  //cd only with a space error check
+  else if (!ft_strncmp(data->built_cmd->value, "echo", 4))
+    echo_cmd(data);
+  else if (!ft_strncmp(data->built_cmd->value, "pwd", 3))
+    pwd_cmd(data);
+  //else if (!ft_strncmp(data->built_cmd->value, "export", 6))
+  //  export_cmd(data);
+  //else if (!ft_strncmp(data->built_cmd->value, "unset", 5))
+  //  unset_cmd(data);
+  else if (!ft_strncmp(data->built_cmd->value, "env", 3))
+    env_cmd(data);
+  else if (!ft_strncmp(data->built_cmd->value, "exit", 4))
+    exit_cmd(data);
+}
 
 int main(int ac, char **av, char **envp)
 {
@@ -235,7 +385,7 @@ int main(int ac, char **av, char **envp)
   i = 0;
   (void)ac;
   data.args = av;
-  data.env = envp;
+  //data.env = envp;
   //write(0, &prompt, sizeof(prompt));
   while (1)
   {
@@ -254,21 +404,33 @@ int main(int ac, char **av, char **envp)
     //if (!ft_strncmp(data.line, "cd", 2))
     //  chdir("/Users/hkaddour/");
     //if (!ft_strncmp(data.line, "$", 1))
-    //get_env(&data);
     //tokenizer(&data);
     //execute_cmd(&data);
+    //if (!data.env)
+    if (i == 0)
+    {
+      data.env = envp;
+      get_env(&data);
+      i++;
+    }
+    //data.env = envp;
+    //get_env(&data);
     tokenizer(&data);
     lexer(&data);
     //builtin cmd
     //env
     //unset
     //export for variables
+    //maybe this should be in loop to see all the list element
+    //still have to fix if there are for example cd cd cd alot of cammand
     if (check_builtin(&data))
       exec_buil_cmd(&data);
+      //printf("%s\n", data.built_cmd->value);
       //printf("yes\n");
     else
+      execute_cmd(&data);
       //here exec 3adi
-      printf("nah\n");
+      //printf("nah\n");
 
     //**Before exuting the command check if it builtin or not
     //execute_cmd(&data);

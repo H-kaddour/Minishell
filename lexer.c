@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 16:13:45 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/06/18 18:25:04 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/06/19 09:22:41 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,11 @@ void  error(char *msg, int check)
   else if (check == 1)
   {
     printf("%s\n", msg);
+    nl();
+  }
+  else if (check == 2)
+  {
+    printf("minishell: %s: command not found 'space'\n", msg);
     nl();
   }
   //if (check == 0)

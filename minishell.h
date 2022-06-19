@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/06/18 17:46:07 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/06/19 16:50:34 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ typedef struct s_data
 	int			i_line;
 	int			index;
 	char		*var;
+	char		*cd_path;
+	t_env		*l_env;
 	//of derection
+	t_token	*built_cmd;
 	t_types	typ;
 	//dial pipe
 	t_token	*trav_p;
@@ -78,6 +81,12 @@ typedef struct s_data
 }	t_data;
 
 //void  sig_c(int c);
+void  reinit_env(t_data *data);
+void  echo_cmd(t_data *data);
+void  env_cmd(t_data *data);
+void  pwd_cmd(t_data *data);
+void  get_env(t_data *data);
+void  error(char *msg, int check);
 void  lexer(t_data *data);
 void  tokenizer(t_data *data);
 char  *grab_line(int fd);
