@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 16:13:45 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/06/19 09:22:41 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/06/20 14:32:28 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,31 +93,32 @@ void  error(char *msg, int check)
   //  exit(0);
 }
 
-void  variable_dolla(t_data *data, char *str)
-{
-  int i;
-  int j;
-  char  *var; //dalla sign variable allocate here.
-
-  i = 0;
-  j = 0;
-  while (str[i] != '=')
-    i++;
-  var = malloc(sizeof(char) * ft_strlen(&str[i]));
-  //the if down below take it off
-  if (str[i] == '=')
-  {
-    //var = malloc(sizeof(char) * ft_strlen(&str[i]));
-    while (str[i])
-    {
-      var[j] = str[i];
-      j++;
-      i++;
-    }
-    var[j] = 0;
-  }
-  data->var = var;
-}
+//not working
+//void  variable_dolla(t_data *data, char *str)
+//{
+//  int i;
+//  int j;
+//  char  *var; //dalla sign variable allocate here.
+//
+//  i = 0;
+//  j = 0;
+//  while (str[i] != '=')
+//    i++;
+//  var = malloc(sizeof(char) * ft_strlen(&str[i]));
+//  //the if down below take it off
+//  if (str[i] == '=')
+//  {
+//    //var = malloc(sizeof(char) * ft_strlen(&str[i]));
+//    while (str[i])
+//    {
+//      var[j] = str[i];
+//      j++;
+//      i++;
+//    }
+//    var[j] = 0;
+//  }
+//  data->var = var;
+//}
 
 void  check_dolla(char *str)
 {
@@ -200,6 +201,31 @@ int check_dalla(char *str)
   return (0);
 }
 
+//int check_quotes(t_token *quote)
+//{
+//  int i;
+//  
+//  i = 0;
+//  //while (quote)
+//  //{
+//    if (quote->type == D_QUOT)
+//    {
+//      while (quote->value[i])
+//      {
+//        i++;
+//      }
+//      //i++;
+//    }
+//    //quote = quote->next;
+//  //}
+//  if (i % 2 == 0)
+//    return (0);
+//  //else if (i % 2 == 1)
+//  //  return (1);
+//  else
+//    return (1);
+//}
+
 void  check_node_error(t_data *data)
 {
   t_token *trav;
@@ -222,6 +248,15 @@ void  check_node_error(t_data *data)
       error(trav->value, 0);
       break ;
     }
+    //else if (check_quotes(trav))
+    //else if (trav->type == D_QUOT)
+    //{
+    //  if (check_quotes(trav))
+    //  {
+    //    error(trav->value, 0);
+    //    break ;
+    //  }
+    //}
     //check other like 
     trav = trav->next;
   }
@@ -265,29 +300,58 @@ void  ot_grammar(t_data *data, t_token *ot)
   //here check if the file is not exist so you can make it
 }
 
+//fix exit i have to write it two time
 void  dolla_grammar(t_data *data, t_token *dolla)
 {
   t_token *trav;
+  int check;
 
+  check = 0;
   trav = data->t_token;
   if (trav->type != dolla->type)
   {
+    if (trav->type == D_QUOT || trav->type == S_QUOT)
+      check++;
     while (trav->next->type != dolla->type)
       trav = trav->next;
   }
-  if (trav->type != W_SPACE)
-    error("Wrong syntax \"space\" $", 1);
-  trav = trav->next;
+  //check 1 means there's "" '' so shiit change
+  if (check == 0)
+  {
+    if (trav->type == PIPE)
+    {
+      error("Wrong syntax \"pipe\" $", 1);
+      //return ;
+    }
+  }
+  //else
+  //{
+
+  //}
+  //if (trav->type != W_SPACE && trav->type != )
+  //  error("Wrong syntax \"space\" $", 1);
+  ////trav = trav->next;
   //if (trav->next == NULL)
   //  error("Wrong syntax $ \" word \"", 1);
   //segfault if NULL cuz it keep going
   //else
   //{
+  if(trav->next == NULL)
+    return ;
   if (trav->next != NULL)
   {
     trav = trav->next;
-    if (trav->type != WRD)
-      error("Wrong syntax $ \" word \"", 1);
+    if (check == 0)
+    {
+      if (trav->type == PIPE || trav->type == O_TRNC || trav->type == I_TRNC ||\
+          trav->type == O_APEND || trav->type == I_APEND)
+        error("Wrong syntax $ \" no pipe and directions \"", 1);
+    }
+    //else
+    //{
+    //}
+    //if (trav->type != WRD)
+    //  error("Wrong syntax $ \" word \"", 1);
   }
   //}
 }
@@ -319,7 +383,8 @@ void  lexer(t_data *data)
       ot_grammar(data, trav);
     else if (typ_cmp(trav->type, DOLLA))
       dolla_grammar(data, trav);
-
+    //else if (typ_cmp(trav->type, D_QUOT))
+    //  d_quot_grammar(data, trav);
     //this code for $ variable
     //i++;
     //segfaul when $ is not use like variavle only

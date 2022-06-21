@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/06/19 16:50:34 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/06/21 14:50:48 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_data
 	int			index;
 	char		*var;
 	char		*cd_path;
+	t_env		*var_exist;
 	t_env		*l_env;
 	//of derection
 	t_token	*built_cmd;
@@ -81,6 +82,8 @@ typedef struct s_data
 }	t_data;
 
 //void  sig_c(int c);
+t_env *node_allocate(t_data *data);
+void  export_cmd(t_data *data);
 void  reinit_env(t_data *data);
 void  echo_cmd(t_data *data);
 void  env_cmd(t_data *data);
@@ -89,6 +92,6 @@ void  get_env(t_data *data);
 void  error(char *msg, int check);
 void  lexer(t_data *data);
 void  tokenizer(t_data *data);
-char  *grab_line(int fd);
+//char  *grab_line(int fd);
 
 #endif

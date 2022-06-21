@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/06/19 18:00:15 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/06/21 11:51:16 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void  get_env(t_data *data)
   t_env *next;
   t_env *trav;
 
-  i = 0;
+  i = 1;
   env = (t_env *)malloc(sizeof(t_env));
   //data->l_env = env;
   trav = env;
@@ -246,9 +246,9 @@ int check_builtin(t_data *data)
 void  exit_cmd(t_data *data)
 {
   //(void)data;
-  free(data->line);
+  //free(data->line);
   //free other shiit
-  exit(0);
+  exit(2);
 }
 
 void  *put_str(char *str, int len)
@@ -366,8 +366,8 @@ void  exec_buil_cmd(t_data *data)
     echo_cmd(data);
   else if (!ft_strncmp(data->built_cmd->value, "pwd", 3))
     pwd_cmd(data);
-  //else if (!ft_strncmp(data->built_cmd->value, "export", 6))
-  //  export_cmd(data);
+  else if (!ft_strncmp(data->built_cmd->value, "export", 6))
+    export_cmd(data);
   //else if (!ft_strncmp(data->built_cmd->value, "unset", 5))
   //  unset_cmd(data);
   else if (!ft_strncmp(data->built_cmd->value, "env", 3))
@@ -416,6 +416,7 @@ int main(int ac, char **av, char **envp)
     //data.env = envp;
     //get_env(&data);
     tokenizer(&data);
+    //lexer problem exit not working in the first time two times machi lexer tokenizer of something else $
     lexer(&data);
     //builtin cmd
     //env
