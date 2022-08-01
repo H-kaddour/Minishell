@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/06/21 14:50:48 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/07/24 19:16:11 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+#	include <signal.h>
+#	include <sys/wait.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <readline/readline.h>
@@ -92,6 +94,7 @@ void  get_env(t_data *data);
 void  error(char *msg, int check);
 void  lexer(t_data *data);
 void  tokenizer(t_data *data);
+void  unset_cmd(t_data *data);
 //char  *grab_line(int fd);
 
 #endif

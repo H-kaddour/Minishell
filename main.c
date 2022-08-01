@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/06/21 11:51:16 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/07/24 19:15:53 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,11 @@ void  get_env(t_data *data)
   }
   env = trav;
   data->l_env = env;
+  //add one to the indent level
+  while (ft_strncmp(trav->sec, "SHLVL", 5))
+    trav = trav->next;
+  i = ft_strlen(trav->value) - 1;
+  trav->value[i] += 1;
   //while (trav->next)
   //{
   //  printf("%s=%s\n", trav->sec, trav->value);
@@ -368,8 +373,8 @@ void  exec_buil_cmd(t_data *data)
     pwd_cmd(data);
   else if (!ft_strncmp(data->built_cmd->value, "export", 6))
     export_cmd(data);
-  //else if (!ft_strncmp(data->built_cmd->value, "unset", 5))
-  //  unset_cmd(data);
+  else if (!ft_strncmp(data->built_cmd->value, "unset", 5))
+    unset_cmd(data);
   else if (!ft_strncmp(data->built_cmd->value, "env", 3))
     env_cmd(data);
   else if (!ft_strncmp(data->built_cmd->value, "exit", 4))

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 16:13:45 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/06/20 14:32:28 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/07/06 12:34:35 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,10 +358,10 @@ void  dolla_grammar(t_data *data, t_token *dolla)
 
 void  lexer(t_data *data)
 {
-  int   i;
+  //int   i;
   t_token *trav;
 
-  i = 0;
+  //i = 0;
   trav = data->t_token;
   data->trav_p = data->t_token;
   data->trav_r = data->t_token;

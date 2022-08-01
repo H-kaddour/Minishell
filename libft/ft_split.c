@@ -6,7 +6,7 @@
 /*   By: hkaddour <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 16:29:46 by hkaddour          #+#    #+#             */
-/*   Updated: 2021/12/07 12:13:19 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/07/05 16:48:56 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -73,12 +73,10 @@ static void	ft_alloc_all(char *str, char c, int w, char **ptr)
 
 char	**ft_split(char const *s, char c)
 {
-	int		i;
 	int		w;
 	char	**ptr;
 	char	*str;
 
-	i = 0;
 	w = 0;
 	if (!s)
 		return (NULL);

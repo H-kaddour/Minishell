@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 12:52:21 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/06/21 18:46:45 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/07/24 19:43:05 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,31 @@ int check_if_exist(t_data *data, t_token *trav)
   //return (0);
 }
 
+void  unset_cmd(t_data *data)
+{
+  t_token *trav;
+
+  trav = data->t_token;
+  if (trav->next->type == W_SPACE)
+  {
+    trav = trav->next;
+    //here double quote alone "niga" 'hhah'
+    if (trav->next->type == WRD)
+    {
+
+    }
+    else
+    {
+      //error function
+    }
+  }
+  else
+  {
+    //error function
+  }
+
+}
+
 void  export_cmd(t_data *data)
 {
   int     i;
@@ -190,17 +215,83 @@ void  export_cmd(t_data *data)
         //
         if (trav->type == D_QUOT)
         {
+          //var for this func
+          char  *pp;
+          char  *ptr;
           //check if the quote are close
           if (!check_quotes(trav))
           {
             trav = trav->next;
+            //here check if the variable is already exist in env
+            //what about if "hey" with no equal sign
             if (check_if_exist(data, trav))
             {
+              int   n;
+              //int   m;
+              int   len;
+
+              //pp = ft_strchr(trav->value, '=');
+              n = 0;
+              while (data->line[n] && data->line[n] != '=')
+                n++;
+              pp = &data->line[++n];
+              len = ft_strlen(pp);
+              ptr = malloc(sizeof(char) * len);
+              //m = n;
+              i = 0;
+              while (pp[i])
+              {
+                if (pp[i] != '"')
+                  ptr[i] = pp[i];
+                i++;
+              }
+              ptr[i] = 0;
+              data->var_exist->value = ptr;
+              return ;
+              //data->var_exist this var point in where the var are in env
               //gad blan "" and signle ones
               //gad blan shlllvl
               //blan unset
               //gD to go to a funciton
             }
+            else
+            {
+              i = 0;
+              while (trav->value[i] && trav->value[i] != '=')
+                i++;
+              pp = trav->value;
+              pp[i] = 0;
+              middle_man = node_allocate(data);
+              middle_man->sec = pp;
+              i = 0;
+              while (data->line[i] && data->line[i] != '=')
+                i++;
+              pp = &data->line[++i];
+              i = 0;
+              ptr = malloc(sizeof(char) * ft_strlen(pp));
+              while (pp[i])
+              {
+                if (pp[i] != '"')
+                  ptr[i] = pp[i];
+                i++;
+              }
+              ptr[i] = 0;
+              middle_man->value = ptr;
+              tail->next = middle_man;
+              //trav = trav->next;
+
+              //here i should put in the ptr var in the env
+              //here finish if var is not exist
+              //printf("%s", pp);
+              return ;
+            }
+          }
+          else
+          {
+            //use function of error.
+            printf("quote are not close");
+            exit(0);
+            return ;
           }
         }
         //
