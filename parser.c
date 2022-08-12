@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 16:42:42 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/06/17 18:40:37 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/12 12:37:00 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,30 @@ void  node_head(t_data *data)
   data->t_token->next = NULL;
 }
 
-void  add_node(t_data *data, t_types typ, int check)
+//void  add_node(t_data *data, t_types typ, int check)
+void  add_node(t_data *data, t_types typ)
 {
   t_token *node;
   t_token *trav;
   int i;
 
   node = (t_token *) malloc(sizeof(t_token));
-  if (check == 1)
+  if (data->check == 1)
+  {
     data->t_token = node;
+    //data->check--;
+    //data->check = 0;
+  }
+  //if (check == 1)
+  //  data->t_token = node;
   node->type = typ;
   node->value = malloc(sizeof(char) * data->i_line + 1);
   if (!node->value)
     return ;
   i = 0;
-  while (data->beg_line[i] != data->n_line[0])
+  //here is the problem cuz we cmp between indexes ? cmp the address
+  //while (data->beg_line[i] != data->n_line[0])
+  while (&data->beg_line[i] != &data->n_line[0])
   {
     node->value[i] = data->beg_line[i];
     i++;
@@ -66,7 +75,8 @@ void  add_node(t_data *data, t_types typ, int check)
   data->beg_line = &data->beg_line[i];
   node->value[i] = 0;
   node->next = NULL;
-  if (check == 0)
+  //if (check == 0)
+  if (data->check == 0)
   {
     trav = data->t_token;
     while (trav->next)
@@ -75,6 +85,8 @@ void  add_node(t_data *data, t_types typ, int check)
     }
     trav->next = node;
   }
+  if (data->check == 1)
+    data->check--;
     //data->t_token->next = node;
   //data->t_token = node;
 }
@@ -86,7 +98,7 @@ int is_word(t_data *data, char *beg_line)
   char  sp[] = "<|\">'$ ";
 
   i = 0;
-  j = 0;
+  //j = 0;
   while (beg_line[i])
   {
     j = 0;
@@ -307,12 +319,44 @@ int is_i_redirection(t_data *data, char *n_line)
 int is_s_quote(t_data *data, char *n_line)
 {
   int i;
+  int quote;
 
   i = 0;
+  quote = 0;
+  //i gotta check if the quote are closed here
   if (n_line[i] != '\'')
     return (0);
-  while (n_line[i] == '\'')
+  //"hey|$cool<<>>"
+  if (n_line[i] == '\'')
+  {
     i++;
+    quote++;
+    while (n_line[i])
+    {
+      if (n_line[i] == '\'')
+      {
+        i++;
+        quote++;
+        break ;
+      }
+      i++;
+    }
+  }
+  //here error of quote not closed
+  if (quote % 2 == 1)
+  {
+    //printf("error the quote are not closed :/");
+    error("error the quote are not closed :/", 1);
+
+  }
+  //else if (quote % 2 == 0)
+  //{
+  //  printf("error the quote are not closed :/");
+  //}
+  //if (n_line[i] != '\'')
+  //  return (0);
+  //while (n_line[i] == '\'')
+  //  i++;
   data->typ = S_QUOT;
   data->n_line = &n_line[i];
   data->i_line = i;
@@ -328,12 +372,35 @@ int is_s_quote(t_data *data, char *n_line)
 int is_d_quote(t_data *data, char *n_line)
 {
   int i;
+  int quote;
 
   i = 0;
+  quote = 0;
+  //here check if the "" are closed so u avoid sigfault
   if (n_line[i] != '\"')
     return (0);
-  while (n_line[i] == '\"')
+  //"hey|$cool<<>>"
+  if (n_line[i] == '\"')
+  {
     i++;
+    quote++;
+    //while (n_line[i] != '\"')
+    while (n_line[i])
+    {
+      if (n_line[i] == '\"')
+      {
+        i++;
+        quote++;
+        break ;
+      }
+      i++;
+    }
+  }
+  //not here cuz the program still keep going and went to run the cmd
+  if (quote % 2 == 1)
+    error("error the quote are not closed :/", 1);
+  //while (n_line[i] == '\"')
+  //  i++;
   data->typ = D_QUOT;
   data->n_line = &n_line[i];
   data->i_line = i;
@@ -371,68 +438,72 @@ void  tokenizer(t_data *data)
   data->i_line = 0;
   data->index = 0;
   //node_head(data);
-  int i = 1;
+  //int i = 1;
+  data->check = 1;
   while (data->line[data->index])
   {
     //if (is_word(data, data->beg_line))
     if (is_word(data, data->n_line))
     {
       //typ = WRD;
-      add_node(data, data->typ, i);
-      if (i == 1)
-        i--;
+      //add_node(data, data->typ, i);
+      add_node(data, data->typ);
+      //if (i == 1)
+      //  i--;
       //data->t_token = node;
     }
     //i--;
     if (is_space(data, data->n_line))
     {
       //typ = W_SPACE;
-      add_node(data, data->typ, i);
-      if (i == 1)
-        i--;
+      //add_node(data, data->typ, i);
+      add_node(data, data->typ);
+      //if (i == 1)
+      //  i--;
       //add_node_2(data, typ);
     }
     //still fix pipe fucntion
     if (is_pipe(data, data->n_line))
     {
       //typ = PIPE;
-      add_node(data, data->typ, i);
-      if (i == 1)
-        i--;
+      //add_node(data, data->typ, i);
+      add_node(data, data->typ);
+      //if (i == 1)
+      //  i--;
     }
     //still fix redirection fucntion
     if (is_o_redirection(data, data->n_line))
     {
       //typ = typ;
-      add_node(data, data->typ, i);
-      if (i == 1)
-        i--;
+      add_node(data, data->typ);
+      //if (i == 1)
+      //  i--;
     }
     if (is_i_redirection(data, data->n_line))
     {
       //typ = typ;
-      add_node(data, data->typ, i);
-      if (i == 1)
-        i--;
+      add_node(data, data->typ);
+      //if (i == 1)
+      //  i--;
     }
     if (is_s_quote(data, data->n_line))
     {
-      add_node(data, data->typ, i);
-      if (i == 1)
-        i--;
+      add_node(data, data->typ);
+      //if (i == 1)
+      //  i--;
     }
     //double quote space not count
     if (is_d_quote(data, data->n_line))
     {
-      add_node(data, data->typ, i);
-      if (i == 1)
-        i--;
+      add_node(data, data->typ);
+      //if (i == 1)
+      //  i--;
     }
     if (is_dolla(data, data->n_line))
     {
-      add_node(data, data->typ, i);
-      if (i == 1)
-        i--;
+      add_node(data, data->typ);
+      //if (i == 1)
+      //  i--;
     }
     //if (is_pipe(data, data->n_line))
     //while (data->t_token)
@@ -442,16 +513,18 @@ void  tokenizer(t_data *data)
     //  data->t_token = data->t_token->next;
     //}
   }
-  t_token *trav;
+  //****
+  //here to write the arg that i entred in the nodes
+  //t_token *trav;
 
-  trav = data->t_token;
-  while (trav)
-  {
-    printf("| %d |\n", trav->type);
-    printf("| %s |\n", trav->value);
-    printf("\n");
-    trav = trav->next;
-  }
+  //trav = data->t_token;
+  //while (trav)
+  //{
+  //  printf("| %d |\n", trav->type);
+  //  printf("| %s |\n", trav->value);
+  //  printf("\n");
+  //  trav = trav->next;
+  //}
   //negad linker dial nodes and other fuction of pipe and redirection
 }
 

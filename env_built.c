@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 12:52:21 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/07/24 19:43:05 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/12 13:59:03 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void  reinit_env(t_data *data)
 {
   t_env *trav;
 
+  //here don't get env again cuz i still have env just change it the pwd
   get_env(data);
   trav = data->l_env;
   while (ft_strncmp(trav->sec, "PWD", 3))

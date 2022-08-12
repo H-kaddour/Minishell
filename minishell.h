@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/07/24 19:16:11 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/09 13:39:30 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_data
 	int			index;
 	char		*var;
 	char		*cd_path;
+	int			check;
 	t_env		*var_exist;
 	t_env		*l_env;
 	//of derection

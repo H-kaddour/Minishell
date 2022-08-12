@@ -1,0 +1,32 @@
+Export:
+export "ok=h" "ok" ok ok=h
+export d="ok" "d"=ok "d="ok
+
+
+To do:
+echo with $ var and -n no newline and $ add a var $?
+cd ~ ~/ and their path in pwd and env
+parser of "" '' add them in one node with the word
+export and their option "" '' $?
+unset
+exit fix u gotta write it multiple time
+Ctrl-\
+handle $? check the old process how he got ended number of signal
+
+
+todo
+gad toknizer of "" and '' and their function of adding to node and skip "" ''
+also fix spaces in "" ("okay son" l) the problem in the while of function add_node
+now fix the single quote
+also fix when you try to echo and export try don't print "" ''
+check if "" are closed in tokinizer
+first check if the cmd that u are runing have the permission
+
+cd ~/
+cd ~
+cd /
+c$d   and $d=d
+
+check error if direcotory not exist or not accessible
+if (chdir() !=0)
+  error();

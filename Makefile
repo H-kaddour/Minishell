@@ -6,7 +6,7 @@
 #    By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/09 11:07:05 by hkaddour          #+#    #+#              #
-#    Updated: 2022/06/17 16:33:46 by hkaddour         ###   ########.fr        #
+#    Updated: 2022/08/08 17:47:29 by hkaddour         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ clean:
 
 fclean:
 	@rm -rf $(NAME) $(LIB) *.o
-	@make fclean -C ./libft
+#@make fclean -C ./libft
 
 re: fclean all
 

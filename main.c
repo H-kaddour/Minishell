@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/07/24 19:15:53 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/12 18:56:20 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void  get_env(t_data *data)
     }
     env->sec[j] = 0;
     k = ft_strlen(data->env[i]) + 1;
+    //here pass the equal sign
     j++;
     env->value = malloc(sizeof(char) * k - j);
     k = 0;
@@ -96,7 +97,8 @@ void  get_env(t_data *data)
       k++;
     }
     env->value[k] = 0;
-    node_allocate(data);
+    //why did u add another node allocate this one just added leaks and i didn't use it
+    //node_allocate(data);
     env = env->next;
     i++;
   }
@@ -114,6 +116,7 @@ void  get_env(t_data *data)
   //}
 }
 
+//I have to take this one off and work with my env
 void  get_path(t_data *data)
 {
   int   i;
@@ -250,10 +253,12 @@ int check_builtin(t_data *data)
 
 void  exit_cmd(t_data *data)
 {
+  (void)data;
   //(void)data;
   //free(data->line);
   //free other shiit
-  exit(2);
+  //exit(2);
+  exit(0);
 }
 
 void  *put_str(char *str, int len)
@@ -286,13 +291,17 @@ void  cd_cmd(t_data *data)
 {
   //(void)data;
   t_env *trav;
+  t_env *home;
   //char  *path;
 
   //trav = data->l_env;
   //maybe i have to put get env here cuz everytime i change the path the PWD change
   //get_env(data);
   trav = data->l_env;
-  if (data->built_cmd->next == NULL)
+  home = data->l_env;
+  while (ft_strncmp(home->sec, "HOME", 4))
+    home = home->next;
+  if (data->built_cmd->next == NULL || data->built_cmd->next->next == NULL)
   {
     //just use HOME
     while (ft_strncmp(trav->sec, "HOME", 4))
@@ -326,17 +335,136 @@ void  cd_cmd(t_data *data)
         if (i > 0)
           i--;
         data->cd_path = put_str(trav->value, i);
-        chdir(data->cd_path);
+        //put this one in a if so if a error happen or something
+        //chdir(data->cd_path);
+        if (chdir(data->cd_path) != 0)
+          error("minishell: no directory matched :v", 1);
         //data->cd_path = ft_strjoin(ft_strjoin(trav->value, "/"), data->built_cmd->value);
       }
       //path = ft_strjoin(ft_strjoin(trav->value, "/"), data->built_cmd->value);
+      else if (!ft_strncmp(data->built_cmd->value, "/", 1))
+      {
+        int   i;
+        int   len;
+        char  *no_slash;
+
+        i = 0;
+        len = ft_strlen(data->built_cmd->value) - 1;
+        if (data->built_cmd->value[1] != 0)
+        {//here check if the path has '/' in the end or not
+          if (data->built_cmd->value[len] == '/')
+          {
+            no_slash = malloc(sizeof(char) * len);
+            while (i < len)
+            {
+              no_slash[i] = data->built_cmd->value[i];
+              i++;
+            }
+            no_slash[i] = 0;
+            //data->cd_path = data->built_cmd->value;
+            data->cd_path = no_slash;
+            if (chdir(data->cd_path) != 0)
+              error("error this path is not exist", 1);
+          }
+          else if (data->built_cmd->value[len] != '/')
+          {
+            data->cd_path = data->built_cmd->value;
+            if (chdir(data->cd_path) != 0)
+              error("error this path is not exist", 1);
+          }
+        }
+        else
+        {
+          data->cd_path = "/";
+          chdir(data->cd_path);
+        }
+        //data->cd_path = "/";
+        //trav->value = "/";
+        //chdir(trav->value);
+        //chdir(data->cd_path);
+        //if (chdir(data->cd_path) != 0)
+      }
+      else if (!ft_strncmp(data->built_cmd->value, "~", 1))
+      {
+        if (data->built_cmd->value[0] == '~' && (data->built_cmd->value[1] == '/' || data->built_cmd->value[1] == 0))
+        {
+          //while (ft_strncmp(trav->sec, "HOME", 4))
+          //  trav = trav->next;
+          data->cd_path = home->value;
+          if (chdir(home->value) != 0)
+            error("minishell: no command found", 1);
+          reinit_env(data);
+          return ;
+          //if (data->built_cmd->value[1] == '/' || data->built_cmd->cmd->value[1] == 0)
+        }
+        else
+        {
+          error("error this derectory not exist :v", 1);
+          return ;
+        }
+      }
       else
       {
-        data->cd_path = ft_strjoin(ft_strjoin(trav->value, "/"), data->built_cmd->value);
+        int   i;
+        int   j;
+        int   len;
+        char  *no_slash;
+
+        j = 0;
+        i = ft_strlen(trav->value) - 1;
+        len = ft_strlen(data->built_cmd->value) - 1;
+        //if (data->built_cmd->value[i] == '/')
+        if (data->built_cmd->value[len] == '/')
+        {
+          no_slash = malloc(sizeof(char) * len);
+          //len--;
+          while (j < len)
+          {
+            no_slash[j] = data->built_cmd->value[j];
+            j++;
+          }
+          no_slash[j] = 0;
+          //data->cd_path = ft_strjoin(trav->value, no_slash);
+          if (trav->value[i] == '/')
+            data->cd_path = ft_strjoin(trav->value, no_slash);
+          else
+            data->cd_path = ft_strjoin(ft_strjoin(trav->value, "/"), no_slash);
+        }
+        else if (data->built_cmd->value[len] != '/')
+          data->cd_path = ft_strjoin(ft_strjoin(trav->value, "/"), data->built_cmd->value);
+        //else
+        //{
+
+        //}
+
+        //if (trav->value[i] == '/')
+        //if (data->built_cmd->value[i] == '/')
+        //  data->cd_path = ft_strjoin(trav->value, data->built_cmd->value);
+        //else
+        //  data->cd_path = ft_strjoin(ft_strjoin(trav->value, "/"), data->built_cmd->value);
+
+        //if (data->built_cmd->value[i] == '/' && trav->value[i] != '/')
+        //  data->cd_path = ft_strjoin(ft_strjoin(trav->value, "/"), data->built_cmd->value);
+        //  //data->cd_path = ft_strjoin(trav->value, data->built_cmd->value);
+        //else if (data->built_cmd->value[i] != '/' && trav->value[i] == '/')
+        //  data->cd_path = ft_strjoin(trav->value, data->built_cmd->value);
+          //data->cd_path = ft_strjoin(ft_strjoin(trav->value, "/"), data->built_cmd->value);
+
+
+        //if (i == 1)
+        //  data->cd_path = ft_strjoin(trav->value, data->built_cmd->value);
+        //else
+        //  data->cd_path = ft_strjoin(ft_strjoin(trav->value, "/"), data->built_cmd->value);
+
         //printf("%s\n", data->cd_path);
         //chdir(path);
         //check error of chdir
-        chdir(data->cd_path);
+        //chdir(data->cd_path);
+        if (chdir(data->cd_path) != 0)
+        {
+          error("minishell: no directory matched :v", 1);
+          return ;
+        }
         //if (chdir(path) != 0)
         //  error("minishell: no command found", 1);
       }
@@ -429,6 +557,8 @@ int main(int ac, char **av, char **envp)
     //export for variables
     //maybe this should be in loop to see all the list element
     //still have to fix if there are for example cd cd cd alot of cammand
+
+    //lexer should be here so if there is a error the program will not continue to exec the cmd
     if (check_builtin(&data))
       exec_buil_cmd(&data);
       //printf("%s\n", data.built_cmd->value);
@@ -467,4 +597,4 @@ int main(int ac, char **av, char **envp)
 //recursive descent paser algo:
 //first read line
 //make a scanner that generate tokens for each cmd and error
-//handle the Ctrl-C ... just int he minishel prompt.
+//handle the Ctrl-C ... just in the minishel prompt.
