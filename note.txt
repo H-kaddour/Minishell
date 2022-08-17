@@ -14,6 +14,8 @@ Ctrl-\
 handle $? check the old process how he got ended number of signal
 
 
+printing "$PWD" it print but printing '$PWD' doesn't print
+
 todo
 gad toknizer of "" and '' and their function of adding to node and skip "" ''
 also fix spaces in "" ("okay son" l) the problem in the while of function add_node
@@ -27,6 +29,80 @@ cd ~
 cd /
 c$d   and $d=d
 
+in the end of the infinity loop in the main free all shiit
+
 check error if direcotory not exist or not accessible
 if (chdir() !=0)
   error();
+
+gad blan variable $ so you can read it
+
+negad blan if pwd == / and u did cd .. || cd / bla malloc jdid dial '/'
+
+check if those work cd "~/" the only one works is cd "/Users/hkaddour/Movies" u should give the absolute path to do so for "" and '' cd "/"
+also after cd to a directory check if u have the permission to do so
+
+cd ".."
+
+/Users/hkaddour/
+/Users/hkaddour
+hkaddour/
+hkaddour
+////
+/
+
+example of parsing "":
+"h"l"h"
+"d""g"
+
+
+
+fix cd    space
+
+try this one in "": ls "hich" lo 'what'
+I think i have to make a ptr = "hich" and then take off ""
+
+can you change env var or unset them
+
+pseudo code:
+In parsing :
+- first i have to take off "" '' in the node of the cmd
+- change $ with it's value
+- make a struct node of cmd like ls -la | grep a this is two cmd
+- make a struct node for redirection for their cmd and files
+- to know how much cmd u got to run u need to count 
+
+parsing:
+$? fix it in "" and simple
+$? for '' just print it
+
+
+fix ls it keep letting it everytime i enter an empty args 
+fix $ in the parsing part
+
+fix now '' should not show out of "" only inside ""
+fix now "" should not show out of '' only inside ''
+fix now '$j' but out of '' should print the var and inside '"$PWD"'
+still have to fix some error in "'$VIM' $PWD '$co'"$SHLVL'$SU'
+
+$ sign error:
+"$l"$PWD $VIM
+"$l"$PWD$VIM
+try:
+"$l $VIM"$PWD
+"$l$$"$$$PWD
+"$$|$$"
+"$$$"
+"$"
+
+check if u write the cmd uppercase
+
+To do:
+- finish parsing $ and lexer errors also gad some part like if pipe count to know if it a simple cmd or pipe and for > save file and shiit also for one cmd split it like "ls" "-la" like that
+- finish cd and echo and exit and export some shiit on it
+- learn git by pushing pull request and shiit to get the budge in github page
+- rest on the parsing part is $ in single quotes 
+- fix when i do Ctrl c the readline function lost all prev values only when the program face a infinity loop
+
+cmd to use:
+ps: to see all the shell running

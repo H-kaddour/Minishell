@@ -6,7 +6,7 @@
 #    By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/09 11:07:05 by hkaddour          #+#    #+#              #
-#    Updated: 2022/08/08 17:47:29 by hkaddour         ###   ########.fr        #
+#    Updated: 2022/08/16 12:25:57 by hkaddour         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC = main.c \
 OBJS = $(SRC:.c=.o)
 #move *.o to a build file
 all: $(NAME)
-
+#flag shows where the sigfault happen and force to check everything -fsanitize=address
 $(NAME): $(LIB) $(OBJS)
 	@$(CC) $(OBJS) $(LIB) -o $(NAME) -L ./readline/lib -lreadline
 

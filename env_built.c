@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 12:52:21 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/12 13:59:03 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/14 10:10:42 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ void  reinit_env(t_data *data)
   t_env *trav;
 
   //here don't get env again cuz i still have env just change it the pwd
-  get_env(data);
+  //get_env(data);
   trav = data->l_env;
   while (ft_strncmp(trav->sec, "PWD", 3))
     trav = trav->next;
-  free(trav->value);
+  //if (trav->value[])
+  //if (ft_strlen(trav->value) > 1)
+  //  free(trav->value);
   //trav->value = malloc(sizeof(char) * ft_strlen(data->cd_path) + 1);
   trav->value = data->cd_path;
 }
@@ -33,10 +35,11 @@ void  pwd_cmd(t_data *data)
   trav = data->l_env;
   while (ft_strncmp(trav->sec, "PWD", 3))
     trav = trav->next;
-  if (data->built_cmd->type == WRD)
-  {
-    printf("%s\n", trav->value);
-  }
+  printf("%s\n", trav->value);
+  //if (data->built_cmd->type == WRD)
+  //{
+  //  printf("%s\n", trav->value);
+  //}
 }
 
 void  env_cmd(t_data *data)

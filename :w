@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/17 16:30:43 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/14 11:45:25 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,6 @@ void  execute_cmd(t_data *data)
 {
   int pid;
 
-  //here check if the cmd working then check fork
   pid = fork();
   if (pid < 0)
     exit(2);
@@ -383,29 +382,19 @@ void  cd_cmd(t_data *data)
             //data->cd_path = data->built_cmd->value;
             data->cd_path = no_slash;
             if (chdir(data->cd_path) != 0)
-            {
               error("error this path is not exist", 1);
-              return ;
-            }
           }
           else if (data->built_cmd->value[len] != '/')
           {
             data->cd_path = data->built_cmd->value;
             if (chdir(data->cd_path) != 0)
-            {
               error("error this path is not exist", 1);
-              return ;
-            }
           }
         }
         else
         {
           data->cd_path = "/";
-          if (chdir(data->cd_path) != 0)
-          {
-            error("error this path is not exist", 1);
-            return ;
-          }
+          chdir(data->cd_path);
         }
         //data->cd_path = "/";
         //trav->value = "/";
@@ -421,10 +410,7 @@ void  cd_cmd(t_data *data)
           //  trav = trav->next;
           data->cd_path = home->value;
           if (chdir(home->value) != 0)
-          {
             error("minishell: no command found", 1);
-            return ;
-          }
           reinit_env(data);
           return ;
           //if (data->built_cmd->value[1] == '/' || data->built_cmd->cmd->value[1] == 0)
@@ -688,7 +674,6 @@ int main(int ac, char **av, char **envp)
   char    prompt[] = "$Minishell> ";
 
   i = 0;
-  //use an if here only if ac == 1
   (void)ac;
   data.args = av;
   //data.env = envp;
@@ -723,7 +708,7 @@ int main(int ac, char **av, char **envp)
     //get_env(&data);
     tokenizer(&data);
     //lexer problem exit not working in the first time two times machi lexer tokenizer of something else $
-    //*lexer(&data);
+    lexer(&data);
     //builtin cmd
     //env
     //unset
@@ -732,15 +717,12 @@ int main(int ac, char **av, char **envp)
     //still have to fix if there are for example cd cd cd alot of cammand
 
     //lexer should be here so if there is a error the program will not continue to exec the cmd
-    //**if (check_builtin(&data))
-    //**  exec_buil_cmd(&data);
+    if (check_builtin(&data))
+      exec_buil_cmd(&data);
       //printf("%s\n", data.built_cmd->value);
       //printf("yes\n");
-
-    //to fix exit just check if the cmd it's a valid cmd in the first and then run it
-    //**else
-    //**  execute_cmd(&data);
-
+    else
+      execute_cmd(&data);
       //here exec 3adi
       //printf("nah\n");
 
@@ -767,8 +749,7 @@ int main(int ac, char **av, char **envp)
     free(data.line);
     //if (!ft_strncmp(data.built_cmd->value, "exit", 4))
     //{
-    //  break ;
-    //  //return (0);
+    //  return (0);
     //}
     //write(0, &prompt, sizeof(prompt));
   }
@@ -779,17 +760,3 @@ int main(int ac, char **av, char **envp)
 //first read line
 //make a scanner that generate tokens for each cmd and error
 //handle the Ctrl-C ... just in the minishel prompt.
-
-
-
-
-
-
-
-
-
-
-//examples for lldb:
-//"'$d' $n"$lo
-//"'$d' $n"'$lo'
-//"'$VIM' $PWD '$co'"$SHLVL'$SU'
