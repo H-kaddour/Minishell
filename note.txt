@@ -84,6 +84,13 @@ fix now '' should not show out of "" only inside ""
 fix now "" should not show out of '' only inside ''
 fix now '$j' but out of '' should print the var and inside '"$PWD"'
 still have to fix some error in "'$VIM' $PWD '$co'"$SHLVL'$SU'
+change the cmd that are uppercase to lowercase
+you gotta free the node of the cmd so when u run the cmd again with empty show nothing new readline
+free anything you end with
+fix this one: "echo 'cool'|"|nn
+fix ; should not work
+fix ""$$$$ parsing for dolla in add_node
+echo '''"'$PWD'"''' try this one also if (s_quot <= 2)
 
 $ sign error:
 "$l"$PWD $VIM

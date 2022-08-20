@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/17 16:30:43 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/19 13:13:46 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -721,7 +721,11 @@ int main(int ac, char **av, char **envp)
     }
     //data.env = envp;
     //get_env(&data);
-    tokenizer(&data);
+    //also do it for lexer and exextion
+    if (data.line[0] == 0)
+      nl();
+    else
+      tokenizer(&data);
     //lexer problem exit not working in the first time two times machi lexer tokenizer of something else $
     //*lexer(&data);
     //builtin cmd

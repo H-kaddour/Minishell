@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 16:42:42 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/17 19:31:13 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/20 19:04:04 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ void  add_node(t_data *data, t_types typ)
         }
         else if (data->beg_line[i + 1] == '?')
         {
+          //maybe here i should put the number on how the process got ended
           keep = i + 1;
           while (i <= keep)
           {
@@ -515,13 +516,14 @@ void  add_node(t_data *data, t_types typ)
       //{
 
       //}
-      //if (data->beg_line[i] != '$')
-      //{
+      //just try this one for $$$
+      if (data->beg_line[i] != '$')
+      {
         node->value[j] = data->beg_line[i];
         i++;
         //if (data->beg_line[j] != '\"' || data->beg_line[j] != '\'')
         j++;
-      //}
+      }
     }
     //data->beg_line = &data->beg_line[j];
     data->beg_line = &data->beg_line[i];
@@ -530,83 +532,314 @@ void  add_node(t_data *data, t_types typ)
  //***************
   else if (typ == S_QUOT)
   {
+    int quote_pos;
+    int s_pos;
+    int d_pos;
     i = 0;
     j = 0;
+    s_pos = 0;
+    d_pos = 0;
+    quote_pos = 0;
     node->value = malloc(sizeof(char) * 100 + 1);
-    while (&data->beg_line[j] != &data->n_line[0] && data->beg_line[i])
+    //while (&data->beg_line[j] != &data->n_line[0] && data->beg_line[i])
+    while (&data->beg_line[i + 1] != &data->n_line[0] && data->beg_line[i])
     {
-      while (data->beg_line[i] == '\'')
-        i++;
-      //**while (data->beg_line[i] == '$')
-      //**{
-      //**  if (data->beg_line[i + 1] == ' ' || data->beg_line[i + 1] == '\"' \
-      //**      || data->beg_line[i + 1] == '\'' /*|| data->beg_line[i + 1] == '\0'*/)
-      //**  {
-      //**    node->value[j] = data->beg_line[i];
-      //**    i++;
-      //**    j++;
-      //**    break ;
-      //**  }
-      //**  else if (data->beg_line[i + 1] == 0)
-      //**  {
-      //**    node->value[j] = data->beg_line[i];
-      //**    i++;
-      //**    j++;
-      //**    break ;
-      //**  }
-      //**  else if (data->beg_line[i + 1] == '$')
-      //**  {
-      //**    i += 2;
-      //**    break ;
-      //**  }
-      //**  i++;
-      //**  char  *dolla;
-      //**  int   len;
+      while (data->beg_line[i] == '\'' || data->beg_line[i] == '\"')
+      {
+        if (data->beg_line[i] == '\'')
+        {
+          quote_pos = 2;
+          s_pos = 2;
+          if (d_quote % 2 == 0)
+          {
+            i++; 
+            s_quote++;
+          }
+          else if (d_quote % 2 == 1)
+          {
+            s_quote++;
+            node->value[j] = data->beg_line[i];
+            i++;
+            j++;
+          }
+          //i++; 
+          //s_quote++;
+        }
+        else if (data->beg_line[i] == '\"')
+        {
+          quote_pos = 4;
+          d_pos = 4;
+          if (s_quote % 2 == 0)
+          {
+            i++;
+            d_quote++;
+          }
+          else
+          {
+            d_quote++;
+            node->value[j] = data->beg_line[i];
+            i++;
+            j++;
+          }
+        }
+      }
+      //***
+      while (data->beg_line[i] == '$')
+      {
+        if (data->beg_line[i + 1] == ' ' || data->beg_line[i + 1] == '\"' \
+            || data->beg_line[i + 1] == '\'')
+        {
+          node->value[j] = data->beg_line[i];
+          i++;
+          j++;
+          break ;
+        }
+        else if (data->beg_line[i + 1] == 0)
+        {
+          node->value[j] = data->beg_line[i];
+          i++;
+          j++;
+          break ;
+        }
+        //else if (data->beg_line[i + 1] == '?' && s_quote % 2 == 0)
+        else if (data->beg_line[i + 1] == '?')
+        {
+          //maybe here i should put the number on how the process got ended
+          //cuz if '$?' should be print but in ''$? should print end of process
+          keep = i + 1;
+          while (i <= keep)
+          {
+            node->value[j] = data->beg_line[i];
+            i++;
+            j++;
+          }
+          break ;
+        }
+        //else if (data->beg_line[i + 1] == '$' && s_quote % 2 == 1)
+        else if (data->beg_line[i + 1] == '$')
+        {
+          //if only '' was open then i will print all $$ if close with "" or without try to print the value
+          if (s_quote % 2 == 1 || (d_pos == 4 && s_pos == 2 && quote_pos == 2))
+          {
+            while (data->beg_line[i] == '$' && data->beg_line[i] != '\'' && data->beg_line[i] != '\"')
+            {
+              node->value[j] = data->beg_line[i];
+              i++;
+              j++;
+            }
+            break ;
+          }
+          //else if (s_quote % 2 == 1 || (d_pos == 4 && s_pos == 2 && quote_pos == 2))
+          else
+          {
+            i += 2;
+            break ;
+          }
+          //i += 2;
+          //break ;
+        }
+        ///****
+        // this one will copy in the below one
+        //if (s_quote % 2 == 1)
+        //{
+        //  while ()
+        //}
+        //if (s_quote % 2 == 0 || quote_pos == 2)
+        if (s_quote % 2 == 0 || (d_pos == 4 && s_pos == 2 && quote_pos == 2))
+        {//and here if '' are closed and "" open so to add "" or take it off
+          i++;
+          char  *dolla;
+          int   len;
 
-      //**  len = 0;
-      //**  while (data->beg_line[i] != ' ' && data->beg_line[i] != '\"' && data->beg_line[i] != '|' && data->beg_line[i] != '>' \
-      //**      && data->beg_line[i] != '<' && data->beg_line[i] != '$' && data->beg_line[i] /*and maybe single quote also*/)
-      //**  {
-      //**    i++;
-      //**    len++;
-      //**  }
-      //**  dolla = malloc(sizeof(char) * len + 1);
-      //**  i = i - len;
-      //**  len = 0;
-      //**  while (data->beg_line[i] != ' ' && data->beg_line[i] != '\"' && data->beg_line[i] != '|' && data->beg_line[i] != '>' \
-      //**      && data->beg_line[i] != '<' && data->beg_line[i] != '$' && data->beg_line[i] /*and maybe single quote also*/)
-      //**  {
-      //**    dolla[len] = data->beg_line[i];
-      //**    i++;
-      //**    len++;
-      //**  }
-      //**  dolla[i] = 0;
-      //**  while (ft_strncmp(trav_env->sec, dolla, i) && trav_env->next != NULL)
-      //**    trav_env = trav_env->next;
-      //**  if (!ft_strncmp(trav_env->sec, dolla, i))
-      //**  {
-      //**    free(dolla);
-      //**    dolla = ft_strdup(trav_env->value);
-      //**  }
-      //**  else
-      //**  {
-      //**    free(dolla);
-      //**    dolla = ft_strdup(" ");
-      //**  }
-      //**  trav_env = data->l_env;
-      //**  len = 0;
-      //**  while (dolla[len])
-      //**  {
-      //**    node->value[j] = dolla[len];
-      //**    j++;
-      //**    len++;
-      //**  }
-      //**while (data->beg_line[i] == '\'')
-      //**  i++;
-      //**}
-      while (data->beg_line[i] == '\'')
-        i++;
-      if (&data->beg_line[i] == &data->n_line[0])
+          len = 0;
+          //here if it reach the end \0
+          while (ft_acceptable_char(data->beg_line[i]))
+          {
+            i++;
+            len++;
+          }
+          dolla = malloc(sizeof(char) * len + 1);
+          i = i - len;
+          len = 0;
+          while (ft_acceptable_char(data->beg_line[i]))
+          {
+            dolla[len] = data->beg_line[i];
+            i++;
+            len++;
+          }
+          dolla[i] = 0;
+          //if (!(d_quote % 2 == 0 && s_quote % 2 == 1))
+          //{
+            while (ft_strncmp(trav_env->sec, dolla, i) && trav_env->next != NULL)
+              trav_env = trav_env->next;
+            if (!ft_strncmp(trav_env->sec, dolla, i))
+            {
+              free(dolla);
+              dolla = ft_strdup(trav_env->value);
+            }
+            else
+            {
+              free(dolla);
+              //dolla = ft_strdup(" ");
+              dolla = ft_strdup("");
+            }
+          //}
+          trav_env = data->l_env;
+          len = 0;
+          while (dolla[len])
+          {
+            node->value[j] = dolla[len];
+            j++;
+            len++;
+          }
+          dolla = NULL;
+          //if (d_quote % 2 == 1)
+          //{
+
+          //}
+          //else if (d_quote % 2 == 0)
+          //{
+          //  //here if equal to '' or "" just count it and move on
+          //}
+        }
+        else
+        {
+          node->value[j] = data->beg_line[i];
+          i++;
+          j++;
+          //i++;
+          //while (data->beg_line[i] != '\'' && data->beg_line[i] != '\"' && data->beg_line[i] != '$' && data->beg_line[i])
+          //{
+          //  node->value[i] = data->beg_line[i];
+          //  i++;
+          //}
+        }
+        //**i++;
+        //**char  *dolla;
+        //**int   len;
+
+        //**len = 0;
+        //**while (ft_acceptable_char(data->beg_line[i]))
+        //**{
+        //**  i++;
+        //**  len++;
+        //**}
+        //**if (!(d_quote % 2 == 0 && s_quote % 2 == 1))
+        //**  dolla = malloc(sizeof(char) * len + 2);
+        //**else
+        //**  dolla = malloc(sizeof(char) * len + 1);
+        //**i = i - len;
+        //**len = 0;
+        //**if (d_quote % 2 == 0 && s_quote % 2 == 1)
+        //**{
+        //**  dolla[len] = '$';
+        //**  len++;
+        //**}
+        //**while (ft_acceptable_char(data->beg_line[i]))
+        //**{
+        //**  dolla[len] = data->beg_line[i];
+        //**  i++;
+        //**  len++;
+        //**}
+        //**dolla[i] = 0;
+        //**if (!(d_quote % 2 == 0 && s_quote % 2 == 1))
+        //**{
+        //**  while (ft_strncmp(trav_env->sec, dolla, i) && trav_env->next != NULL)
+        //**    trav_env = trav_env->next;
+        //**  if (!ft_strncmp(trav_env->sec, dolla, i))
+        //**  {
+        //**    free(dolla);
+        //**    dolla = ft_strdup(trav_env->value);
+        //**  }
+        //**  else
+        //**  {
+        //**    free(dolla);
+        //**    dolla = ft_strdup(" ");
+        //**  }
+        //**}
+        //**trav_env = data->l_env;
+        //**len = 0;
+        //**while (dolla[len])
+        //**{
+        //**  node->value[j] = dolla[len];
+        //**  j++;
+        //**  len++;
+        //**}
+        //**dolla = NULL;
+        while (data->beg_line[i] == '\"' || data->beg_line[i] == '\'')
+        {
+          if (data->beg_line[i] == '\'')
+          {
+            //if (s_quote % 2 == 0)
+            if (d_quote % 2 == 0)
+            {
+              i++; 
+              s_quote++;
+            }
+            else if (d_quote % 2 == 1)
+            {
+              s_quote++;
+              node->value[j] = data->beg_line[i];
+              i++;
+              j++;
+            }
+            //i++; 
+            //s_quote++;
+          }
+          else if (data->beg_line[i] == '\"')
+          {
+            if (s_quote % 2 == 0)
+            {
+              i++;
+              d_quote++;
+            }
+            else
+            {
+              d_quote++;
+              node->value[j] = data->beg_line[i];
+              i++;
+              j++;
+            }
+          }
+        }
+      }
+      //****
+      while (data->beg_line[i] == '\'' || data->beg_line[i] == '\"')
+      {
+        if (data->beg_line[i] == '\'')
+        {
+          if (d_quote % 2 == 0)
+          {
+            i++; 
+            s_quote++;
+          }
+          else if (d_quote % 2 == 1)
+          {
+            s_quote++;
+            node->value[j] = data->beg_line[i];
+            i++;
+            j++;
+          }
+          //i++; 
+          //s_quote++;
+        }
+        else if (data->beg_line[i] == '\"')
+        {
+          if (s_quote % 2 == 0)
+          {
+            i++;
+            d_quote++;
+          }
+          else
+          {
+            d_quote++;
+            node->value[j] = data->beg_line[i];
+            i++;
+            j++;
+          }
+        }
+      }
+      if (&data->beg_line[i + 1] == &data->n_line[0])
         break ;
       if (data->beg_line[i] != '$')
       {
@@ -627,6 +860,7 @@ void  add_node(t_data *data, t_types typ)
 
     i = 0;
     j = 0;
+    //here do $? let it so i can show the value in echo
     node->value = malloc(sizeof(char) * data->i_line + 1);
     if (data->beg_line[i] == '$')
       i++;

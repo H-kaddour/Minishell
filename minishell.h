@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/09 13:39:30 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/19 13:07:52 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void  error(char *msg, int check);
 void  lexer(t_data *data);
 void  tokenizer(t_data *data);
 void  unset_cmd(t_data *data);
+void  nl(void);
 //char  *grab_line(int fd);
 
 #endif

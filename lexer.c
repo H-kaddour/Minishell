@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 16:13:45 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/07/06 12:34:35 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/19 13:12:23 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@
 
 void  nl(void)
 {
+  //here do a check
   printf("\n");
   rl_on_new_line();
   rl_replace_line("", 0);
