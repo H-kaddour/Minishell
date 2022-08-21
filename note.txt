@@ -91,6 +91,9 @@ fix this one: "echo 'cool'|"|nn
 fix ; should not work
 fix ""$$$$ parsing for dolla in add_node
 echo '''"'$PWD'"''' try this one also if (s_quot <= 2)
+lexer in the add_node
+gad blan ${PWD} "${PWD}" '${PWD}' and example like this
+shellvl everytime ./minishell i run a program
 
 $ sign error:
 "$l"$PWD $VIM

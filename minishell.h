@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/19 13:07:52 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/21 17:36:15 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_data
 	char		*var;
 	char		*cd_path;
 	int			check;
+	t_env		*shlvl_ptr;
 	t_env		*var_exist;
 	t_env		*l_env;
 	//of derection
@@ -97,6 +98,10 @@ void  lexer(t_data *data);
 void  tokenizer(t_data *data);
 void  unset_cmd(t_data *data);
 void  nl(void);
+int		ft_acceptable_char(int c);
+
+//**
+void  token_s_quote(t_data *data);
 //char  *grab_line(int fd);
 
 #endif

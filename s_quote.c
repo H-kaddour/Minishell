@@ -1,171 +1,183 @@
-  if (typ == D_QUOT)
-  {
-    //here i should count how much i will allocate
-    node->value = malloc(sizeof(char) * 100 + 1);
-    i = 0;
-    j = 0;
-    while (&data->beg_line[i + 1] != &data->n_line[0] && data->beg_line[i])
-    {
-      while (data->beg_line[i] == '\"' || data->beg_line[i] == '\'')
-      {
-        if (data->beg_line[i] == '\"')
-        {
-          i++;
-          d_quote++;
-        }
-        else if (data->beg_line[i] == '\'')
-        {
-          if (d_quote % 2 == 0)
-          {
-            i++;
-            s_quote++;
-          }
-          else
-          {
-            s_quote++;
-            node->value[j] = data->beg_line[i];
-            i++;
-            j++;
-          }
-        }
-      }
-      while (data->beg_line[i] == '$')
-      {
-        if (data->beg_line[i + 1] == ' ' || data->beg_line[i + 1] == '\"' || data->beg_line[i + 1] == '\'')
-        {
-          node->value[j] = data->beg_line[i];
-          i++;
-          j++;
-          break ;
-        }
-        else if (data->beg_line[i + 1] == 0)
-        {
-          node->value[j] = data->beg_line[i];
-          i++;
-          j++;
-          break ;
-        }
-        else if (data->beg_line[i + 1] == '?')
-        {
-          keep = i + 1;
-          while (i <= keep)
-          {
-            node->value[j] = data->beg_line[i];
-            i++;
-            j++;
-          }
-          break ;
-        }
-        else if (data->beg_line[i + 1] == '$')
-        {
-          i += 2;
-          break ;
-        }
-        i++;
-        char  *dolla;
-        int   len;
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   s_quote.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/21 13:46:15 by hkaddour          #+#    #+#             */
+/*   Updated: 2022/08/21 19:32:08 by hkaddour         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "minishell.h"
+
+void  token_s_quote(t_data *data)
+{
+  int   i;
+  int   j;
+  int   len;
+  char  *ptr;
+  char  *dolla;
+  t_env *trav;
+
+  i = 0;
+  j = 0;
+  trav = data->l_env;
+  ptr = malloc(sizeof(char) * 100);
+  while (data->line[i])
+  {
+    if (data->line[i] == '\'')
+    {
+      i++;
+      while (data->line[i] != '\'' && data->line[i])
+      {
+        ptr[j] = data->line[i];
+        i++;
+        j++;
+      }
+      if (data->line[i] == '\'')
+        i++;
+    }
+    else if (data->line[i] == '\"')
+    {
+      i++;
+      //while (data->line[i] != '$' && data->line[i] != '\'' && data->line[i] != '\"' && data->line[i])
+      while (data->line[i] != '$' && data->line[i] != '\"' && data->line[i])
+      {
+        ptr[j] = data->line[i];
+        i++;
+        j++;
+      }
+      while (data->line[i] == '$')
+      {
+        i++;
         len = 0;
-        while (ft_acceptable_char(data->beg_line[i]))
+        while (ft_acceptable_char(data->line[i]))
         {
           i++;
           len++;
         }
-        if (!(d_quote % 2 == 0 && s_quote % 2 == 1))
-          dolla = malloc(sizeof(char) * len + 2);
+        dolla = malloc(sizeof(char) * len + 1);
+        i -= len;
+        len = 0;
+        while (ft_acceptable_char(data->line[i]))
+        {
+          dolla[len] = data->line[i];
+          i++;
+          len++;
+        }
+        dolla[len] = 0;
+        while (ft_strncmp(trav->sec, dolla, len) && trav->next != NULL)
+          trav = trav->next;
+        if (!ft_strncmp(trav->sec, dolla, len))
+        {
+          free(dolla);
+          dolla = ft_strdup(trav->value);
+        }
         else
-          dolla = malloc(sizeof(char) * len + 1);
-        i = i - len;
-        len = 0;
-        if (d_quote % 2 == 0 && s_quote % 2 == 1)
         {
-          dolla[len] = '$';
-          len++;
+          free(dolla);
+          dolla = ft_strdup("");
         }
-        while (ft_acceptable_char(data->beg_line[i]))
-        {
-          dolla[len] = data->beg_line[i];
-          i++;
-          len++;
-        }
-        dolla[i] = 0;
-        if (!(d_quote % 2 == 0 && s_quote % 2 == 1))
-        {
-          while (ft_strncmp(trav_env->sec, dolla, i) && trav_env->next != NULL)
-            trav_env = trav_env->next;
-          if (!ft_strncmp(trav_env->sec, dolla, i))
-          {
-            free(dolla);
-            dolla = ft_strdup(trav_env->value);
-          }
-          else
-          {
-            free(dolla);
-            dolla = ft_strdup(" ");
-          }
-        }
-        trav_env = data->l_env;
         len = 0;
         while (dolla[len])
         {
-          node->value[j] = dolla[len];
+          ptr[j] = dolla[len];
           j++;
           len++;
         }
-        dolla = NULL;
-        while (data->beg_line[i] == '\"' || data->beg_line[i] == '\'')
-        {
-          if (data->beg_line[i] == '\"')
-          {
-            i++;
-            d_quote++;
-          }
-          else if (data->beg_line[i] == '\'')
-          {
-            if (d_quote % 2 == 0)
-            {
-              i++;
-              s_quote++;
-            }
-            else
-            {
-              s_quote++;
-              node->value[j] = data->beg_line[i];
-              i++;
-              j++;
-            }
-          }
-        }
+        trav = data->l_env;
       }
-      while (data->beg_line[i] == '\"' || data->beg_line[i] == '\'')
+      if (data->line[i] == '\"' || data->line[i] == '\'')
       {
-        if (data->beg_line[i] == '\"')
+        if (data->line[i] == '\'')
         {
+          ptr[j] = data->line[i];
           i++;
-          d_quote++;
+          j++;
         }
-        else if (data->beg_line[i] == '\'')
-        {
-          if (d_quote % 2 == 0)
-          {
-            i++;
-            s_quote++;
-          }
-          else
-          {
-            s_quote++;
-            node->value[j] = data->beg_line[i];
-            i++;
-            j++;
-          }
-        }
+        else if (data->line[i] == '\"')
+          i++;
       }
-      if (&data->beg_line[i + 1] == &data->n_line[0])
-        break ;
-        node->value[j] = data->beg_line[i];
+    }
+    while (data->line[i] == '$')
+    {
+      i++;
+      len = 0;
+      while (ft_acceptable_char(data->line[i]))
+      {
+        i++;
+        len++;
+      }
+      dolla = malloc(sizeof(char) * len + 1);
+      i -= len;
+      len = 0;
+      while (ft_acceptable_char(data->line[i]))
+      {
+        dolla[len] = data->line[i];
+        i++;
+        len++;
+      }
+      dolla[len] = 0;
+      while (ft_strncmp(trav->sec, dolla, len) && trav->next != NULL)
+        trav = trav->next;
+      if (!ft_strncmp(trav->sec, dolla, len))
+      {
+        free(dolla);
+        dolla = ft_strdup(trav->value);
+      }
+      else
+      {
+        free(dolla);
+        dolla = ft_strdup("");
+      }
+      len = 0;
+      while (dolla[len])
+      {
+        ptr[j] = dolla[len];
+        j++;
+        len++;
+      }
+      trav = data->l_env;
+    }
+    //else
+    //{
+      while (data->line[i] != '\'' && data->line[i] != '\"' && data->line[i])
+      {
+        ptr[j] = data->line[i];
         i++;
         j++;
-    }
-    data->beg_line = &data->beg_line[i];
-    node->value[j] = 0;
+      }
+    //}
+    //i++;
   }
+  ptr[j] = 0;
+  printf("%s\n", ptr);
+}
+//'$cool'
+
+
+
+
+
+//if (data->line[i] == '$')
+//{
+//  i++;
+//  k = 0;
+//  while (ft_acceptable_char(data->line[i]))
+//  {
+//    i++;
+//    k++;
+//    //dolla[k] = data->line[i];
+//  }
+//  dolla = malloc(sizeof(char) * k + 1);
+//  i = i - k;
+//  k = 0;
+//  while (ft_acceptable_char(data->line[i]))
+//  {
+//    dolla[k] = data->line[i];
+//    k++;
+//    i++;
+//  }
+//}

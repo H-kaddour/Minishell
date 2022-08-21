@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/19 13:13:46 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/21 17:35:42 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,15 @@ void  get_env(t_data *data)
   //add one to the indent level
   while (ft_strncmp(trav->sec, "SHLVL", 5))
     trav = trav->next;
-  i = ft_strlen(trav->value) - 1;
-  trav->value[i] += 1;
+  //i = ft_strlen(trav->value) - 1;
+  //trav->value[i] += 1;
+  int shlvl;
+  data->shlvl_ptr = trav;
+  shlvl = ft_atoi(trav->value);
+  shlvl++;
+  data->shlvl_ptr->value = ft_itoa(shlvl);
+  //trav->value = ft_itoa(shlvl);
+
   //while (trav->next)
   //{
   //  printf("%s=%s\n", trav->sec, trav->value);
@@ -725,7 +732,8 @@ int main(int ac, char **av, char **envp)
     if (data.line[0] == 0)
       nl();
     else
-      tokenizer(&data);
+      token_s_quote(&data);
+      //**tokenizer(&data);
     //lexer problem exit not working in the first time two times machi lexer tokenizer of something else $
     //*lexer(&data);
     //builtin cmd
@@ -736,14 +744,27 @@ int main(int ac, char **av, char **envp)
     //still have to fix if there are for example cd cd cd alot of cammand
 
     //lexer should be here so if there is a error the program will not continue to exec the cmd
+
     //**if (check_builtin(&data))
     //**  exec_buil_cmd(&data);
       //printf("%s\n", data.built_cmd->value);
       //printf("yes\n");
 
     //to fix exit just check if the cmd it's a valid cmd in the first and then run it
+
     //**else
     //**  execute_cmd(&data);
+
+    //**this one for shlvl when u run ./minishell in readline
+    //**data.built_cmd->value = av[0];
+    //**if (!ft_strncmp(data.built_cmd->value, av[0], ft_strlen(av[0])))
+    //**{
+    //**  int shlvl;
+    //**  //data.shlvl_ptr = trav;
+    //**  shlvl = ft_atoi(data.shlvl_ptr->value);
+    //**  shlvl++;
+    //**  data.shlvl_ptr->value = ft_itoa(shlvl);
+    //**}
 
       //here exec 3adi
       //printf("nah\n");

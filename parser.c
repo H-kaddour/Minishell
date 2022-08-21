@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 16:42:42 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/20 19:04:04 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/21 18:20:39 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,8 +246,8 @@ void  add_node(t_data *data, t_types typ)
           else
           {
             free(dolla);
-            //dolla = ft_strdup("");
-            dolla = ft_strdup(" ");
+            dolla = ft_strdup("");
+            //dolla = ft_strdup(" ");
             //maybe here is the problem
           }
         }
@@ -550,17 +550,31 @@ void  add_node(t_data *data, t_types typ)
         {
           quote_pos = 2;
           s_pos = 2;
+          s_quote++;
+          //if (d_quote % 2 == 0 && s_quote % 2 == 1)
           if (d_quote % 2 == 0)
           {
-            i++; 
-            s_quote++;
-          }
-          else if (d_quote % 2 == 1)
-          {
-            s_quote++;
-            node->value[j] = data->beg_line[i];
             i++;
-            j++;
+            //s_quote++;
+          }
+          //else if (d_quote % 2 == 1 && s_quote % 2 == 1)
+          //else if (d_quote % 2 == 1 && s_quote % 2 == 1)
+          //{
+          //  i++;
+          //  //s_quote++;
+          //}
+          //else if (d_quote % 2 == 1 && s_quote % 2 == 0)
+          else if (d_quote % 2 == 1 /*&& s_quote % 2 == 0*/)
+          {
+            if (s_quote % 2 == 0)
+              i++;
+            else if (s_quote % 2 == 1)
+            {
+              //s_quote++;
+              node->value[j] = data->beg_line[i];
+              i++;
+              j++;
+            }
           }
           //i++; 
           //s_quote++;
@@ -619,7 +633,7 @@ void  add_node(t_data *data, t_types typ)
         else if (data->beg_line[i + 1] == '$')
         {
           //if only '' was open then i will print all $$ if close with "" or without try to print the value
-          if (s_quote % 2 == 1 || (d_pos == 4 && s_pos == 2 && quote_pos == 2))
+          if (s_quote % 2 == 1 || (d_pos == 4 && s_pos == 2 && quote_pos == 2 && s_quote < 2))
           {
             while (data->beg_line[i] == '$' && data->beg_line[i] != '\'' && data->beg_line[i] != '\"')
             {
@@ -864,6 +878,7 @@ void  add_node(t_data *data, t_types typ)
     node->value = malloc(sizeof(char) * data->i_line + 1);
     if (data->beg_line[i] == '$')
       i++;
+    //fix here
     while (&data->beg_line[i] != & data->n_line[0])
     {
       node->value[j] = data->beg_line[i];
