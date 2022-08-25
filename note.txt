@@ -2,11 +2,16 @@ Export:
 export "ok=h" "ok" ok ok=h
 export d="ok" "d"=ok "d="ok
 
-the biggest problem i will find in single quotes $? will not print
+the biggest problem i will find in single quotes $? will not print make a variable that change the value of process exit and the it 
+start with 0 at first and then it get change by the process exiting
+add all whitespaces in strchr parsing
+every exit will down up the shlvl 
 
 fix those:
 lexer '"'"'" not error even if not close ignore in the big quote
 ''"$PWD$|$HOME"
+
+maybe i will split the cmd with split for enum PIPE
 To do:
 echo with $ var and -n no newline and $ add a var $?
 cd ~ ~/ and their path in pwd and env
@@ -17,6 +22,7 @@ exit fix u gotta write it multiple time
 Ctrl-\
 handle $? check the old process how he got ended number of signal
 
+handle heredoc in parsing << $PWD should not expand but "<< $PWD" should expand
 
 printing "$PWD" it print but printing '$PWD' doesn't print
 
@@ -128,3 +134,12 @@ To do today:
 - fix single and double quote in parsing and $ and lexer
 - fix and read a cmd in **array
 - fix the main and take off the comment and make file and norminette and free leaks
+
+To do tomorrow:
+- still have to fix $? in parsing part and count lenght of str to allocate
+- fix heredoc in tokenizer << not expand 
+- start in lexer with error color and fix all other problem i put in this note
+- gad double pointer cmd struct and parse cmd and input file and output and file
+- start implementing cd 
+- fix main norminette and structure 
+- Leaks

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/21 17:36:15 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/24 14:31:43 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,10 @@ typedef struct s_data
 	char		*var;
 	char		*cd_path;
 	int			check;
+	int			i;
+	int			j;
+	t_token	*node;
+  t_token *trav;
 	t_env		*shlvl_ptr;
 	t_env		*var_exist;
 	t_env		*l_env;
@@ -85,20 +89,40 @@ typedef struct s_data
 	t_token	*t_token;
 }	t_data;
 
-//void  sig_c(int c);
-t_env *node_allocate(t_data *data);
-void  export_cmd(t_data *data);
-void  reinit_env(t_data *data);
-void  echo_cmd(t_data *data);
-void  env_cmd(t_data *data);
-void  pwd_cmd(t_data *data);
-void  get_env(t_data *data);
-void  error(char *msg, int check);
-void  lexer(t_data *data);
-void  tokenizer(t_data *data);
-void  unset_cmd(t_data *data);
-void  nl(void);
-int		ft_acceptable_char(int c);
+/******* Function of parsing *********/
+void	add_dolla_begin(t_data *data);
+void	add_dolla(t_data *data);
+void	add_node(t_data *data, t_types typ);
+int	ft_acceptable_char(int c);
+void	is_quote_helper(t_data *data, int c, char *n_line);
+void	ft_init_tokenizer(t_data *data, char *n_line, int i, t_types typ);
+int	is_o_redirection(t_data *data, char *n_line);
+int	is_i_redirection(t_data *data, char *n_line);
+int	is_s_quote(t_data *data, char *n_line);
+int	is_dolla(t_data *data, char *n_line);
+int	is_d_quote(t_data *data, char *n_line);
+void	tokenizer(t_data *data);
+
+
+
+
+
+
+
+//i gotta sperate the function prototype
+//**t_env *node_allocate(t_data *data);
+//**void  export_cmd(t_data *data);
+//**void  reinit_env(t_data *data);
+//**void  echo_cmd(t_data *data);
+//**void  env_cmd(t_data *data);
+//**void  pwd_cmd(t_data *data);
+//**void  get_env(t_data *data);
+//**void  error(char *msg, int check);
+//**void  lexer(t_data *data);
+//**void  tokenizer(t_data *data);
+//**void  unset_cmd(t_data *data);
+//**void  nl(void);
+//int		ft_acceptable_char(int c);
 
 //**
 void  token_s_quote(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/21 17:35:42 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/23 13:25:40 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -732,7 +732,8 @@ int main(int ac, char **av, char **envp)
     if (data.line[0] == 0)
       nl();
     else
-      token_s_quote(&data);
+      tokenizer(&data);
+      //token_s_quote(&data);
       //**tokenizer(&data);
     //lexer problem exit not working in the first time two times machi lexer tokenizer of something else $
     //*lexer(&data);
