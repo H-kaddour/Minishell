@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 16:13:45 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/19 13:12:23 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:47:39 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,48 +357,48 @@ void  dolla_grammar(t_data *data, t_token *dolla)
   //}
 }
 
-void  lexer(t_data *data)
-{
-  //int   i;
-  t_token *trav;
-
-  //i = 0;
-  trav = data->t_token;
-  data->trav_p = data->t_token;
-  data->trav_r = data->t_token;
-  check_node_error(data);
-  while (trav)
-  {
-    //check an error if "" are not close
-    //if (!ft_strncmp(trav->type, PIPE, 1))
-    //break in every fucntion so to not have a lot of error
-    if (typ_cmp(trav->type, PIPE))
-      pipe_grammar(data, trav);
-    else if (typ_cmp(trav->type, O_TRNC))
-      ot_grammar(data, trav);
-    else if (typ_cmp(trav->type, O_APEND))
-      ot_grammar(data, trav);
-    else if (typ_cmp(trav->type, I_TRNC))
-      ot_grammar(data, trav);
-    else if (typ_cmp(trav->type, I_APEND))
-      ot_grammar(data, trav);
-    else if (typ_cmp(trav->type, DOLLA))
-      dolla_grammar(data, trav);
-    //else if (typ_cmp(trav->type, D_QUOT))
-    //  d_quot_grammar(data, trav);
-    //this code for $ variable
-    //i++;
-    //segfaul when $ is not use like variavle only
-    //if (!ft_strncmp(trav->value, "$", 1))
-    //{
-    //  trav = trav->next;
-    //  check_dolla(trav->value);
-    //  variable_dolla(data, trav->value);
-    //  printf("%s\n", data->var);
-    //  //printf("%d\n", i);
-    //  //printf("%s\n", trav->value);
-    //}
-    //data->trav_p = trav;
-    trav = trav->next;
-  }
-}
+//void  lexer(t_data *data)
+//{
+//  //int   i;
+//  t_token *trav;
+//
+//  //i = 0;
+//  trav = data->t_token;
+//  data->trav_p = data->t_token;
+//  data->trav_r = data->t_token;
+//  check_node_error(data);
+//  while (trav)
+//  {
+//    //check an error if "" are not close
+//    //if (!ft_strncmp(trav->type, PIPE, 1))
+//    //break in every fucntion so to not have a lot of error
+//    if (typ_cmp(trav->type, PIPE))
+//      pipe_grammar(data, trav);
+//    else if (typ_cmp(trav->type, O_TRNC))
+//      ot_grammar(data, trav);
+//    else if (typ_cmp(trav->type, O_APEND))
+//      ot_grammar(data, trav);
+//    else if (typ_cmp(trav->type, I_TRNC))
+//      ot_grammar(data, trav);
+//    else if (typ_cmp(trav->type, I_APEND))
+//      ot_grammar(data, trav);
+//    else if (typ_cmp(trav->type, DOLLA))
+//      dolla_grammar(data, trav);
+//    //else if (typ_cmp(trav->type, D_QUOT))
+//    //  d_quot_grammar(data, trav);
+//    //this code for $ variable
+//    //i++;
+//    //segfaul when $ is not use like variavle only
+//    //if (!ft_strncmp(trav->value, "$", 1))
+//    //{
+//    //  trav = trav->next;
+//    //  check_dolla(trav->value);
+//    //  variable_dolla(data, trav->value);
+//    //  printf("%s\n", data->var);
+//    //  //printf("%d\n", i);
+//    //  //printf("%s\n", trav->value);
+//    //}
+//    //data->trav_p = trav;
+//    trav = trav->next;
+//  }
+//}

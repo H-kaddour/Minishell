@@ -136,6 +136,8 @@ To do today:
 - fix the main and take off the comment and make file and norminette and free leaks
 
 To do tomorrow:
+- in lexer '"' "'" should not print an error 
+- i have to fix some shiit tokenizer alone and then lexer then parsing and put every cmd in a node and then executing
 - still have to fix $? in parsing part and count lenght of str to allocate
 - fix heredoc in tokenizer << not expand 
 - start in lexer with error color and fix all other problem i put in this note
@@ -143,3 +145,8 @@ To do tomorrow:
 - start implementing cd 
 - fix main norminette and structure 
 - Leaks
+- cd -
+- gad popd and pushd
+- read a config file at first and then run the program
+- error handling minishell: cd not ...
+- protect all malloc

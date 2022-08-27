@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/24 14:31:43 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/27 18:08:19 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ typedef struct s_data
 	int			check;
 	int			i;
 	int			j;
+	int			chk_hrdoc; //this one is for heredoc to check so i can ignore expanding $PWD
+	int			chk_dolla; //this one checks for $? so it print or not and change the value in how the process got end
 	t_token	*node;
   t_token *trav;
 	t_env		*shlvl_ptr;
@@ -92,17 +94,20 @@ typedef struct s_data
 /******* Function of parsing *********/
 void	add_dolla_begin(t_data *data);
 void	add_dolla(t_data *data);
-void	add_node(t_data *data, t_types typ);
-int	ft_acceptable_char(int c);
+//void	add_node(t_data *data, t_types typ);
+int		add_node(t_data *data, t_types typ);
+int		ft_acceptable_char(int c);
 void	is_quote_helper(t_data *data, int c, char *n_line);
 void	ft_init_tokenizer(t_data *data, char *n_line, int i, t_types typ);
-int	is_o_redirection(t_data *data, char *n_line);
-int	is_i_redirection(t_data *data, char *n_line);
-int	is_s_quote(t_data *data, char *n_line);
-int	is_dolla(t_data *data, char *n_line);
-int	is_d_quote(t_data *data, char *n_line);
+int		is_o_redirection(t_data *data, char *n_line);
+int		is_i_redirection(t_data *data, char *n_line);
+int		is_s_quote(t_data *data, char *n_line);
+int		is_dolla(t_data *data, char *n_line);
+int		is_d_quote(t_data *data, char *n_line);
 void	tokenizer(t_data *data);
 
+/******* Function of lexer **********/
+int	lexer(t_data *data, t_types typ);
 
 
 
@@ -121,7 +126,7 @@ void	tokenizer(t_data *data);
 //**void  lexer(t_data *data);
 //**void  tokenizer(t_data *data);
 //**void  unset_cmd(t_data *data);
-//**void  nl(void);
+void  nl(void);
 //int		ft_acceptable_char(int c);
 
 //**

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:46:07 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/24 14:29:04 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/27 15:49:10 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,18 @@ static void	add_d_quote(t_data *data)
 		data->node->value[data->j++] = data->beg_line[data->i++];
 	while (data->beg_line[data->i] == '$')
 	{
-		add_dolla_begin(data);
-		add_dolla(data);
+		if (data->chk_hrdoc == 1)
+		{
+			while (data->beg_line[data->i] != ' ' && data->beg_line[data->i] &&\
+					&data->beg_line[data->i] != &data->n_line[0])
+				data->node->value[data->j++] = data->beg_line[data->i++];
+			data->chk_hrdoc = 0;
+		}
+		else
+		{
+			add_dolla_begin(data);
+			add_dolla(data);
+		}
 		while (data->beg_line[data->i] != '$' && \
 				data->beg_line[data->i] != '\"' && data->beg_line[data->i])
 			data->node->value[data->j++] = data->beg_line[data->i++];
@@ -52,10 +62,21 @@ static void	add_node_helper(t_data *data, int check)
 			add_s_quote(data);
 		if (data->beg_line[data->i] == '\"')
 			add_d_quote(data);
-		while (data->beg_line[data->i] == '$')
+		while (data->beg_line[data->i] == '$' \
+				&& &data->beg_line[data->i] != &data->n_line[0])
 		{
-			add_dolla_begin(data);
-			add_dolla(data);
+			if (data->chk_hrdoc == 1)
+			{
+			while (data->beg_line[data->i] != ' ' && data->beg_line[data->i] &&\
+					&data->beg_line[data->i] != &data->n_line[0])
+					data->node->value[data->j++] = data->beg_line[data->i++];
+				data->chk_hrdoc = 0;
+			}
+			else
+			{
+				add_dolla_begin(data);
+				add_dolla(data);
+			}
 		}
 	}
 	if (check == 1)
