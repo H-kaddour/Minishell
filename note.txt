@@ -150,3 +150,11 @@ To do tomorrow:
 - read a config file at first and then run the program
 - error handling minishell: cd not ...
 - protect all malloc
+- signal handling
+- cd should change the file name in $Minishell>
+- add cmd didn't execut in prompt msg with color
+- cd . while deleting the directory fix
+
+example:
+'dds' lsl
+"dkjdk" <<<

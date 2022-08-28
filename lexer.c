@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 16:13:45 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/27 18:47:39 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/28 19:22:38 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,6 @@
 //    trav = trav->next;
 //  }
 //}
-
-void  nl(void)
-{
-  //here do a check
-  printf("\n");
-  rl_on_new_line();
-  rl_replace_line("", 0);
-}
 
 void  error(char *msg, int check)
 {

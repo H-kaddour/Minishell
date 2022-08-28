@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/27 18:08:19 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/28 16:24:10 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,9 @@ typedef struct s_data
 	t_token	*t_token;
 }	t_data;
 
-/******* Function of parsing *********/
+/******* Function of tokenizer *********/
 void	add_dolla_begin(t_data *data);
 void	add_dolla(t_data *data);
-//void	add_node(t_data *data, t_types typ);
 int		add_node(t_data *data, t_types typ);
 int		ft_acceptable_char(int c);
 void	is_quote_helper(t_data *data, int c, char *n_line);
@@ -106,7 +105,7 @@ int		is_dolla(t_data *data, char *n_line);
 int		is_d_quote(t_data *data, char *n_line);
 void	tokenizer(t_data *data);
 
-/******* Function of lexer **********/
+/******* Function of lexer ************/
 int	lexer(t_data *data, t_types typ);
 
 
