@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/27 13:38:10 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/28 17:53:36 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -687,11 +687,23 @@ void  *put_str(char *str, int len)
 //    exit_cmd(data);
 //}
 
+void  nl(void)
+{
+  //here do a check
+  printf("\n");
+  rl_on_new_line();
+  rl_replace_line("", 0);
+}
+
 int main(int ac, char **av, char **envp)
 {
   t_data  data;
   int     i;
-  char    prompt[] = "$Minishell> ";
+  //char    prompt[] = "\e[44m\033[4;37m$Minishell>";
+  //char    prompt[] = "\e[43m\e[44mMinishell\033[4;37mMinishell>";
+  //the Minishell in the prompt will be change by cd changing to file name and at first it get the path of in env to print
+  //that file name
+  char    prompt[] = "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30mMinishell \e[0m\e[34m \e[0m";
 
   i = 0;
   //use an if here only if ac == 1
@@ -699,6 +711,7 @@ int main(int ac, char **av, char **envp)
   data.args = av;
   //data.env = envp;
   //write(0, &prompt, sizeof(prompt));
+  //make a function that init all var that u work with
   while (1)
   {
     //line = grab_line(0);

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/27 18:59:34 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/28 18:25:27 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,34 @@ static int	is_word(t_data *data, char *n_line)
 	char	c;
 	char	*sp;
 	int		quote;
+	int		typ;
 
 	///sp = "<|\">'$ ";
 	sp = "<|>$ ";
 	data->i = 0;
 	quote = 0;
+	typ = WRD;
 	while (n_line[data->i])
 	{
 		data->j = 0;
 		if (n_line[data->i] == '\"' || n_line[data->i] == '\'')
 		{
 			c = n_line[data->i];
+			if (n_line[0] == c)
+			{
+				if (c == '\'')
+					typ = S_QUOT;
+				else if (c == '\"')
+					typ = D_QUOT;
+			}
+			//else
+			//	typ = WRD;
 			quote++;
 			data->i++;
 			//while (beg_line[data->i] != ' ')
 			while (n_line[data->i])
 			{
-				if (n_line[data->i] == '\'')
+				if (n_line[data->i] == '\'' || n_line[data->i] == '\"')
 					quote++;
 				if ((n_line[data->i] == ' ' || n_line[data->i] == '|' ||\
 						n_line[data->i] == '>' || n_line[data->i] == '<') && quote % 2 == 0)
@@ -92,7 +103,7 @@ static int	is_word(t_data *data, char *n_line)
 	}
 	if (data->i == 0)
 		return (0);
-	ft_init_tokenizer(data, &n_line[data->i], data->i, WRD);
+	ft_init_tokenizer(data, &n_line[data->i], data->i, typ);
 	return (1);
 }
 
@@ -120,7 +131,10 @@ void	tokenizer(t_data *data)
 				is_o_redirection(data, data->n_line))
 		{
 			if (add_node(data, data->typ))
+			{
+				//here free 
 				return ;
+			}
 			//also '' "" now is entring in node of wrd
 			//before u return u should free the token node and return an error msg with color and print newline prompt
 		}
