@@ -154,7 +154,8 @@ To do tomorrow:
 - cd should change the file name in $Minishell>
 - add cmd didn't execut in prompt msg with color
 - cd . while deleting the directory fix
-
+- fix export "ls -la" it will not split should split with space
+- when you finish in tokenizer and parsing i should free all the nodes to start a new cmd
 example:
 'dds' lsl
 "dkjdk" <<<

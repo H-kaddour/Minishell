@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/28 16:24:10 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/29 13:48:24 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,26 @@ typedef struct s_env
 typedef struct token
 {
 	t_types type;
-	char	*value;
+	char		*value;
 	struct token *next;
 } t_token;
+
+typedef	struct cmd_detail
+{
+	t_types	typ;
+	char		**cmd;
+	char		*file;
+	//maybe add a << stop char *
+	struct s_cmd	*next;
+} d_cmd;
+
+typedef	struct valid_cmd
+{
+	d_cmd	*cmd;
+	int		fd_in;
+	int		fd_out;
+	struct valid_cmd	*next;
+} v_cmd;
 
 typedef struct s_data
 {
@@ -89,9 +106,15 @@ typedef struct s_data
 	//dial redirection
 	t_token	*trav_r;
 	t_token	*t_token;
+	//parsing
+	v_cmd		*valid_cmd;
+	//d_cmd		*data_cmd;
+	char		**split_cmd;
+
 }	t_data;
 
 /******* Function of tokenizer *********/
+void	free_token_node(t_data *data);
 void	add_dolla_begin(t_data *data);
 void	add_dolla(t_data *data);
 int		add_node(t_data *data, t_types typ);
@@ -108,7 +131,8 @@ void	tokenizer(t_data *data);
 /******* Function of lexer ************/
 int	lexer(t_data *data, t_types typ);
 
-
+/******* Function of parser ************/
+void  parser(t_data *data);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/28 17:53:36 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/29 09:39:56 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void  get_env(t_data *data)
   data->shlvl_ptr = trav;
   shlvl = ft_atoi(trav->value);
   shlvl++;
+  free(trav->value);
   data->shlvl_ptr->value = ft_itoa(shlvl);
   //trav->value = ft_itoa(shlvl);
 
@@ -803,6 +804,8 @@ int main(int ac, char **av, char **envp)
     //  printf("%d\n", data.w_path[i++]);
     add_history(data.line);
     free(data.line);
+    //this func free all token nodes
+		free_token_node(&data);
     //if (!ft_strncmp(data.built_cmd->value, "exit", 4))
     //{
     //  break ;

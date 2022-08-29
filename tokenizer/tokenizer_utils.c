@@ -6,11 +6,24 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:54 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/24 14:27:31 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/29 09:33:42 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	free_token_node(t_data *data)
+{
+	t_token	*trav;
+
+	trav = data->t_token;
+	while (trav)
+	{
+		free(trav->value);
+		free(trav);
+		trav = trav->next;
+	}
+}
 
 int	ft_acceptable_char(int c)
 {

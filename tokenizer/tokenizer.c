@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/28 18:25:27 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/29 11:16:45 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ void	tokenizer(t_data *data)
 			if (add_node(data, data->typ))
 			{
 				//here free 
+				free_token_node(data);
 				return ;
 			}
 			//also '' "" now is entring in node of wrd
@@ -146,15 +147,17 @@ void	tokenizer(t_data *data)
 		//		is_o_redirection(data, data->n_line))
 		//	add_node(data, data->typ);
 	}
-	//here to write the arg that i entred in the nodes
-	t_token	*trav;
+	parser(data);
 
-	trav = data->t_token;
-	while (trav)
-	{
-		printf("| %d |\n", trav->type);
-		printf("| %s |\n", trav->value);
-		printf("\n");
-		trav = trav->next;
-	}
+	//here to write the arg that i entred in the nodes
+	//t_token	*trav;
+
+	//trav = data->t_token;
+	//while (trav)
+	//{
+	//	printf("| %d |\n", trav->type);
+	//	printf("| %s |\n", trav->value);
+	//	printf("\n");
+	//	trav = trav->next;
+	//}
 }

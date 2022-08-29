@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 17:15:30 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/28 18:23:43 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/29 09:13:28 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	pipe_lexer(t_data *data)
 {
 	if (data->beg_line[0] == '|')
 	{
-		if (data->beg_line[1] != 0)
+		if (data->beg_line[1] == '|')
 		{
 			printf("minishell: syntax error near unexpected token '|'\n");
 			return (1);
