@@ -156,6 +156,16 @@ To do tomorrow:
 - cd . while deleting the directory fix
 - fix export "ls -la" it will not split should split with space
 - when you finish in tokenizer and parsing i should free all the nodes to start a new cmd
+- take the spaces out in the end and the begining before tokenizer
+export ls="echo llsl jdkd "
 example:
 'dds' lsl
 "dkjdk" <<<
+
+Example of parsing cmd:
+ls -la
+ls > file > g 
+
+To do:
+- fix tokenizer again every expression in a token don't add something else with it
+- Gad all parser to have a valid cmd

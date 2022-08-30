@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/29 13:48:24 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/08/30 11:09:02 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,22 @@ typedef struct token
 	struct token *next;
 } t_token;
 
+
+
+
+typedef	struct cmd
+{
+	char	**cmd;
+
+	
+} t_cmd;
+
 typedef	struct cmd_detail
 {
 	t_types	typ;
 	char		**cmd;
 	char		*file;
+	//take the typ off and make a struct of redirection file name and type and file name 
 	//maybe add a << stop char *
 	struct s_cmd	*next;
 } d_cmd;
@@ -71,6 +82,10 @@ typedef	struct valid_cmd
 	int		fd_out;
 	struct valid_cmd	*next;
 } v_cmd;
+
+
+
+
 
 typedef struct s_data
 {

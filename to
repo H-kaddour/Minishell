@@ -7,7 +7,6 @@ builtin_cmd
 env_built.c
 execution
 file
-g
 idneed
 lexer.c
 libft
@@ -18,5 +17,6 @@ minishell_comment
 note.txt
 parser
 readline
+to
 tokenizer
 utils
