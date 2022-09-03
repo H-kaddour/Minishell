@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/29 09:39:56 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/03 18:41:12 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -834,3 +834,5 @@ int main(int ac, char **av, char **envp)
 //"'$d' $n"$lo
 //"'$d' $n"'$lo'
 //"'$VIM' $PWD '$co'"$SHLVL'$SU'
+//"ls"-la > file | grep a
+//"ls"-la

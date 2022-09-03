@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   lexer_pt1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 17:15:30 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/29 09:13:28 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/03 19:31:31 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	redirection_lexer(t_data *data, int c)
 	return (0);
 }
 
-int	lexer(t_data *data, t_types typ)
+int	lexer_pt1(t_data *data, t_types typ)
 {
 	if (typ == PIPE)
 	{

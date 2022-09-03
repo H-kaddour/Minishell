@@ -169,3 +169,11 @@ ls > file > g
 To do:
 - fix tokenizer again every expression in a token don't add something else with it
 - Gad all parser to have a valid cmd
+- add other thing in lexer like ls <<|
+- what if we start with | ls | grep a
+- ghilad check blanat gh lexer like "| ls | grep a |" this one will fuck me over in parsing when i count the pipes 
+
+**Error should i handle:
+- | ls |  pipe at first and the end
+- > << >> < redirection at first and the end 
+- > << >> < with no file after 

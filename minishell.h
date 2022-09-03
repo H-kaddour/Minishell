@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/30 11:09:02 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/03 19:31:51 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,37 +55,45 @@ typedef struct token
 	struct token *next;
 } t_token;
 
+//typedef	struct cmd_detail
+//{
+//	t_types	typ;
+//	char		**cmd;
+//	char		*file;
+//	//take the typ off and make a struct of redirection file name and type and file name 
+//	//maybe add a << stop char *
+//	struct s_cmd	*next;
+//} d_cmd;
+//
+//typedef	struct valid_cmd
+//{
+//	d_cmd	*cmd;
+//	int		fd_in;
+//	int		fd_out;
+//	struct valid_cmd	*next;
+//} v_cmd;
 
+
+
+//those struct for parsing
+typedef	struct s_red
+{
+	t_types	typ;
+	char	*file;
+	char	*determiner;
+	struct s_red *next;
+} t_red;
 
 
 typedef	struct cmd
 {
 	char	**cmd;
-
-	
+	t_red	*redirect;
+	int		f_in;
+	int		f_out;
+	struct cmd	*next;
 } t_cmd;
-
-typedef	struct cmd_detail
-{
-	t_types	typ;
-	char		**cmd;
-	char		*file;
-	//take the typ off and make a struct of redirection file name and type and file name 
-	//maybe add a << stop char *
-	struct s_cmd	*next;
-} d_cmd;
-
-typedef	struct valid_cmd
-{
-	d_cmd	*cmd;
-	int		fd_in;
-	int		fd_out;
-	struct valid_cmd	*next;
-} v_cmd;
-
-
-
-
+//******
 
 typedef struct s_data
 {
@@ -122,9 +130,11 @@ typedef struct s_data
 	t_token	*trav_r;
 	t_token	*t_token;
 	//parsing
-	v_cmd		*valid_cmd;
+	t_cmd	*v_cmd;
+	t_cmd	*trav_cmd;
+	//v_cmd		*valid_cmd;
 	//d_cmd		*data_cmd;
-	char		**split_cmd;
+	//char		**split_cmd;
 
 }	t_data;
 
@@ -144,7 +154,8 @@ int		is_d_quote(t_data *data, char *n_line);
 void	tokenizer(t_data *data);
 
 /******* Function of lexer ************/
-int	lexer(t_data *data, t_types typ);
+//int	lexer(t_data *data, t_types typ);
+int	lexer_pt1(t_data *data, t_types typ);
 
 /******* Function of parser ************/
 void  parser(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/29 11:16:45 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/03 19:59:32 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ void	tokenizer(t_data *data)
 		//		is_o_redirection(data, data->n_line))
 		//	add_node(data, data->typ);
 	}
+	//here token pt 2 maybe i will put it in if or not
 	parser(data);
 
 	//here to write the arg that i entred in the nodes
