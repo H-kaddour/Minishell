@@ -198,5 +198,8 @@ $3789 should ignore first number and print the rest 789 but if 0 was first don't
 cat > <<l error > <<l same
 add history if the line was empty or space it should not add to history
 heredoc if u do ** ls << cat | > it should work the heredoc and then print the error msg and the cmd ls should not work but << work
+add to all tokenizer \t and whitespaces not just space
+negad free ndoe of tokenizer if not allocate and u try to free error
+heredoc in parsing
 
 
