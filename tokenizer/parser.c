@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 10:32:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/04 14:48:50 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/04 17:12:19 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -344,31 +344,31 @@ void  parser(t_data *data)
 
 
   //this one for printing the parsing cmd
-  int i;
   //t_cmd *c_trav;
   //c_trav = data->v_cmd;
   //while (c_trav)
   //{
-  t_cmd *trav;
+  //**int i;
+  //**t_cmd *trav;
 
-  trav = data->v_cmd;
-  while (trav)
-  {
-    i = 0;
-    while (trav->cmd[i])
-      printf("%s\n", trav->cmd[i++]);
-    printf("redirection now=\n");
-    while (trav->redirect)
-    {
-      printf("%d\n", trav->redirect->typ);
-      printf("%s\n", trav->redirect->file);
-      printf("%s\n", trav->redirect->determiner);
-      //printf("\n|||redirection|||\n");
-      trav->redirect = trav->redirect->next;
-    }
-    printf("\n***next cmd***\n");
-    trav = trav->next;
-  }
+  //**trav = data->v_cmd;
+  //**while (trav)
+  //**{
+  //**  i = 0;
+  //**  while (trav->cmd[i])
+  //**    printf("%s\n", trav->cmd[i++]);
+  //**  printf("redirection now=\n");
+  //**  while (trav->redirect)
+  //**  {
+  //**    printf("%d\n", trav->redirect->typ);
+  //**    printf("%s\n", trav->redirect->file);
+  //**    printf("%s\n", trav->redirect->determiner);
+  //**    //printf("\n|||redirection|||\n");
+  //**    trav->redirect = trav->redirect->next;
+  //**  }
+  //**  printf("\n***next cmd***\n");
+  //**  trav = trav->next;
+  //**}
   //}
 
 //the idea is to loop for the tokenizer and break in PIPE then allocate the first node and start after the PIPE and like that goes to allocate everything 

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/04 13:18:59 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/04 21:41:00 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -803,7 +803,7 @@ int main(int ac, char **av, char **envp)
     //while (data.w_path[i])
     //  printf("%d\n", data.w_path[i++]);
     add_history(data.line);
-    free(data.line);
+    //**free(data.line);
     //this func free all token nodes
     //***here make a condition to free the tokenizer node
 		//***free_token_node(&data);

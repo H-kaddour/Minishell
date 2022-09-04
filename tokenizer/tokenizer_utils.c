@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:54 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/29 09:33:42 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/04 21:35:54 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	free_token_node(t_data *data)
 	trav = data->t_token;
 	while (trav)
 	{
-		free(trav->value);
+		if (trav->value != NULL)
+			free(trav->value);
 		free(trav);
 		trav = trav->next;
 	}
@@ -47,8 +48,8 @@ void	is_quote_helper(t_data *data, int c, char *n_line)
 			data->i++;
 			while (n_line[data->i])
 			{
-				if (n_line[data->i] == ' ' || n_line[data->i] == '|' || \
-						n_line[data->i] == '>' || n_line[data->i] == '<')
+				if (n_line[data->i] == ' ' || (n_line[data->i] >= 9 && n_line[data->i] <= 13)\
+						|| n_line[data->i] == '|' || n_line[data->i] == '>' || n_line[data->i] == '<')
 				{
 					ft_init_tokenizer(data, &n_line[data->i], data->i, S_QUOT);
 					return ;

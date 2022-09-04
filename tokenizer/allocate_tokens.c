@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:46:07 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/03 19:32:01 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/04 22:16:46 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,16 @@ int	add_node(t_data *data, t_types typ)
 	if (lexer_pt1(data, typ))
 		return (1);
 	data->node = (t_token *) malloc(sizeof(t_token));
+	if (!data->node)
+		return (0);
 	if (data->check == 1)
 		data->t_token = data->node;
 	data->node->type = typ;
 	//i gotta count the lenght for this node
-	data->node->value = malloc(sizeof(char) * 100);
+	//here where the program craches 
+	data->node->value = malloc(sizeof(char) * 500);
+	if (!data->node->value)
+		return (0);
 	while (&data->beg_line[data->i] != &data->n_line[0] \
 			&& data->beg_line[data->i])
 	{

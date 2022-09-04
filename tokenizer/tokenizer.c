@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/04 15:40:21 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/04 21:03:56 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ static int	is_space(t_data *data, char *n_line)
 	int	i;
 
 	i = 0;
-	if (n_line[i] != ' ')
+	if (n_line[i] != ' ' && !(n_line[i] >= 9 && n_line[i] <= 13))
 		return (0);
-	while (n_line[i] == ' ')
+	while (n_line[i] == ' ' || (n_line[i] >= 9 && n_line[i] <= 13))
 		i++;
 	ft_init_tokenizer(data, &n_line[i], i, W_SPACE);
 	return (1);
@@ -55,7 +55,8 @@ static int	is_word(t_data *data, char *n_line)
 	int		typ;
 
 	///sp = "<|\">'$ ";
-	sp = "<|>$ ";
+	sp = "<|>$\t\v\r\f ";
+	//\t\v\r\f
 	data->i = 0;
 	quote = 0;
 	typ = WRD;
@@ -79,10 +80,12 @@ static int	is_word(t_data *data, char *n_line)
 			//while (beg_line[data->i] != ' ')
 			while (n_line[data->i])
 			{
-				if (n_line[data->i] == '\'' || n_line[data->i] == '\"')
+				//if (n_line[data->i] == '\'' || n_line[data->i] == '\"')
+				if (n_line[data->i] == c)
 					quote++;
-				if ((n_line[data->i] == ' ' || n_line[data->i] == '|' ||\
-						n_line[data->i] == '>' || n_line[data->i] == '<') && quote % 2 == 0)
+				if ((n_line[data->i] == ' ' || (n_line[data->i] >= 9 && n_line[data->i] <= 13) ||\
+							n_line[data->i] == '|' || n_line[data->i] == '>' || n_line[data->i] == '<')\
+						&& quote % 2 == 0)
 					break ;
 				data->i++;
 			}
@@ -132,14 +135,25 @@ static char	*spaces_takeoff(char *str)
 	return (ptr);
 }
 
+void	*spaces_first(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	return (&str[i]);
+}
+
 void	tokenizer(t_data *data)
 {
 	//here maybe i should check all whitespace also in is_space
-	if (data->line[0] == ' ')
-		data->beg_line = ft_strchr(data->line, ' ');
+	//if (data->line[0] == ' ' || (data->line[0]))
+	data->beg_line = spaces_first(data->line);
+		//data->beg_line = ft_strchr(data->line, ' ');
 	//strchr it's not working and take off the whitespaces too
-	else
-		data->beg_line = data->line;
+	//**else
+	//**	data->beg_line = data->line;
 	//take off the end spaces
 	data->beg_line = spaces_takeoff(data->beg_line);
 	data->index = 0;
@@ -162,7 +176,7 @@ void	tokenizer(t_data *data)
 			if (add_node(data, data->typ))
 			{
 				//double free
-				free_token_node(data);
+				//free_token_node(data);
 				return ;
 			}
 			//also '' "" now is entring in node of wrd
@@ -177,20 +191,20 @@ void	tokenizer(t_data *data)
 		//	add_node(data, data->typ);
 	}
 	//here token pt 2 maybe i will put it in if or not
-	if (lexer_pt2(data))
-		return ;
-	else
-		parser(data);
+	//**if (lexer_pt2(data))
+	//**	return ;
+	//**else
+	//**	parser(data);
 
 	//here to write the arg that i entred in the nodes
-	//t_token	*trav;
+	t_token	*trav;
 
-	//trav = data->t_token;
-	//while (trav)
-	//{
-	//	printf("| %d |\n", trav->type);
-	//	printf("| %s |\n", trav->value);
-	//	printf("\n");
-	//	trav = trav->next;
-	//}
+	trav = data->t_token;
+	while (trav)
+	{
+		printf("| %d |\n", trav->type);
+		printf("| %s |\n", trav->value);
+		printf("\n");
+		trav = trav->next;
+	}
 }

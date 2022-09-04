@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 13:30:14 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/08/27 16:55:08 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/04 22:15:27 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static void	add_dolla_helper(t_data *data, int len)
 
 	trav_env = data->l_env;
 	dolla = malloc(sizeof(char) * len + 1);
+	if (!dolla)
+		return ;
 	data->i -= len;
 	len = 0;
 	while (ft_acceptable_char(data->beg_line[data->i]))
@@ -39,6 +41,7 @@ static void	add_dolla_helper(t_data *data, int len)
 	len = 0;
 	while (dolla[len])
 		data->node->value[data->j++] = dolla[len++];
+	//free(dolla);
 }
 
 void	add_dolla(t_data *data)
