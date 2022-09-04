@@ -172,8 +172,31 @@ To do:
 - add other thing in lexer like ls <<|
 - what if we start with | ls | grep a
 - ghilad check blanat gh lexer like "| ls | grep a |" this one will fuck me over in parsing when i count the pipes 
+- i still got to change $? in tokenizer
+- Parsing maybe i should make the output files
+- heredoc should be open in parsing part
 
 **Error should i handle:
+- check position of tokens 
 - | ls |  pipe at first and the end
 - > << >> < redirection at first and the end 
 - > << >> < with no file after 
+
+#Error handling
+"'$PATH'$PATH" == double free
+strchr is not working "    |ls" should take spaces at first "" just to show the str
+<<< && >>> double free
+in echo when i print the **cmd i should put a space between them
+in $USER_ should print a space empty
+$PATH+ double free
+adfe'adfe" double free
+;; double free
+$"USER" should ignore $ and print USER
+$_PATH should print a space empty
+$0 should print program name
+$3789 should ignore first number and print the rest 789 but if 0 was first don't ignore, print program name and number
+cat > <<l error > <<l same
+add history if the line was empty or space it should not add to history
+heredoc if u do ** ls << cat | > it should work the heredoc and then print the error msg and the cmd ls should not work but << work
+
+

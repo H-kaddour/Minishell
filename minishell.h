@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/03 19:31:51 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/04 09:28:44 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ void	tokenizer(t_data *data);
 
 /******* Function of lexer ************/
 //int	lexer(t_data *data, t_types typ);
+int	lexer_pt2(t_data *data);
 int	lexer_pt1(t_data *data, t_types typ);
 
 /******* Function of parser ************/

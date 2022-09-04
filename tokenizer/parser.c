@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 10:32:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/03 18:51:08 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/04 14:48:50 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,7 +363,7 @@ void  parser(t_data *data)
       printf("%d\n", trav->redirect->typ);
       printf("%s\n", trav->redirect->file);
       printf("%s\n", trav->redirect->determiner);
-      printf("\n|||redirection|||\n");
+      //printf("\n|||redirection|||\n");
       trav->redirect = trav->redirect->next;
     }
     printf("\n***next cmd***\n");

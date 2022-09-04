@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/03 19:59:32 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/04 15:40:21 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,41 @@ static int	is_word(t_data *data, char *n_line)
 	return (1);
 }
 
+static char	*spaces_takeoff(char *str)
+{
+	int		len;
+	char	*ptr;
+	int		i;
+
+	len = ft_strlen(str) - 1;
+	if (str[len] == ' ' || (str[len] >= 9 && str[len] <= 13))
+	{
+		while (str[len] == ' ' || (str[len] >= 9 && str[len] <= 13))
+			len--;
+	}
+	else
+		return (str);
+	ptr = malloc(sizeof(char) * len + 2);
+	i = 0;
+	while (i <= len)
+	{
+		ptr[i] = str[i];
+		i++;
+	}
+	ptr[i] = 0;
+	return (ptr);
+}
+
 void	tokenizer(t_data *data)
 {
 	//here maybe i should check all whitespace also in is_space
 	if (data->line[0] == ' ')
 		data->beg_line = ft_strchr(data->line, ' ');
+	//strchr it's not working and take off the whitespaces too
 	else
 		data->beg_line = data->line;
+	//take off the end spaces
+	data->beg_line = spaces_takeoff(data->beg_line);
 	data->index = 0;
 	data->check = 1;
 	//those two var should init in the main one time init
@@ -122,7 +150,8 @@ void	tokenizer(t_data *data)
 	ft_init_tokenizer(data, data->beg_line, 0, 0);
 	//if (!lexer(data))
 	//	return ;
-	while (data->line[data->index])
+	//while (data->line[data->index])
+	while (*data->beg_line)
 	{
 		if (is_word(data, data->n_line) || is_space(data, data->n_line) || \
 				is_d_quote(data, data->n_line) || is_dolla(data, data->n_line) || \
@@ -132,7 +161,7 @@ void	tokenizer(t_data *data)
 		{
 			if (add_node(data, data->typ))
 			{
-				//here free 
+				//double free
 				free_token_node(data);
 				return ;
 			}
@@ -148,7 +177,10 @@ void	tokenizer(t_data *data)
 		//	add_node(data, data->typ);
 	}
 	//here token pt 2 maybe i will put it in if or not
-	parser(data);
+	if (lexer_pt2(data))
+		return ;
+	else
+		parser(data);
 
 	//here to write the arg that i entred in the nodes
 	//t_token	*trav;
