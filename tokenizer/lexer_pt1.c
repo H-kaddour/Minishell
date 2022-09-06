@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 17:15:30 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/03 19:31:31 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/06 12:14:11 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,9 @@ int	lexer_pt1(t_data *data, t_types typ)
 		if (pipe_lexer(data))
 			return (1);
 	}
-	if (typ == D_QUOT || typ == S_QUOT || typ == WRD)
+	if (typ == D_QUOT || typ == S_QUOT || typ == WRD || typ == DOLLA)
 	{
-		if (typ == S_QUOT || typ == WRD)
+		if (typ == S_QUOT || typ == WRD || typ == DOLLA)
 		{
 			if (quote_lexer(data, '\'', '\"'))
 				return (1);

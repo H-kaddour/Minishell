@@ -201,5 +201,23 @@ heredoc if u do ** ls << cat | > it should work the heredoc and then print the e
 add to all tokenizer \t and whitespaces not just space
 negad free ndoe of tokenizer if not allocate and u try to free error
 heredoc in parsing
+signals in minishell and signals in heredoc
+color in error
+ft_strncmp i should take off if we cmp between hich and hicham it returns it
+sigs in prompt and heredoc and take off the ^C and all that shiit
 
+HEREDOC expand in readline not in heredoc prompt:
+cat << "$HOME"   == $HOME
+cat << '$HOME'   == $HOME
+cat << "$""HOME"   == $HOME
+cat << $"HOME"   == HOME
+cat << $'HOME'   == HOME
+cat << "$"HOME   == $HOME
+cat << '$'HOME   == $HOME
+cat << "$""HOME"   == $HOME
+cat << '$''HOME'   == $HOME
 
+HEREDOC expand inside the heredoc prompt:
+cat << HOME && $HOME will expand the $vars this is the only one that should expand and the other not
+cat << "HOME" && '$HOME' and the above ones will not expand the $var inside also the one that don't have the var value empty line
+enter in prompt "$PWD'l'" it should not take of the quotes

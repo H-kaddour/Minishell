@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 19:35:09 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/04 14:14:07 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/05 09:43:23 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,15 @@ static int	redirection_grammar(t_token *trav)
 		if (trav->next->type == W_SPACE)
 		{
 			trav = trav->next;
-			if (trav->next->type != PIPE)
+			if (trav->next->type == WRD || trav->next->type == D_QUOT\
+					|| trav->next->type == S_QUOT || trav->next->type == DOLLA)
 				return (1);
 			return (0);
 		}
 		else
 		{
-			if (trav->next->type != PIPE)
+			if (trav->next->type == WRD || trav->next->type == D_QUOT\
+					|| trav->next->type == S_QUOT || trav->next->type == DOLLA)
 				return (1);
 			return (0);
 		}

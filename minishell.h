@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/04 09:28:44 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/06 18:34:44 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,14 @@ typedef	struct cmd
 } t_cmd;
 //******
 
+typedef struct grab_line
+{
+	char	*ptr;
+	char	*tmp;
+	char	*buff;
+	char	*line;
+}	t_gnl;
+
 typedef struct s_data
 {
 	char		**path;
@@ -116,6 +124,9 @@ typedef struct s_data
 	int			j;
 	int			chk_hrdoc; //this one is for heredoc to check so i can ignore expanding $PWD
 	int			chk_dolla; //this one checks for $? so it print or not and change the value in how the process got end
+	int			d_q_chk; // this one to check $"HOME"  and "$""HOME" in heredoc
+	int			chk_q_hrdoc; //this one to check if the determinater have "" '' so to not expand $ inside the heredoc
+	int			hrdoc_fd[2];
 	t_token	*node;
   t_token *trav;
 	t_env		*shlvl_ptr;
@@ -135,12 +146,12 @@ typedef struct s_data
 	//v_cmd		*valid_cmd;
 	//d_cmd		*data_cmd;
 	//char		**split_cmd;
-
 }	t_data;
 
 /******* Function of tokenizer *********/
 void	free_token_node(t_data *data);
-void	add_dolla_begin(t_data *data);
+int		add_dolla_begin(t_data *data);
+//void	add_dolla_begin(t_data *data);
 void	add_dolla(t_data *data);
 int		add_node(t_data *data, t_types typ);
 int		ft_acceptable_char(int c);
@@ -159,6 +170,7 @@ int	lexer_pt2(t_data *data);
 int	lexer_pt1(t_data *data, t_types typ);
 
 /******* Function of parser ************/
+void	heredoc_implement(t_data *data, char *det);
 void  parser(t_data *data);
 
 

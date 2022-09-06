@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/04 21:03:56 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/05 14:17:00 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,29 @@ static int	is_word(t_data *data, char *n_line)
 	return (1);
 }
 
-static char	*spaces_takeoff(char *str)
+void	*spaces_first(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == 0)
+		return (0);
+	return (&str[i]);
+}
+
+char	*spaces_takeoff(char *str)
 {
 	int		len;
 	char	*ptr;
 	int		i;
 
+	if (!str)
+		return (0);
+	str = spaces_first(str);
 	len = ft_strlen(str) - 1;
 	if (str[len] == ' ' || (str[len] >= 9 && str[len] <= 13))
 	{
@@ -135,27 +152,20 @@ static char	*spaces_takeoff(char *str)
 	return (ptr);
 }
 
-void	*spaces_first(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	return (&str[i]);
-}
-
 void	tokenizer(t_data *data)
 {
 	//here maybe i should check all whitespace also in is_space
 	//if (data->line[0] == ' ' || (data->line[0]))
-	data->beg_line = spaces_first(data->line);
+	//**data->beg_line = spaces_first(data->line);
 		//data->beg_line = ft_strchr(data->line, ' ');
 	//strchr it's not working and take off the whitespaces too
 	//**else
 	//**	data->beg_line = data->line;
 	//take off the end spaces
-	data->beg_line = spaces_takeoff(data->beg_line);
+	//data->beg_line = spaces_takeoff(data->beg_line);
+	data->beg_line = spaces_takeoff(data->line);
+	if (!data->beg_line)
+		return ;
 	data->index = 0;
 	data->check = 1;
 	//those two var should init in the main one time init
@@ -191,20 +201,19 @@ void	tokenizer(t_data *data)
 		//	add_node(data, data->typ);
 	}
 	//here token pt 2 maybe i will put it in if or not
-	//**if (lexer_pt2(data))
-	//**	return ;
-	//**else
-	//**	parser(data);
+	if (lexer_pt2(data))
+		return ;
+	parser(data);
 
 	//here to write the arg that i entred in the nodes
-	t_token	*trav;
+	//**t_token	*trav;
 
-	trav = data->t_token;
-	while (trav)
-	{
-		printf("| %d |\n", trav->type);
-		printf("| %s |\n", trav->value);
-		printf("\n");
-		trav = trav->next;
-	}
+	//**trav = data->t_token;
+	//**while (trav)
+	//**{
+	//**	printf("| %d |\n", trav->type);
+	//**	printf("| %s |\n", trav->value);
+	//**	printf("\n");
+	//**	trav = trav->next;
+	//**}
 }

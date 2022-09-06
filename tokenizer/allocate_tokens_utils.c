@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 13:30:14 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/04 22:15:27 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/06 17:31:17 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,24 +70,55 @@ void	add_dolla(t_data *data)
 	}
 }
 
-void	add_dolla_begin(t_data *data)
+//void	add_dolla_begin(t_data *data)
+int	add_dolla_begin(t_data *data)
 {
 	int		i;
 	char	*ptr;
 
 	i = 0;
-	if (data->beg_line[data->i + 1] == ' ' || \
-			data->beg_line[data->i + 1] == '\"' \
+	if (data->beg_line[data->i + 1] == ' ')
+	{
+		data->node->value[data->j++] = data->beg_line[data->i++];
+		return (1);
+	}
+	else if (data->beg_line[data->i + 1] == '\"'\
 			|| data->beg_line[data->i + 1] == '\'')
-		data->node->value[data->j++] = data->beg_line[data->i++];
+	{
+		if (data->d_q_chk == 0)
+			data->i++;
+		else
+			data->node->value[data->j++] = data->beg_line[data->i++];
+		return (1);
+	}
 	else if (data->beg_line[data->i + 1] == 0)
+	{
 		data->node->value[data->j++] = data->beg_line[data->i++];
+		return (1);
+	}
+	else if (data->beg_line[data->i + 1] == '0')
+	{
+		i = 2;
+		while (data->args[0][i])
+			data->node->value[data->j++] = data->args[0][i++];
+		data->i += 2;
+		return (1);
+	}
+	else if (data->beg_line[data->i + 1] >= '1' &&\
+			data->beg_line[data->i + 1] <= '9')
+	{
+		data->i += 2;
+		return (1);
+	}
 	else if (data->beg_line[data->i + 1] == '?')
 	{
 		data->i += 2;
+		//mabye here i should free too
 		ptr = ft_itoa(data->chk_dolla);
+		i = 0;
 		while (ptr[i])
 			data->node->value[data->j++] = ptr[i++];
+		return (1);
 	}
 	else if (data->beg_line[data->i + 1] == '$')
 	{
@@ -98,5 +129,7 @@ void	add_dolla_begin(t_data *data)
 			else
 				break ;
 		}
+		return (1);
 	}
+	return (0);
 }

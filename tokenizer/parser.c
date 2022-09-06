@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 10:32:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/04 17:12:19 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/06 18:44:06 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,15 +159,18 @@ static int  count_cmd(t_data *data)
 {
   t_token *trav;
   int     i;
+  int     j;
 
   i = 0;
+  j = 0;
   trav = data->t_token;
   while (trav)
   {
     //maybe here i will face a problem if | was at first of the cmd
-    if (trav->type == PIPE)
+    if (trav->type == PIPE && j != 0 && trav->next)
       i++;
     trav = trav->next;
+    j++;
   }
   return (i);
 }
@@ -298,7 +301,10 @@ static void get_cmd_parsing(t_data *data)
         if (trav->type != I_APEND)
           trav_red->file = ft_strdup(trav->next->next->value);
         else
+        {
           trav_red->determiner = ft_strdup(trav->next->next->value);
+          heredoc_implement(data, trav_red->determiner);
+        }
         trav = trav->next->next->next;
       }
       else
@@ -307,7 +313,10 @@ static void get_cmd_parsing(t_data *data)
         if (trav->type != I_APEND)
           trav_red->file = ft_strdup(trav->next->value);
         else
+        {
           trav_red->determiner = ft_strdup(trav->next->value);
+          heredoc_implement(data, trav_red->determiner);
+        }
         trav = trav->next->next;
       }
       trav_red = trav_red->next;
@@ -355,20 +364,22 @@ void  parser(t_data *data)
   //**while (trav)
   //**{
   //**  i = 0;
+  //**  printf("CMD:\n");
   //**  while (trav->cmd[i])
-  //**    printf("%s\n", trav->cmd[i++]);
-  //**  printf("redirection now=\n");
+  //**    printf("    %s\n", trav->cmd[i++]);
+  //**  printf("Redirection:\n");
   //**  while (trav->redirect)
   //**  {
-  //**    printf("%d\n", trav->redirect->typ);
-  //**    printf("%s\n", trav->redirect->file);
-  //**    printf("%s\n", trav->redirect->determiner);
+  //**    printf("    %d\n", trav->redirect->typ);
+  //**    printf("    %s\n", trav->redirect->file);
+  //**    printf("    %s\n", trav->redirect->determiner);
   //**    //printf("\n|||redirection|||\n");
   //**    trav->redirect = trav->redirect->next;
   //**  }
-  //**  printf("\n***next cmd***\n");
+  //**  printf("\n*next cmd*\n");
   //**  trav = trav->next;
   //**}
+  //printf("%d\n", data->chk_q_hrdoc);
   //}
 
 //the idea is to loop for the tokenizer and break in PIPE then allocate the first node and start after the PIPE and like that goes to allocate everything 

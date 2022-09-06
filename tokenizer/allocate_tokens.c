@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:46:07 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/04 22:16:46 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/06 18:06:54 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,20 @@
 static void	add_s_quote(t_data *data)
 {
 	data->i++;
+	data->chk_q_hrdoc = 1;
 	while (data->beg_line[data->i] != '\'' && data->beg_line[data->i])
 		data->node->value[data->j++] = data->beg_line[data->i++];
 	if (data->beg_line[data->i] == '\'')
+	{
+		data->chk_q_hrdoc = 1;
 		data->i++;
+	}
 }
 
 static void	add_d_quote(t_data *data)
 {
 	data->i++;
+	data->chk_q_hrdoc = 1;
 	while (data->beg_line[data->i] != '$' && \
 			data->beg_line[data->i] != '\"' && data->beg_line[data->i])
 		data->node->value[data->j++] = data->beg_line[data->i++];
@@ -38,8 +43,10 @@ static void	add_d_quote(t_data *data)
 		}
 		else
 		{
-			add_dolla_begin(data);
-			add_dolla(data);
+			if (!add_dolla_begin(data))
+				add_dolla(data);
+			//add_dolla_begin(data);
+			//add_dolla(data);
 		}
 		while (data->beg_line[data->i] != '$' && \
 				data->beg_line[data->i] != '\"' && data->beg_line[data->i])
@@ -56,26 +63,63 @@ static void	add_d_quote(t_data *data)
 
 static void	add_node_helper(t_data *data, int check)
 {
+	int	c;
+	int	i;
 	if (check == 0)
 	{
 		if (data->beg_line[data->i] == '\'')
 			add_s_quote(data);
 		if (data->beg_line[data->i] == '\"')
 			add_d_quote(data);
+		data->d_q_chk = 0;
 		while (data->beg_line[data->i] == '$' \
 				&& &data->beg_line[data->i] != &data->n_line[0])
 		{
 			if (data->chk_hrdoc == 1)
 			{
-			while (data->beg_line[data->i] != ' ' && data->beg_line[data->i] &&\
+				i = data->i + 1;
+				while (data->beg_line[i])
+				{
+					if (data->beg_line[i] == '\"')
+					{
+						c = '\"';
+						break ;
+					}
+					else if (data->beg_line[i] == '\'')
+					{
+						c = '\'';
+						break ;
+					}
+					i++;
+				}
+				if (c == '\'' || c == '\"')
+					data->chk_q_hrdoc = 1;
+				data->i++;
+				//if (data->beg_line[data->i + 1] == '\'' \
+				//		|| data->beg_line[data->i + 1] == '\"')
+				//{
+				//	if (data->beg_line[data->i + 1] == '\"')
+				//		c = '\"';
+				//	else if (data->beg_line[data->i + 1] == '\'')
+				//		c = '\'';
+				//	data->i++;
+				//}
+				while (data->beg_line[data->i] != ' ' && data->beg_line[data->i] &&\
 					&data->beg_line[data->i] != &data->n_line[0])
-					data->node->value[data->j++] = data->beg_line[data->i++];
+				{
+					if (data->beg_line[data->i] == c)
+						data->i++;
+					else
+						data->node->value[data->j++] = data->beg_line[data->i++];
+				}
 				data->chk_hrdoc = 0;
 			}
 			else
 			{
-				add_dolla_begin(data);
-				add_dolla(data);
+				if (!add_dolla_begin(data))
+					add_dolla(data);
+				//add_dolla_begin(data);
+				//add_dolla(data);
 			}
 		}
 	}
@@ -99,6 +143,7 @@ int	add_node(t_data *data, t_types typ)
 
 	data->i = 0;
 	data->j = 0;
+	data->chk_q_hrdoc = 0;
 	trav_env = data->l_env;
 	if (lexer_pt1(data, typ))
 		return (1);

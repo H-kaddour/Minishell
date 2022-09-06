@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:54 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/04 21:35:54 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/05 10:06:19 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	ft_acceptable_char(int c)
 	else if (c >= 65 && c <= 90)
 		return (1);
 	else if (c >= 97 && c <= 122)
+		return (1);
+	else if (c == '_')
 		return (1);
 	else
 		return (0);
