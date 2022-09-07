@@ -221,3 +221,6 @@ HEREDOC expand inside the heredoc prompt:
 cat << HOME && $HOME will expand the $vars this is the only one that should expand and the other not
 cat << "HOME" && '$HOME' and the above ones will not expand the $var inside also the one that don't have the var value empty line
 enter in prompt "$PWD'l'" it should not take of the quotes
+
+fix if cat << l << d if ctrl c will end all the process and show the other pipe return a value to quite the process
+i will fix the above problem with putting the check num in a file

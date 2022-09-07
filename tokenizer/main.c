@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/05 12:24:36 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/07 19:04:15 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -669,8 +669,7 @@ void  *put_str(char *str, int len)
 //}
 
 //void  exec_buil_cmd(t_data *data)
-//{
-//  //char ll[] = "cd";
+//{ //char ll[] = "cd";
 //  if (!ft_strncmp(data->built_cmd->value, "cd", 2))
 //    cd_cmd(data);
 //  //cd only with a space error check
@@ -691,7 +690,7 @@ void  *put_str(char *str, int len)
 void  nl(void)
 {
   //here do a check
-  printf("\n");
+  //printf("\n");
   rl_on_new_line();
   rl_replace_line("", 0);
 }

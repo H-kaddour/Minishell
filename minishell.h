@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/06 18:34:44 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/07 19:04:10 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,14 @@ typedef struct grab_line
 	char	*line;
 }	t_gnl;
 
+int	chk_hrdoc_exit; //this one check if heredoc got exit with ctrl c so to not finish the other hrdoc << l << d
+
+typedef struct check
+{
+	int check;
+	//t_data *ni;
+} t_check;
+
 typedef struct s_data
 {
 	char		**path;
@@ -127,6 +135,7 @@ typedef struct s_data
 	int			d_q_chk; // this one to check $"HOME"  and "$""HOME" in heredoc
 	int			chk_q_hrdoc; //this one to check if the determinater have "" '' so to not expand $ inside the heredoc
 	int			hrdoc_fd[2];
+	//int			chk_hrdoc_exit; //this one check if heredoc got exit with ctrl c so to not finish the other hrdoc << l << d
 	t_token	*node;
   t_token *trav;
 	t_env		*shlvl_ptr;
@@ -170,9 +179,11 @@ int	lexer_pt2(t_data *data);
 int	lexer_pt1(t_data *data, t_types typ);
 
 /******* Function of parser ************/
+int		ft_strcmp(const char *s1, const char *s2);
 void	heredoc_implement(t_data *data, char *det);
 void  parser(t_data *data);
 
+/**** Function of builtin cmd **********/
 
 
 

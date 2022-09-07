@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 10:32:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/06 18:44:06 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/07 18:29:34 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,6 +304,8 @@ static void get_cmd_parsing(t_data *data)
         {
           trav_red->determiner = ft_strdup(trav->next->next->value);
           heredoc_implement(data, trav_red->determiner);
+          if (chk_hrdoc_exit == 1)
+            return ;
         }
         trav = trav->next->next->next;
       }
@@ -316,6 +318,8 @@ static void get_cmd_parsing(t_data *data)
         {
           trav_red->determiner = ft_strdup(trav->next->value);
           heredoc_implement(data, trav_red->determiner);
+          if (chk_hrdoc_exit == 1)
+            return ;
         }
         trav = trav->next->next;
       }
@@ -338,17 +342,23 @@ void  parser(t_data *data)
 
   //trav = data->t_token;
   allocate_cmd_node(data);
+	//chk_hrdoc_exit = 0;
   data->trav_cmd = data->v_cmd;
   data->trav = data->t_token;
   while (data->trav)
   {
     get_cmd_parsing(data);
+    if (chk_hrdoc_exit == 1)
+      return ;
     if (!data->trav)
       break ;
     //here i should see the next too "ls | cool |"
     else if (data->trav->type == PIPE)
       data->trav = data->trav->next;
   }
+  //printf("**\n%d\n**", data->du.ok);
+	//printf("&&%d\n", data->nm);
+  //printf("\n%s\n", data->ch);
 
 
 

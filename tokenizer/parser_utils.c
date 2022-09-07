@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:12:08 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/06 22:00:03 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/07 19:04:05 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,43 +128,52 @@ static char	*fill_data(t_data *data, char *str)
 	return (ptr);
 }
 
-//void  heredoc_sig(int c)
-//{
-//  if (c == SIGINT)
-//	{
-//    printf("\n");
-//    rl_on_new_line();
-//    rl_replace_line("", 0);
-//    rl_redisplay();
-//  }
-//  else if (c == SIGQUIT)
-//  {
-//    printf("\n");
-//    exit(0);
-//  }
-//}
+void	heredoc_sig(int c)
+{
+	//printf("%d\n", c);
+	//t_data data;
+	//t_check chk;
+	//t_ll ai;
+	//int	fd;
 
-void	heredoc_implement(t_data *data, char *det)
+	//ai.niga->nm = 22;
+	//l.ok = 1;
+	//data.chk_hrdoc_exit = 55;
+	//chk.check = 0;
+	//printf("%d\n", data.chk_hrdoc_exit);
+	//fd = open("ai.txt", O_CREAT | O_RDWR | O_TRUNC, 0664);
+	//ft_putnbr_fd(8, fd);
+	write(1, "\n", 1);
+	exit(0);
+	//return ;
+  //if (c == SIGINT)
+	//{
+	//	//write(1, "\n", 1);
+	//	exit(0);
+  //}
+  //else if (c == SIGQUIT)
+  //{
+  //  printf("\n");
+  //  exit(0);
+  //}
+}
+
+void	heredoc_process(t_data *data, char *det)
 {
 	char	*heredoc;
 	char	*buff;
-	char	*tmp;
-	int		len;
 
-	//buff = malloc(sizeof(char) * 1);
-	//buff[0] = 0;
 	buff = ft_strdup("");
-	//heredoc = readline("> ");
-	//if (!heredoc)
-	//	return ;
-	//while (ft_strncmp(heredoc, det, ft_strlen(det)))
+	signal(SIGINT, heredoc_sig);
+	//also if it ctrl c ignore the next <<
 	while (1)
 	{
 		//signal(SIGINT, heredoc_sig);
 		//for the signal just fork and in the child run the heredoc and when u ctrl c exit(0) and in the parent will exit too ignore it
 		heredoc = readline("> ");
 		if (!heredoc)
-			return ;
+			exit(0);
+			//return ;
 		if (!ft_strcmp(heredoc, det))
 			break ;
 		if (data->chk_q_hrdoc == 0)
@@ -173,14 +182,85 @@ void	heredoc_implement(t_data *data, char *det)
 		//fill_data(data, heredoc);
 		//and here i should send the data i enter to a file and expand it and all that shiit
 	}
-	pipe(data->hrdoc_fd);
+	//**pipe(data->hrdoc_fd);
+	//**close(data->hrdoc_fd[0]);
 	ft_putstr_fd(buff, data->hrdoc_fd[1]);
 	close(data->hrdoc_fd[1]);
-	tmp = malloc(ft_strlen(buff) + 1);
-	len = read(data->hrdoc_fd[0], tmp, ft_strlen(buff));
-	len++;
-	tmp[len] = 0;
-	printf("%s", tmp);
+	exit(0);
+}
+
+void	heredoc_implement(t_data *data, char *det)
+{
+	//char	*heredoc;
+	//char	*buff;
+	//char	*tmp;
+	//int		len;
+	int		pid;
+
+	//buff = malloc(sizeof(char) * 1);
+	//buff[0] = 0;
+	//**buff = ft_strdup("");
+	//heredoc = readline("> ");
+	//if (!heredoc)
+	//	return ;
+	//while (ft_strncmp(heredoc, det, ft_strlen(det)))
+	pipe(data->hrdoc_fd);
+	//**chk_hrdoc_exit = 1;
+	//if (pipe(data->hrdoc_fd) != 0)
+	//	//error msg here
+	//close(data->hrdoc_fd[0]);
+	pid = fork();
+	//if (pid < 0)
+	//{
+	//	//error msg
+	//}
+	if (pid == 0)
+	{
+		close(data->hrdoc_fd[0]);
+		//dup2(data->hrdoc_fd[1], 0);
+		//ft_putstr_fd("vye", data->hrdoc_fd[1]);
+		//close(data->hrdoc_fd[1]);
+		heredoc_process(data, det);
+		//exit(0);
+	}
+	if (pid > 0)
+	{
+		signal(SIGINT, SIG_IGN);
+		wait(0);
+		close(data->hrdoc_fd[1]);
+		//int	l;
+		//l = open("ai.txt", O_CREAT | O_RDWR | O_APPEND, 0664);
+		//write(l, "kdd", 3);
+		//ft_putnbr_fd(l, 92);
+		//here u should exit with the right number process and keep it in the variable of chk_$?
+		//this one u will close it when u finish the execution
+		//close(data->hrdoc_fd[0]);
+		return ;
+	}
+	//**while (1)
+	//**{
+	//**	//signal(SIGINT, heredoc_sig);
+	//**	//for the signal just fork and in the child run the heredoc and when u ctrl c exit(0) and in the parent will exit too ignore it
+	//**	heredoc = readline("> ");
+	//**	if (!heredoc)
+	//**		return ;
+	//**	if (!ft_strcmp(heredoc, det))
+	//**		break ;
+	//**	if (data->chk_q_hrdoc == 0)
+	//**		heredoc = fill_data(data, heredoc);
+	//**	buff = ft_strjoin(buff, ft_strjoin(heredoc, "\n"));
+	//**	//fill_data(data, heredoc);
+	//**	//and here i should send the data i enter to a file and expand it and all that shiit
+	//**}
+	//**pipe(data->hrdoc_fd);
+	//**close(data->hrdoc_fd[0]);
+	//**ft_putstr_fd(buff, data->hrdoc_fd[1]);
+	//**close(data->hrdoc_fd[1]);
+	//tmp = malloc(ft_strlen(buff) + 1);
+	//len = read(data->hrdoc_fd[0], tmp, ft_strlen(buff));
+	//len++;
+	//tmp[len] = 0;
+	//printf("%s", tmp);
 
 }
 //ls << $PW' just i didn't add DOLLA type in lexer pt1
