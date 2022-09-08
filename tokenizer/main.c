@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/07 19:04:15 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/08 21:21:16 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -744,7 +744,10 @@ int main(int ac, char **av, char **envp)
     if (data.line[0] == 0)
       nl();
     else
+    {
       tokenizer(&data);
+      //here fucntion of execution
+    }
       //token_s_quote(&data);
       //**tokenizer(&data);
     //lexer problem exit not working in the first time two times machi lexer tokenizer of something else $
@@ -810,6 +813,7 @@ int main(int ac, char **av, char **envp)
         add_history(data.line);
     }
     free(data.line);
+    //**here should free tokenizer in case of error or normal and parsing nodes
     //this func free all token nodes
     //***here make a condition to free the tokenizer node
 		//***free_token_node(&data);

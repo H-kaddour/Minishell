@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/07 19:04:10 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/08 20:43:13 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef	struct cmd
 } t_cmd;
 //******
 
+//i don't need this one anymore
 typedef struct grab_line
 {
 	char	*ptr;
@@ -102,14 +103,6 @@ typedef struct grab_line
 	char	*buff;
 	char	*line;
 }	t_gnl;
-
-int	chk_hrdoc_exit; //this one check if heredoc got exit with ctrl c so to not finish the other hrdoc << l << d
-
-typedef struct check
-{
-	int check;
-	//t_data *ni;
-} t_check;
 
 typedef struct s_data
 {
@@ -135,7 +128,7 @@ typedef struct s_data
 	int			d_q_chk; // this one to check $"HOME"  and "$""HOME" in heredoc
 	int			chk_q_hrdoc; //this one to check if the determinater have "" '' so to not expand $ inside the heredoc
 	int			hrdoc_fd[2];
-	//int			chk_hrdoc_exit; //this one check if heredoc got exit with ctrl c so to not finish the other hrdoc << l << d
+	int			chk_hrdoc_exit; //this one check if heredoc got exit with ctrl c so to not finish the other hrdoc << l << d
 	t_token	*node;
   t_token *trav;
 	t_env		*shlvl_ptr;

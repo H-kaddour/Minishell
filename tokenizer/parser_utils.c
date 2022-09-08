@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:12:08 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/07 19:04:05 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/08 21:14:02 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,15 +134,22 @@ void	heredoc_sig(int c)
 	//t_data data;
 	//t_check chk;
 	//t_ll ai;
-	//int	fd;
+	int	fd;
+	//int oldfd;
 
 	//ai.niga->nm = 22;
 	//l.ok = 1;
 	//data.chk_hrdoc_exit = 55;
 	//chk.check = 0;
 	//printf("%d\n", data.chk_hrdoc_exit);
-	//fd = open("ai.txt", O_CREAT | O_RDWR | O_TRUNC, 0664);
-	//ft_putnbr_fd(8, fd);
+	//if (access("/tmp/check.txt", F_OK) == 0)
+	//{
+	//	old
+	//	close("/tmp/check.txt");
+	//}
+	fd = open("/tmp/check.txt", O_CREAT | O_RDWR | O_TRUNC, 0664);
+	ft_putnbr_fd(1, fd);
+	close(fd);
 	write(1, "\n", 1);
 	exit(0);
 	//return ;
@@ -196,6 +203,9 @@ void	heredoc_implement(t_data *data, char *det)
 	//char	*tmp;
 	//int		len;
 	int		pid;
+	int		fd;
+	//int		i;
+	char	c[2] = {0};
 
 	//buff = malloc(sizeof(char) * 1);
 	//buff[0] = 0;
@@ -228,6 +238,20 @@ void	heredoc_implement(t_data *data, char *det)
 		signal(SIGINT, SIG_IGN);
 		wait(0);
 		close(data->hrdoc_fd[1]);
+		if (access("/tmp/check.txt", F_OK) == 0)
+		{
+			fd = open("/tmp/check.txt", O_RDONLY);
+			read(fd, c, 1);
+			close(fd);
+			fd = open("/tmp/check.txt", O_RDONLY | O_TRNC);
+			ft_putnbr_fd(0, fd);
+			close(fd);
+			//c[i] = 0;
+			data->chk_hrdoc_exit = ft_atoi(c);
+			//close(fd);
+			//printf("%d\n", i);
+		}
+
 		//int	l;
 		//l = open("ai.txt", O_CREAT | O_RDWR | O_APPEND, 0664);
 		//write(l, "kdd", 3);
