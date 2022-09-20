@@ -224,3 +224,4 @@ enter in prompt "$PWD'l'" it should not take of the quotes
 
 fix if cat << l << d if ctrl c will end all the process and show the other pipe return a value to quite the process
 i will fix the above problem with putting the check num in a file
+also in history add if the line is the same at the last one it should not entre it just a strncmp should work fine

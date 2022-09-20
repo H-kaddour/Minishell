@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/08 20:43:13 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/20 14:06:38 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,11 @@ typedef struct s_data
 	//v_cmd		*valid_cmd;
 	//d_cmd		*data_cmd;
 	//char		**split_cmd;
+	/*var of execution*/
+	int			size_cmd;
+	char		*old_pwd_value; //this one is for cd env oldpwd to dup the old path of cd
+	int			old_pwd_make;
+	/*end of execution*/
 }	t_data;
 
 /******* Function of tokenizer *********/
@@ -176,7 +181,19 @@ int		ft_strcmp(const char *s1, const char *s2);
 void	heredoc_implement(t_data *data, char *det);
 void  parser(t_data *data);
 
+/**** Function of execution **********/
+void  execution(t_data *data);
+
 /**** Function of builtin cmd **********/
+//void  builtin_cmd(t_data *data, char *cmd);
+int		check_builtin(char *cmd);
+void  builtin_cmd(t_data *data, char *cmd);
+void  cd_cmd(t_data *data);
+void  get_env(t_data *data);
+void  env_cmd(t_data *data);
+void  pwd_cmd(t_data *data);
+t_env *node_allocate(void);
+//void  cd_cmd(t_data *data);
 
 
 

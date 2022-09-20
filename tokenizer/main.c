@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/08 21:21:16 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/20 14:54:24 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,236 +37,236 @@ void  sig_c(int c)
   }
 }
 
-t_env *node_allocate(t_data *data)
-{
-  (void)data;
-  t_env *node;
-
-  node = (t_env *) malloc(sizeof(t_env));
-  node->sec = NULL;
-  node->value = NULL;
-  node->next = NULL;
-  return (node);
-}
-
-void  get_env(t_data *data)
-{
-  int   i;
-  int   j;
-  int   k;
-  t_env *env;
-  t_env *next;
-  t_env *trav;
-
-  i = 1;
-  env = (t_env *)malloc(sizeof(t_env));
-  //data->l_env = env;
-  trav = env;
-  while (data->env[i])
-  {
-    next = node_allocate(data);
-    env->next = next;
-    env = env->next;
-    i++;
-  }
-  i = 0;
-  env = trav;
-  while (data->env[i])
-  {
-    j = 0;
-    while (data->env[i][j] && data->env[i][j] != '=')
-      j++;
-    env->sec = malloc(sizeof(char) * j + 1);
-    j = 0;
-    while (data->env[i][j] && data->env[i][j] != '=')
-    {
-      env->sec[j] = data->env[i][j];
-      j++;
-    }
-    env->sec[j] = 0;
-    k = ft_strlen(data->env[i]) + 1;
-    //here pass the equal sign
-    j++;
-    env->value = malloc(sizeof(char) * k - j);
-    k = 0;
-    while (data->env[i][j] && data->env[i][j] != 0)
-    {
-      env->value[k] = data->env[i][j];
-      j++;
-      k++;
-    }
-    env->value[k] = 0;
-    //why did u add another node allocate this one just added leaks and i didn't use it
-    //node_allocate(data);
-    env = env->next;
-    i++;
-  }
-  env = trav;
-  data->l_env = env;
-  //add one to the indent level
-  while (ft_strncmp(trav->sec, "SHLVL", 5))
-    trav = trav->next;
-  //i = ft_strlen(trav->value) - 1;
-  //trav->value[i] += 1;
-  int shlvl;
-  data->shlvl_ptr = trav;
-  shlvl = ft_atoi(trav->value);
-  shlvl++;
-  free(trav->value);
-  data->shlvl_ptr->value = ft_itoa(shlvl);
-  //trav->value = ft_itoa(shlvl);
-
-  //while (trav->next)
-  //{
-  //  printf("%s=%s\n", trav->sec, trav->value);
-  //  trav = trav->next;
-  //}
-}
+//t_env *node_allocate(t_data *data)
+//{
+//  (void)data;
+//  t_env *node;
+//
+//  node = (t_env *) malloc(sizeof(t_env));
+//  node->sec = NULL;
+//  node->value = NULL;
+//  node->next = NULL;
+//  return (node);
+//}
+//
+//void  get_env(t_data *data)
+//{
+//  int   i;
+//  int   j;
+//  int   k;
+//  t_env *env;
+//  t_env *next;
+//  t_env *trav;
+//
+//  i = 1;
+//  env = (t_env *)malloc(sizeof(t_env));
+//  //data->l_env = env;
+//  trav = env;
+//  while (data->env[i])
+//  {
+//    next = node_allocate(data);
+//    env->next = next;
+//    env = env->next;
+//    i++;
+//  }
+//  i = 0;
+//  env = trav;
+//  while (data->env[i])
+//  {
+//    j = 0;
+//    while (data->env[i][j] && data->env[i][j] != '=')
+//      j++;
+//    env->sec = malloc(sizeof(char) * j + 1);
+//    j = 0;
+//    while (data->env[i][j] && data->env[i][j] != '=')
+//    {
+//      env->sec[j] = data->env[i][j];
+//      j++;
+//    }
+//    env->sec[j] = 0;
+//    k = ft_strlen(data->env[i]) + 1;
+//    //here pass the equal sign
+//    j++;
+//    env->value = malloc(sizeof(char) * k - j);
+//    k = 0;
+//    while (data->env[i][j] && data->env[i][j] != 0)
+//    {
+//      env->value[k] = data->env[i][j];
+//      j++;
+//      k++;
+//    }
+//    env->value[k] = 0;
+//    //why did u add another node allocate this one just added leaks and i didn't use it
+//    //node_allocate(data);
+//    env = env->next;
+//    i++;
+//  }
+//  env = trav;
+//  data->l_env = env;
+//  //add one to the indent level
+//  while (ft_strncmp(trav->sec, "SHLVL", 5))
+//    trav = trav->next;
+//  //i = ft_strlen(trav->value) - 1;
+//  //trav->value[i] += 1;
+//  int shlvl;
+//  data->shlvl_ptr = trav;
+//  shlvl = ft_atoi(trav->value);
+//  shlvl++;
+//  free(trav->value);
+//  data->shlvl_ptr->value = ft_itoa(shlvl);
+//  //trav->value = ft_itoa(shlvl);
+//
+//  //while (trav->next)
+//  //{
+//  //  printf("%s=%s\n", trav->sec, trav->value);
+//  //  trav = trav->next;
+//  //}
+//}
 
 //I have to take this one off and work with my env
-void  get_path(t_data *data)
-{
-  int   i;
-  int   j;
-  int   k;
+//void  get_path(t_data *data)
+//{
+//  int   i;
+//  int   j;
+//  int   k;
+//
+//  i = 0;
+//  j = 5;
+//  while (data->env[i] && ft_strncmp(data->env[i], "PATH=", 5))
+//    i++;
+//  while (data->env[i][j] && data->env[i][j])
+//    j++;
+//  data->w_path = malloc(sizeof(char) * j + 1);
+//  if (!data->w_path)
+//    return ;
+//  //ft_strdup(data->env[i]);
+//  j = 5;
+//  k = 0;
+//  while (data->env[i][j])
+//  {
+//    data->w_path[k] = data->env[i][j];
+//    j++;
+//    k++;
+//  }
+//  data->w_path[k] = 0;
+//}
 
-  i = 0;
-  j = 5;
-  while (data->env[i] && ft_strncmp(data->env[i], "PATH=", 5))
-    i++;
-  while (data->env[i][j] && data->env[i][j])
-    j++;
-  data->w_path = malloc(sizeof(char) * j + 1);
-  if (!data->w_path)
-    return ;
-  //ft_strdup(data->env[i]);
-  j = 5;
-  k = 0;
-  while (data->env[i][j])
-  {
-    data->w_path[k] = data->env[i][j];
-    j++;
-    k++;
-  }
-  data->w_path[k] = 0;
-}
+//void  excute(t_data *data)
+//{
+//  int i;
+//
+//  i = 0;
+//  get_path(data);
+//  data->cmd = ft_split(data->line, ' ');
+//  data->split = ft_split(data->w_path, ':');
+//  while (data->split[i])
+//  {
+//    data->abs_path = ft_strjoin(ft_strjoin(data->split[i], "/"), data->cmd[0]);
+//    //printf("%s\n", data->abs_path);
+//    if (!access(data->abs_path, F_OK))
+//    {
+//      execve(data->abs_path, data->cmd, data->env);
+//    }
+//    free(data->abs_path);
+//    i++;
+//  }
+//}
 
-void  excute(t_data *data)
-{
-  int i;
+//void  execute_cmd(t_data *data)
+//{
+//  int pid;
+//
+//  //here check if the cmd working then check fork
+//  pid = fork();
+//  if (pid < 0)
+//    exit(2);
+//  else if (pid == 0)
+//  {
+//    excute(data);
+//  }
+//  else
+//  {
+//    wait(0);
+//    return ;
+//  }
+//}
 
-  i = 0;
-  get_path(data);
-  data->cmd = ft_split(data->line, ' ');
-  data->split = ft_split(data->w_path, ':');
-  while (data->split[i])
-  {
-    data->abs_path = ft_strjoin(ft_strjoin(data->split[i], "/"), data->cmd[0]);
-    //printf("%s\n", data->abs_path);
-    if (!access(data->abs_path, F_OK))
-    {
-      execve(data->abs_path, data->cmd, data->env);
-    }
-    free(data->abs_path);
-    i++;
-  }
-}
-
-void  execute_cmd(t_data *data)
-{
-  int pid;
-
-  //here check if the cmd working then check fork
-  pid = fork();
-  if (pid < 0)
-    exit(2);
-  else if (pid == 0)
-  {
-    excute(data);
-  }
-  else
-  {
-    wait(0);
-    return ;
-  }
-}
-
-int check_builtin(t_data *data)
-{
-  t_token *trav;
-  int   i;
-  char  **sp;
-  char  cmd[] = "cd echo pwd export unset env exit";
-
-  //i = 0;
-  trav = data->t_token;
-  sp = ft_split(cmd, ' ');
-  //while (trav)
-  //{
-  //get the commad u want to check
-  //this var of trav should be in struct so i can rememver the value
-  //while (trav)
-  //{
-  //  if (trav->type == WRD)
-  //    break ;
-  //  trav = trav->next;
-  //}
-  //i = 0;
-  while (trav)
-  {
-    i = 0;
-    if (trav->type == WRD)
-    {
-      while (sp[i])
-      {
-        if (!strncmp(trav->value, sp[i], ft_strlen(sp[i]) + 1))
-        {
-          data->built_cmd = trav;
-          return (1);
-        }
-        i++;
-      }
-    }
-    trav = trav->next;
-  }
-  //**here free
-  //i = 0;
-  //while (sp[i])
-  //{
-  //  free(sp[i]);
-  //  i++;
-  //}
-  //free(sp);
-  //free(cmd);
-  //while (sp[i])
-  //{
-  //  if (!strncmp(trav->value, sp[i], ft_strlen(sp[i])))
-  //  {
-  //    data->built_cmd = data->t_token;
-  //    return (1);
-  //  }
-  //  i++;
-  //}
-  return (0);
-  //}
-  //while (trav->type != WRD)
-  //  trav = trav->next;
-  //if (ft_strncmp(trav->value, "cd", 2))
-  //  cd_cmd(data);
-  //else if (ft_strncmp(trav->value, "echo", 4))
-  //  echo_cmd(data);
-  //else if (ft_strncmp(trav->value, "pwd", 3))
-  //  pwd_cmd(data);
-  //else if (ft_strncmp(trav->value, "export", 6))
-  //  export_cmd(data);
-  //else if (ft_strncmp(trav->value, "unset", 5))
-  //  unset_cmd(data);
-  //else if (ft_strncmp(trav->value, "env", 3))
-  //  env_cmd(data);
-  //else if (ft_strncmp(trav->value, "exit", 4))
-  //  exit_cmd(data);
-  //return (0);
-}
+//**int check_builtin(t_data *data)
+//**{
+//**  t_token *trav;
+//**  int   i;
+//**  char  **sp;
+//**  char  cmd[] = "cd echo pwd export unset env exit";
+//**
+//**  //i = 0;
+//**  trav = data->t_token;
+//**  sp = ft_split(cmd, ' ');
+//**  //while (trav)
+//**  //{
+//**  //get the commad u want to check
+//**  //this var of trav should be in struct so i can rememver the value
+//**  //while (trav)
+//**  //{
+//**  //  if (trav->type == WRD)
+//**  //    break ;
+//**  //  trav = trav->next;
+//**  //}
+//**  //i = 0;
+//**  while (trav)
+//**  {
+//**    i = 0;
+//**    if (trav->type == WRD)
+//**    {
+//**      while (sp[i])
+//**      {
+//**        if (!strncmp(trav->value, sp[i], ft_strlen(sp[i]) + 1))
+//**        {
+//**          data->built_cmd = trav;
+//**          return (1);
+//**        }
+//**        i++;
+//**      }
+//**    }
+//**    trav = trav->next;
+//**  }
+//**  //**here free
+//**  //i = 0;
+//**  //while (sp[i])
+//**  //{
+//**  //  free(sp[i]);
+//**  //  i++;
+//**  //}
+//**  //free(sp);
+//**  //free(cmd);
+//**  //while (sp[i])
+//**  //{
+//**  //  if (!strncmp(trav->value, sp[i], ft_strlen(sp[i])))
+//**  //  {
+//**  //    data->built_cmd = data->t_token;
+//**  //    return (1);
+//**  //  }
+//**  //  i++;
+//**  //}
+//**  return (0);
+//**  //}
+//**  //while (trav->type != WRD)
+//**  //  trav = trav->next;
+//**  //if (ft_strncmp(trav->value, "cd", 2))
+//**  //  cd_cmd(data);
+//**  //else if (ft_strncmp(trav->value, "echo", 4))
+//**  //  echo_cmd(data);
+//**  //else if (ft_strncmp(trav->value, "pwd", 3))
+//**  //  pwd_cmd(data);
+//**  //else if (ft_strncmp(trav->value, "export", 6))
+//**  //  export_cmd(data);
+//**  //else if (ft_strncmp(trav->value, "unset", 5))
+//**  //  unset_cmd(data);
+//**  //else if (ft_strncmp(trav->value, "env", 3))
+//**  //  env_cmd(data);
+//**  //else if (ft_strncmp(trav->value, "exit", 4))
+//**  //  exit_cmd(data);
+//**  //return (0);
+//**}
 
 void  exit_cmd(t_data *data)
 {
@@ -695,10 +695,13 @@ void  nl(void)
   rl_replace_line("", 0);
 }
 
+
+
 int main(int ac, char **av, char **envp)
 {
   t_data  data;
   int     i;
+  int     j;
   //char    prompt[] = "\e[44m\033[4;37m$Minishell>";
   //char    prompt[] = "\e[43m\e[44mMinishell\033[4;37mMinishell>";
   //the Minishell in the prompt will be change by cd changing to file name and at first it get the path of in env to print
@@ -712,6 +715,9 @@ int main(int ac, char **av, char **envp)
   //data.env = envp;
   //write(0, &prompt, sizeof(prompt));
   //make a function that init all var that u work with
+  j = 0;
+  data.old_pwd_make = 0;
+  data.old_pwd_value = ft_strdup("");
   while (1)
   {
     //line = grab_line(0);
@@ -732,11 +738,11 @@ int main(int ac, char **av, char **envp)
     //tokenizer(&data);
     //execute_cmd(&data);
     //if (!data.env)
-    if (i == 0)
+    if (j == 0)
     {
       data.env = envp;
       get_env(&data);
-      i++;
+      j++;
     }
     //data.env = envp;
     //get_env(&data);
@@ -748,6 +754,8 @@ int main(int ac, char **av, char **envp)
       tokenizer(&data);
       //here fucntion of execution
     }
+    //here if up was error should not entre here i should do a var boolean
+    execution(&data);
       //token_s_quote(&data);
       //**tokenizer(&data);
     //lexer problem exit not working in the first time two times machi lexer tokenizer of something else $
