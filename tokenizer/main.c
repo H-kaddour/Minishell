@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/21 12:04:09 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/21 21:11:00 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -751,6 +751,41 @@ void  prompt_changer(t_data *data)
   //}
 }
 
+void  make_myown_env(t_data *data)
+{
+  t_env *head;
+  t_env *node;
+  int   i;
+  char  **sp1;
+  char  **sp2;
+  char  *sec = "PATH SHLVL";
+  char  *val = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin 1";
+
+  i = 0;
+  sp1 = ft_split(sec, ' ');
+  sp2 = ft_split(val, ' ');
+  head = node_allocate();
+  head->sec = "PWD";
+  head->value = malloc(1024);
+  getcwd(head->value, 1024);
+  data->l_env = head;
+  while (i < 2)
+  {
+    node = node_allocate();
+    node->sec = sp1[i];
+    node->value = sp2[i];
+    head->next = node;
+    head = node;
+    i++;
+  }
+  //head = data->l_env;
+  //while (head)
+  //{
+  //  printf("%s = %s\n", head->sec, head->value);
+  //  head = head->next;
+  //}
+  //while(1);
+}
 
 int main(int ac, char **av, char **envp)
 {
@@ -773,8 +808,15 @@ int main(int ac, char **av, char **envp)
   j = 0;
   data.old_pwd_make = 0;
   data.old_pwd_value = ft_strdup("");
-  data.env = envp;
-  get_env(&data);
+  if (!envp[0])
+  {
+    make_myown_env(&data);
+  }
+  else
+  {
+    data.env = envp;
+    get_env(&data);
+  }
   prompt_changer(&data);
   //maybe here i will print date and time and user name
   //also make a last login file to print in first 

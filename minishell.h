@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/21 11:39:43 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/21 18:49:05 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ void  env_cmd(t_data *data);
 void  pwd_cmd(t_data *data);
 void  exit_cmd(t_data *data);
 t_env *node_allocate(void);
+char	**env_double_ptr(t_data *data);
 //void  cd_cmd(t_data *data);
 
 //this one in the main but should go to cd

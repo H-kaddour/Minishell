@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:22:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/21 11:12:28 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/21 21:17:34 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void  old_pwd_alloc(t_data *data)
   data->old_pwd_make = 1;
 }
 
-void  get_home_path(t_data *data, t_env **trav_e)
+int get_home_path(t_data *data, t_env **trav_e)
 {
   t_env *trav;
 
@@ -52,6 +52,12 @@ void  get_home_path(t_data *data, t_env **trav_e)
   if (!ft_strcmp(trav->sec, "HOME") && trav->next)
   {
     *trav_e = trav;
+    return (0);
+  }
+  else
+  {
+    printf("minishell: cd: HOME not set\n");
+    return (1);
   }
   //here if i didn't find it 
 }
@@ -126,6 +132,17 @@ void  get_old_pwd(t_data *data, int chk)
       //  free(trav->value);
       //trav->value = data->old_pwd_value;
     }
+    //i added this one and this bitch give me the problem
+    //if (chdir(trav->value) != 0)
+    //{
+    //  printf("minishell: cd: No such file or directory\n");
+    //  return ;
+    //}
+  }
+  else
+  {
+    printf("minishell: cd: OLDPWD not set\n");
+    return ;
   }
 }
 
@@ -157,7 +174,8 @@ void  cd_home_path(t_data *data, char *cmd)
   t_env *trav_e;
 
   i = 1;
-  get_home_path(data, &trav_e);
+  if (get_home_path(data, &trav_e))
+    return ;
   //pass ~ direct to /
   if (!cmd)
   {
@@ -238,6 +256,7 @@ void  execute_cd_swap_old_pwd(t_data *data)
     printf("minishell: cd: %s: No such file or directory\n", trav_pwd->value);
     return ;
   }
+  prompt_changer(data);
 }
 
 void  cd_between_pwd_and_oldpwd(t_data *data, char *cmd)
@@ -433,6 +452,11 @@ void  cd_cmd(t_data *data)
     if (data->old_pwd_make == 0)
       old_pwd_alloc(data);
     get_old_pwd(data, 1);
+    if (chdir(alloc_old_pwd(data)))
+    {
+      printf("minishell: cd: No such file or directory\n");
+      return ;
+    }
     return ;
   }
   else if (trav_c->cmd[1][0] == '-')
@@ -448,3 +472,6 @@ void  cd_cmd(t_data *data)
   else
     printf("minishell: cd: %s: No such file or directory\n", trav_c->cmd[1]);
 }
+//here error is env element was not there like ft_strcmp if equal and else if not print and error msg
+//also in ./minishell two i should work with the second env that i made
+//exit and it's erro $? 1 maybe 

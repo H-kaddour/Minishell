@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/21 14:07:00 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/21 20:50:25 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,18 @@ void  get_path(t_data *data)
 
   i = 0;
   trav = data->l_env;
+  //still need to fix this chick over here
   if (find_slash(*data->v_cmd->cmd))
   {
     cmd = *data->v_cmd->cmd;
     if (access(cmd, X_OK) == 0)
     {
-      execve(cmd, data->v_cmd->cmd, data->env);
+      //execve(cmd, data->v_cmd->cmd, data->env);
+      execve(cmd, data->v_cmd->cmd, env_double_ptr(data));
       return ;
     }
     printf("minishell: command not found: %s\n", data->v_cmd->cmd[0]);
+    exit(0);
     return ;
   }
   while (ft_strcmp("PATH", trav->sec) && trav->next)
@@ -68,6 +71,7 @@ void  get_path(t_data *data)
     //if (access(ft_strjoin(ft_strjoin(sp[i], "/"), data->v_cmd->cmd[0]), F_OK) == 0)
     if (access(cmd, F_OK) == 0)
     {
+      //execve(cmd, data->v_cmd->cmd, env_double_ptr(data));
       execve(cmd, data->v_cmd->cmd, data->env);
       free(cmd);
     }
@@ -76,6 +80,7 @@ void  get_path(t_data *data)
   }
   //here an error
   printf("minishell: command not found: %s\n", data->v_cmd->cmd[0]);
+  exit(0);
 }
 
 void  cmd_without_redirection(t_data *data)

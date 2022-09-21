@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 12:11:41 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/20 14:04:35 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/21 19:01:05 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,43 @@ t_env *node_allocate(void)
   node->value = 0;
   node->next = 0;
   return (node);
+}
+
+char **env_double_ptr(t_data *data)
+{
+  t_env *trav;
+  char  **env;
+  int   i;
+  int   j;
+  int   k;
+
+  i = 0;
+  trav = data->l_env;
+  while (trav)
+  {
+    trav = trav->next;
+    i++;
+  }
+  env = malloc(sizeof(char *) * i + 1);
+  i = 0;
+  trav = data->l_env;
+  while (trav)
+  {
+    env[i] = malloc(sizeof(char) * ft_strlen(trav->sec) + ft_strlen(trav->value) + 1);
+    j = 0;
+    k = 0;
+    while (trav->sec[k])
+      env[i][j++] = trav->sec[k++];
+    env[i][j++] = '=';
+    k = 0;
+    while (trav->value[k])
+      env[i][j++] = trav->value[k++];
+    env[i][j] = 0;
+    i++;
+    trav = trav->next;
+  }
+  env[i] = 0;
+  return (env);
 }
 
 void  get_env(t_data *data)
