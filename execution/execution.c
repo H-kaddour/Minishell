@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/20 12:43:17 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/21 14:07:00 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,20 @@ void  size_cmd(t_data *data)
   }
 }
 
+int find_slash(char *cmd)
+{
+  int i;
+
+  i = 0;
+  while (cmd[i])
+  {
+    if (cmd[i] == '/')
+      return (1);
+    i++;
+  }
+  return (0);
+}
+
 void  get_path(t_data *data)
 {
   int i;
@@ -32,6 +46,17 @@ void  get_path(t_data *data)
 
   i = 0;
   trav = data->l_env;
+  if (find_slash(*data->v_cmd->cmd))
+  {
+    cmd = *data->v_cmd->cmd;
+    if (access(cmd, X_OK) == 0)
+    {
+      execve(cmd, data->v_cmd->cmd, data->env);
+      return ;
+    }
+    printf("minishell: command not found: %s\n", data->v_cmd->cmd[0]);
+    return ;
+  }
   while (ft_strcmp("PATH", trav->sec) && trav->next)
     trav = trav->next;
   if (!trav)
@@ -61,6 +86,7 @@ void  cmd_without_redirection(t_data *data)
   //error here
   if (pid < 0)
     return ;
+  //pid = 0;
   if (pid == 0)
   {
     if (check_builtin(data->v_cmd->cmd[0]))

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:54:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/20 12:22:11 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/21 11:39:30 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,6 @@ void  builtin_cmd(t_data *data, char *cmd)
   //  export_cmd();
   //else if (!ft_strcmp(cmd, "unset"))
   //  unset_cmd();
-  //else if (!ft_strcmp(cmd, "exit"))
-  //  exit_cmd();
+  else if (!ft_strcmp(cmd, "exit"))
+    exit_cmd(data);
 }

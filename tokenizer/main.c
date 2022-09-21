@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/20 14:54:24 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/21 12:04:09 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -695,6 +695,61 @@ void  nl(void)
   rl_replace_line("", 0);
 }
 
+//this for the prompt
+//had fucntion is named leaks cuz it got alot of them
+void  prompt_changer(t_data *data)
+{
+  t_env *pwd;
+  t_env *home;
+  int   len;
+  int   i;
+  //char  *tmp = "~/";
+  //char  *clr_err = "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30m";
+  char  *clr_err = "\e[103m \e[91m \e[40m\e[93m \e[97m \e[44m\e[30m\e[44m \e[30m";
+  char  *clr1 = "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30m";
+  char  *clr2 = " \e[0m\e[34m \e[0m";
+
+  pwd = data->l_env;
+  home = data->l_env;
+  while (ft_strcmp(pwd->sec, "PWD") && pwd->next)
+    pwd = pwd->next;
+  while (ft_strcmp(home->sec, "HOME") && home->next)
+    home = home->next;
+  if (!ft_strncmp(pwd->value, home->value, ft_strlen(home->value)))
+  {
+    if (ft_strlen(pwd->value) > ft_strlen(home->value))
+    {
+      //len = ft_strlen(pwd->value) - ft_strlen(home->value);
+      len = ft_strlen(home->value);
+      data->prompt = malloc(sizeof(char) * len + 3);
+      i = 0;
+      //while (i < 2)
+      //{
+      //  data->prompt[i] = tmp[i];
+      //  i++;
+      //}
+      data->prompt[i++] = '~';
+      while (pwd->value[len])
+        data->prompt[i++] = pwd->value[len++];
+      data->prompt[i] = 0;
+      data->prompt = ft_strjoin(clr1, ft_strjoin(data->prompt, clr2));
+    }
+    else if (ft_strlen(pwd->value) == ft_strlen(home->value))
+    {
+      data->prompt = "~";
+      data->prompt = ft_strjoin(clr1, ft_strjoin(data->prompt, clr2));
+    }
+  }
+  else
+  {
+    data->prompt = ft_strjoin(clr1, ft_strjoin(pwd->value, clr2));
+    //just join the color with path
+  }
+  //if (!ft_strcmp(pwd->sec, "PWD") && !ft_strcmp(home->sec, "HOME"))
+  //{
+
+  //}
+}
 
 
 int main(int ac, char **av, char **envp)
@@ -706,7 +761,7 @@ int main(int ac, char **av, char **envp)
   //char    prompt[] = "\e[43m\e[44mMinishell\033[4;37mMinishell>";
   //the Minishell in the prompt will be change by cd changing to file name and at first it get the path of in env to print
   //that file name
-  char    prompt[] = "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30mMinishell \e[0m\e[34m \e[0m";
+  //char    prompt[] = "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30mMinishell \e[0m\e[34m \e[0m";
 
   i = 0;
   //use an if here only if ac == 1
@@ -718,13 +773,18 @@ int main(int ac, char **av, char **envp)
   j = 0;
   data.old_pwd_make = 0;
   data.old_pwd_value = ft_strdup("");
+  data.env = envp;
+  get_env(&data);
+  prompt_changer(&data);
+  //maybe here i will print date and time and user name
+  //also make a last login file to print in first 
   while (1)
   {
     //line = grab_line(0);
     signal(SIGINT, sig_c);
     signal(SIGQUIT, sig_c);
     //printf("%d\n", getpid());
-    data.line = readline(prompt);
+    data.line = readline(data.prompt);
     if (!data.line)
       return (0);
     //if (!ft_strncmp(data.line, "exit", 4))
@@ -738,12 +798,22 @@ int main(int ac, char **av, char **envp)
     //tokenizer(&data);
     //execute_cmd(&data);
     //if (!data.env)
-    if (j == 0)
-    {
-      data.env = envp;
-      get_env(&data);
-      j++;
-    }
+
+    //**j = 0;
+    //**while (envp[j])
+    //**{
+    //**  printf("%s\n", envp[j]);
+    //**  j++;
+    //**}
+
+    //old initialize for env
+    //**if (j == 0)
+    //**{
+    //**  data.env = envp;
+    //**  get_env(&data);
+    //**  j++;
+    //**}
+
     //data.env = envp;
     //get_env(&data);
     //also do it for lexer and exextion

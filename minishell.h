@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/20 14:06:38 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/21 11:39:43 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ typedef struct s_data
 	char		*old_pwd_value; //this one is for cd env oldpwd to dup the old path of cd
 	int			old_pwd_make;
 	/*end of execution*/
+	//for prompt
+	char *prompt;
 }	t_data;
 
 /******* Function of tokenizer *********/
@@ -192,9 +194,12 @@ void  cd_cmd(t_data *data);
 void  get_env(t_data *data);
 void  env_cmd(t_data *data);
 void  pwd_cmd(t_data *data);
+void  exit_cmd(t_data *data);
 t_env *node_allocate(void);
 //void  cd_cmd(t_data *data);
 
+//this one in the main but should go to cd
+void  prompt_changer(t_data *data);
 
 
 //i gotta sperate the function prototype

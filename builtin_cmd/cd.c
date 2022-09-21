@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:22:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/20 19:11:43 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/21 11:12:28 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,11 +129,13 @@ void  get_old_pwd(t_data *data, int chk)
   }
 }
 
-void  execute_cmd_cd(t_data *data, char *path)
+void  execute_cmd_cd(t_data *data, char *cmd, char *path)
 {
   if (chdir(path) != 0)
   {
-    printf("minishell: cd: %s: No such file or directory\n", path);
+    //it should print the cmd not the path
+    //printf("minishell: cd: %s: No such file or directory\n", path);
+    printf("minishell: cd: %s: No such file or directory\n", cmd);
     return ;
   }
   //maybe i should sort the env
@@ -141,6 +143,7 @@ void  execute_cmd_cd(t_data *data, char *path)
     old_pwd_alloc(data);
   get_pwd(data, path);
   get_old_pwd(data, 0);
+  prompt_changer(data);
   //here add the path to pwd and oldpath and change the prompt path
 }
 
@@ -158,7 +161,7 @@ void  cd_home_path(t_data *data, char *cmd)
   //pass ~ direct to /
   if (!cmd)
   {
-    execute_cmd_cd(data, trav_e->value);
+    execute_cmd_cd(data, cmd, trav_e->value);
     return ;
     //send it to execution and changing path and all that
   }
@@ -166,7 +169,7 @@ void  cd_home_path(t_data *data, char *cmd)
   {
     if (cmd[i] == 0)
     {
-      execute_cmd_cd(data, trav_e->value);
+      execute_cmd_cd(data, cmd, trav_e->value);
       return ;
       //execution direct
     }
@@ -178,7 +181,7 @@ void  cd_home_path(t_data *data, char *cmd)
           i++;
         if (cmd[i] == 0)
         {
-          execute_cmd_cd(data, trav_e->value);
+          execute_cmd_cd(data, cmd, trav_e->value);
           return ;
         }
         else
@@ -197,7 +200,7 @@ void  cd_home_path(t_data *data, char *cmd)
         }
         //path = ft_strjoin(trav_e->value, path);
         path = ft_strjoin(trav_e->value, ft_strjoin("/", path));
-        execute_cmd_cd(data, path);
+        execute_cmd_cd(data, cmd, path);
       }
       else
       {
@@ -301,7 +304,7 @@ void  cd_double_dot(t_data *data, char *cmd)
     //if (trav->value[lst] == '/')
     if (len_for_root(&trav->value[0], &trav->value[lst]) == 1)
     {
-      execute_cmd_cd(data, "/");
+      execute_cmd_cd(data, cmd, "/");
       return ;
     }
     path = malloc(sizeof(char) * lst);
@@ -312,12 +315,12 @@ void  cd_double_dot(t_data *data, char *cmd)
       i++;
     }
     path[i] = 0;
-    execute_cmd_cd(data, path);
+    execute_cmd_cd(data, cmd, path);
   }
   //error here
 }
 
-void  cd_to_root(t_data *data, char *cmd)
+int cd_to_root(t_data *data, char *cmd)
 {
   int i;
 
@@ -325,22 +328,98 @@ void  cd_to_root(t_data *data, char *cmd)
   while (cmd[i] == '/' && cmd[i])
     i++;
   if (cmd[i] != 0)
-  {
-    printf("minishell: cd: %s: No such file or directory\n", cmd);
-    return ;
-  }
+    return (0);
+  //{
+  //  printf("minishell: cd: %s: No such file or directory\n", cmd);
+  //  return ;
+  //}
   else
-    execute_cmd_cd(data, "/");
+  {
+    execute_cmd_cd(data, cmd, "/");
+    return (1);
+  }
+}
+
+//pseudo code:
+//"/path/path"
+//"/path/path/"
+//"/"
+//"tmp/"
+//"tmp"
+
+char *take_off_the_lst_slash(char *cmd)
+{
+  char  *path;
+  int   lst;
+  int   i;
+
+  i = 0;
+  lst = ft_strlen(cmd) - 1;
+  if (cmd[lst] != '/')
+    lst++;
+  while (cmd[lst - 1] == '/')
+    lst--;
+  i = 0;
+  path = malloc(sizeof(char) * lst);
+  while (&cmd[i] != &cmd[lst])
+  {
+    path[i] = cmd[i];
+    i++;
+  }
+  path[i] = 0;
+  return (path);
 }
 
 void  cd_path_and_folders(t_data *data, char *cmd)
 {
-  //pseudo code:
-  //"/path/path"
-  //"/path/path/"
-  //"/"
-  //"tmp/"
-  //"tmp"
+  t_env *trav;
+  //int   lst;
+  //int   i;
+  char  *path;
+
+  //lst = 0;
+  trav = data->l_env;
+  if (cmd[0] == '/')
+  {
+    //if (cmd[1] == 0)
+    if (cd_to_root(data, cmd))
+      return ;
+    //{
+    //  execute_cmd_cd(data, "/");
+    //  return ;
+    //}
+    //**lst = ft_strlen(cmd) - 1;
+    //**if (cmd[lst] != '/')
+    //**  lst++;
+    //**while (cmd[lst - 1] == '/')
+    //**  lst--;
+    //**i = 0;
+    //**path = malloc(sizeof(char) * lst);
+    //**while (&cmd[i] != &cmd[lst])
+    //**{
+    //**  path[i] = cmd[i];
+    //**  i++;
+    //**}
+    //**path[i] = 0;
+    path = take_off_the_lst_slash(cmd);
+    execute_cmd_cd(data, cmd, path);
+  }
+  else
+  {
+    while (ft_strcmp(trav->sec, "PWD") && trav->next)
+      trav = trav->next;
+    if (!ft_strcmp(trav->sec, "PWD"))
+    {
+      path = take_off_the_lst_slash(cmd);
+      //what if pwd equal 1 and that one it's not / it's * or somth
+      if (trav->value[1] == 0)
+        path = ft_strjoin(trav->value, path);
+      else
+        path = ft_strjoin(trav->value, ft_strjoin("/", path));
+      execute_cmd_cd(data, cmd, path);
+    }
+    //else an error msg if we take the env down
+  }
 }
 
 void  cd_cmd(t_data *data)
@@ -364,11 +443,8 @@ void  cd_cmd(t_data *data)
   //  cd_to_root(data, trav_c->cmd[1]);
   else if (trav_c->cmd[1][0] != '-' && trav_c->cmd[1][0] != '~' && trav_c->cmd[1][0] != '.' && trav_c->cmd[1])
     cd_path_and_folders(data, trav_c->cmd[1]);
-
   //another else if it was the path with no / in first and end
   //another one for error
   else
-  {
-    printf("bad \n");
-  }
+    printf("minishell: cd: %s: No such file or directory\n", trav_c->cmd[1]);
 }
