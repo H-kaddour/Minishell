@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/21 20:50:25 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/22 10:46:36 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ void  get_path(t_data *data)
       return ;
     }
     printf("minishell: command not found: %s\n", data->v_cmd->cmd[0]);
-    exit(0);
-    return ;
+    exit(127);
+    //return ;
   }
   while (ft_strcmp("PATH", trav->sec) && trav->next)
     trav = trav->next;
@@ -69,28 +69,34 @@ void  get_path(t_data *data)
   {
     cmd = ft_strjoin(ft_strjoin(sp[i], "/"), data->v_cmd->cmd[0]);
     //if (access(ft_strjoin(ft_strjoin(sp[i], "/"), data->v_cmd->cmd[0]), F_OK) == 0)
-    if (access(cmd, F_OK) == 0)
+    if (access(cmd, X_OK) == 0)
     {
       //execve(cmd, data->v_cmd->cmd, env_double_ptr(data));
       execve(cmd, data->v_cmd->cmd, data->env);
+        //printf("retrun process execve failded\n");
       free(cmd);
+      //exit(0);
     }
     free(cmd);
     i++;
   }
   //here an error
   printf("minishell: command not found: %s\n", data->v_cmd->cmd[0]);
-  exit(0);
+  exit(127);
 }
 
 void  cmd_without_redirection(t_data *data)
 {
   int pid; 
+  int status;
 
   pid = fork();
   //error here
   if (pid < 0)
+  {
+    printf("retrun process execve failded\n");
     return ;
+  }
   //pid = 0;
   if (pid == 0)
   {
@@ -101,7 +107,30 @@ void  cmd_without_redirection(t_data *data)
   }
   if (pid >= 1)
   {
-    wait(0);
+    //wait(0);
+    //waitpid(pid, &status, 0);
+    //if (status <= -1)
+    //if (status == 1)
+    //  printf("err in execve \n");
+    //else
+    //  printf("all good \n");
+
+    waitpid(pid, &status, 0);
+    printf("%d\n", status);
+    //printf("cmd + garbage\n");
+    if (status == 256)
+      data->chk_dolla = 1;
+    //printf("no cmd existence\n");
+    else if (status == 32512)
+      data->chk_dolla = 127;
+    else
+      data->chk_dolla = 0;
+    //if (waitpid(pid, &status, 0) == 0)
+    //  printf("all good %d\n", status);
+    //else if (waitpid(pid, &status, 0) == 127)
+    //  printf("err no cmd %d\n", status);
+    //else
+    //  printf("err cmd + fleabag %d\n", status);
     if (check_builtin(data->v_cmd->cmd[0]))
       builtin_cmd(data, data->v_cmd->cmd[0]);
     //check no need for 

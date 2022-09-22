@@ -228,3 +228,5 @@ also in history add if the line is the same at the last one it should not entre 
 
 
 Negad env -i 
+Fix when i entre in the prompt it execute the old cmd
+env with args should not works

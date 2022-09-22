@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/21 21:11:00 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/22 09:27:52 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -865,9 +865,11 @@ int main(int ac, char **av, char **envp)
     {
       tokenizer(&data);
       //here fucntion of execution
+      //if an error happen in tokenizer don't execute
+      execution(&data);
     }
     //here if up was error should not entre here i should do a var boolean
-    execution(&data);
+    //execution(&data);
       //token_s_quote(&data);
       //**tokenizer(&data);
     //lexer problem exit not working in the first time two times machi lexer tokenizer of something else $
