@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:54:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/21 11:39:30 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/22 17:16:33 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void  builtin_cmd(t_data *data, char *cmd)
 {
   if (!ft_strcmp(cmd, "cd"))
     cd_cmd(data);
-  //else if (!ft_strcmp(cmd, "echo"))
-  //  echo_cmd();
+  else if (!ft_strcmp(cmd, "echo"))
+    echo_cmd(data);
   else if (!ft_strcmp(cmd, "pwd"))
     pwd_cmd(data);
   else if (!ft_strcmp(cmd, "env"))

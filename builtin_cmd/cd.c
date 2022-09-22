@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:22:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/21 21:17:34 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/22 15:21:31 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ void  execute_cmd_cd(t_data *data, char *cmd, char *path)
   {
     //it should print the cmd not the path
     //printf("minishell: cd: %s: No such file or directory\n", path);
+    data->chk_dolla = 1;
     printf("minishell: cd: %s: No such file or directory\n", cmd);
     return ;
   }
@@ -160,6 +161,7 @@ void  execute_cmd_cd(t_data *data, char *cmd, char *path)
     old_pwd_alloc(data);
   get_pwd(data, path);
   get_old_pwd(data, 0);
+  data->chk_dolla = 0;
   prompt_changer(data);
   //here add the path to pwd and oldpath and change the prompt path
 }
@@ -246,16 +248,30 @@ void  execute_cd_swap_old_pwd(t_data *data)
     path = trav_pwd->value;
     trav_pwd->value = trav_o_p->value;
   }
+  else
+  {
+    data->chk_dolla = 1;
+    printf("minishell: cd: PWD not set\n");
+    return ;
+  }
   if (!ft_strcmp(trav_o_p->sec, "OLDPWD"))
   {
     trav_o_p->value = path;
   }
+  else
+  {
+    data->chk_dolla = 1;
+    printf("minishell: cd: OLDPWD not set\n");
+    return ;
+  }
   //check error if OLDPWD if does not exist
   if (chdir(trav_pwd->value) != 0)
   {
+    data->chk_dolla = 1;
     printf("minishell: cd: %s: No such file or directory\n", trav_pwd->value);
     return ;
   }
+  data->chk_dolla = 0;
   prompt_changer(data);
 }
 
@@ -335,6 +351,12 @@ void  cd_double_dot(t_data *data, char *cmd)
     }
     path[i] = 0;
     execute_cmd_cd(data, cmd, path);
+  }
+  else
+  {
+    data->chk_dolla = 1;
+    printf("minishell: cd: PWD not set\n");
+    return ;
   }
   //error here
 }
@@ -425,6 +447,7 @@ void  cd_path_and_folders(t_data *data, char *cmd)
   }
   else
   {
+    //this one make a function that get u pwd
     while (ft_strcmp(trav->sec, "PWD") && trav->next)
       trav = trav->next;
     if (!ft_strcmp(trav->sec, "PWD"))
@@ -438,6 +461,12 @@ void  cd_path_and_folders(t_data *data, char *cmd)
       execute_cmd_cd(data, cmd, path);
     }
     //else an error msg if we take the env down
+    else
+    {
+      data->chk_dolla = 1;
+      printf("minishell: cd: PWD not set\n");
+      return ;
+    }
   }
 }
 
@@ -454,9 +483,11 @@ void  cd_cmd(t_data *data)
     get_old_pwd(data, 1);
     if (chdir(alloc_old_pwd(data)))
     {
+      data->chk_dolla = 1;
       printf("minishell: cd: No such file or directory\n");
       return ;
     }
+    data->chk_dolla = 0;
     return ;
   }
   else if (trav_c->cmd[1][0] == '-')
@@ -470,7 +501,10 @@ void  cd_cmd(t_data *data)
   //another else if it was the path with no / in first and end
   //another one for error
   else
+  {
+    data->chk_dolla = 1;
     printf("minishell: cd: %s: No such file or directory\n", trav_c->cmd[1]);
+  }
 }
 //here error is env element was not there like ft_strcmp if equal and else if not print and error msg
 //also in ./minishell two i should work with the second env that i made

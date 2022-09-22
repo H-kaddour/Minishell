@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/22 09:27:52 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/22 18:14:42 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -807,6 +807,7 @@ int main(int ac, char **av, char **envp)
   //make a function that init all var that u work with
   j = 0;
   data.old_pwd_make = 0;
+  data.chk_redct_exist = 0;
   data.old_pwd_value = ft_strdup("");
   if (!envp[0])
   {

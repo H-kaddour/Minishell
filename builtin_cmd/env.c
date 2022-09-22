@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 12:11:41 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/21 19:01:05 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/22 15:27:24 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,23 @@ void  get_env(t_data *data)
 void  env_cmd(t_data *data)
 {
   t_env *trav;
+  t_cmd *cmd;
 
   trav = data->l_env;
-  while (trav)
+  cmd = data->v_cmd;
+  if (cmd->cmd[1] != 0)
   {
-    printf("%s=%s\n", trav->sec, trav->value);
-    trav = trav->next;
+    data->chk_dolla = 1;
+    printf("env: %s: No such file or directory", cmd->cmd[1]);
+    return ;
+  }
+  else
+  {
+    data->chk_dolla = 0;
+    while (trav)
+    {
+      printf("%s=%s\n", trav->sec, trav->value);
+      trav = trav->next;
+    }
   }
 }

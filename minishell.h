@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/21 18:49:05 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/22 18:13:14 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ typedef struct s_data
 	int			size_cmd;
 	char		*old_pwd_value; //this one is for cd env oldpwd to dup the old path of cd
 	int			old_pwd_make;
+	int			chk_redct_exist; //var to chk if redirection exist in run_one_cmd
 	/*end of execution*/
 	//for prompt
 	char *prompt;
@@ -195,6 +196,7 @@ void  get_env(t_data *data);
 void  env_cmd(t_data *data);
 void  pwd_cmd(t_data *data);
 void  exit_cmd(t_data *data);
+void  echo_cmd(t_data *data);
 t_env *node_allocate(void);
 char	**env_double_ptr(t_data *data);
 //void  cd_cmd(t_data *data);
