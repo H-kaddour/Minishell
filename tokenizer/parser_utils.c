@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:12:08 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/20 15:32:12 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/23 12:44:11 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ void	heredoc_process(t_data *data, char *det)
 
 	buff = ft_strdup("");
 	signal(SIGINT, heredoc_sig);
+	//here i should count the heredoc so the last one point to the pipe file
 	//also if it ctrl c ignore the next <<
 	while (1)
 	{
@@ -214,16 +215,22 @@ void	heredoc_implement(t_data *data, char *det)
 	//if (!heredoc)
 	//	return ;
 	//while (ft_strncmp(heredoc, det, ft_strlen(det)))
-	pipe(data->hrdoc_fd);
+	//check error of pipe and fork
+	if (pipe(data->hrdoc_fd))
+	{
+		printf("error in pipe\n");
+		exit(1);
+	}
 	//**chk_hrdoc_exit = 1;
 	//if (pipe(data->hrdoc_fd) != 0)
 	//	//error msg here
 	//close(data->hrdoc_fd[0]);
 	pid = fork();
-	//if (pid < 0)
-	//{
-	//	//error msg
-	//}
+	if (pid < 0)
+	{
+		printf("error in fork\n");
+		exit(1);
+	}
 	if (pid == 0)
 	{
 		close(data->hrdoc_fd[0]);
@@ -231,26 +238,28 @@ void	heredoc_implement(t_data *data, char *det)
 		//ft_putstr_fd("vye", data->hrdoc_fd[1]);
 		//close(data->hrdoc_fd[1]);
 		heredoc_process(data, det);
-		//exit(0);
+		exit(0);
 	}
 	if (pid > 0)
 	{
 		signal(SIGINT, SIG_IGN);
 		wait(0);
 		close(data->hrdoc_fd[1]);
-		if (access("/tmp/check.txt", F_OK) == 0)
-		{
-			fd = open("/tmp/check.txt", O_RDONLY);
-			read(fd, c, 1);
-			close(fd);
-			fd = open("/tmp/check.txt", O_RDONLY | O_TRNC);
-			ft_putnbr_fd(0, fd);
-			close(fd);
-			//c[i] = 0;
-			data->chk_hrdoc_exit = ft_atoi(c);
-			//close(fd);
-			//printf("%d\n", i);
-		}
+		//had zaml lichrali blan me3a pipe reading
+		//**if (access("/tmp/check.txt", F_OK) == 0)
+		//**{
+		//**	fd = open("/tmp/check.txt", O_RDONLY);
+		//**	read(fd, c, 1);
+		//**	close(fd);
+		//**	fd = open("/tmp/check.txt", O_RDONLY | O_TRNC);
+		//**	ft_putnbr_fd(0, fd);
+		//**	close(fd);
+		//**	//c[i] = 0;
+		//**	data->chk_hrdoc_exit = ft_atoi(c);
+		//**	//close(fd);
+		//**	//printf("%d\n", i);
+		//**}
+		//i will get this one back but not for now
 
 		//int	l;
 		//l = open("ai.txt", O_CREAT | O_RDWR | O_APPEND, 0664);
@@ -259,6 +268,7 @@ void	heredoc_implement(t_data *data, char *det)
 		//here u should exit with the right number process and keep it in the variable of chk_$?
 		//this one u will close it when u finish the execution
 		//close(data->hrdoc_fd[0]);
+		//exit(0);
 		return ;
 	}
 	//**while (1)

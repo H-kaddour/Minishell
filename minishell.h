@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/22 18:13:14 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/23 16:41:06 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,8 @@ void  env_cmd(t_data *data);
 void  pwd_cmd(t_data *data);
 void  exit_cmd(t_data *data);
 void  echo_cmd(t_data *data);
+void  export_cmd(t_data *data);
+void  unset_cmd(t_data *data);
 t_env *node_allocate(void);
 char	**env_double_ptr(t_data *data);
 //void  cd_cmd(t_data *data);

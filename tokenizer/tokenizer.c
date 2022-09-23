@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/05 14:17:00 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/23 13:33:01 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,11 +166,12 @@ void	tokenizer(t_data *data)
 	data->beg_line = spaces_takeoff(data->line);
 	if (!data->beg_line)
 		return ;
+	//those var should not be here
 	data->index = 0;
 	data->check = 1;
 	//those two var should init in the main one time init
 	data->chk_hrdoc = 0;
-	data->chk_dolla = 0;
+	//**data->chk_dolla = 0;
 	ft_init_tokenizer(data, data->beg_line, 0, 0);
 	//if (!lexer(data))
 	//	return ;

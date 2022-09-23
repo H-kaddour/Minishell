@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 12:11:41 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/22 15:27:24 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/23 13:23:06 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void  env_cmd(t_data *data)
   if (cmd->cmd[1] != 0)
   {
     data->chk_dolla = 1;
-    printf("env: %s: No such file or directory", cmd->cmd[1]);
+    printf("env: %s: No such file or directory\n", cmd->cmd[1]);
     return ;
   }
   else

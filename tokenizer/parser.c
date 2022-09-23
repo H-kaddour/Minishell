@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 10:32:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/08 21:21:25 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/23 09:41:31 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,7 @@ static void get_cmd_parsing(t_data *data)
   int     len;
   int     i;
   int     j;
+  int     chk;
 
   j = 0;
   len = 0;
@@ -278,6 +279,7 @@ static void get_cmd_parsing(t_data *data)
   t_red *trav_red;
   trav_red = data->trav_cmd->redirect;
   i = 0;
+  chk = 0;
   //len = 0;
   while (trav)
   {
@@ -303,9 +305,12 @@ static void get_cmd_parsing(t_data *data)
         else
         {
           trav_red->determiner = ft_strdup(trav->next->next->value);
+          if (chk != 0)
+            close(data->hrdoc_fd[0]);
           heredoc_implement(data, trav_red->determiner);
           if (data->chk_hrdoc_exit == 1)
             return ;
+          chk = 1;
         }
         trav = trav->next->next->next;
       }
@@ -317,9 +322,12 @@ static void get_cmd_parsing(t_data *data)
         else
         {
           trav_red->determiner = ft_strdup(trav->next->value);
+          if (chk != 0)
+            close(data->hrdoc_fd[0]);
           heredoc_implement(data, trav_red->determiner);
           if (data->chk_hrdoc_exit == 1)
             return ;
+          chk = 1;
         }
         trav = trav->next->next;
       }

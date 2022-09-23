@@ -230,3 +230,11 @@ also in history add if the line is the same at the last one it should not entre 
 Negad env -i 
 Fix when i entre in the prompt it execute the old cmd
 env with args should not works
+
+
+fix << << << file leaks also change the file cat didn't exit
+fix cat << l > g
+fix cat << l >> z reapeat the content of the file it reads from >> not in heredoc <<
+fix cat << l > ok should not create the file and if file exist should not put the output in the file
+fix cat << l >> ok should not create the file and if file exist should not put the output of heredoc in the file
+ECHO big 

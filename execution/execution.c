@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/22 19:43:36 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/23 16:45:08 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void  get_path(t_data *data)
     {
       //execve(cmd, data->v_cmd->cmd, env_double_ptr(data));
       execve(cmd, data->v_cmd->cmd, data->env);
+      //if (data->v_cmd->f_in == 3)
+      //  close(data->v_cmd->f_in);
         //printf("retrun process execve failded\n");
       free(cmd);
       //exit(0);
@@ -135,12 +137,16 @@ void  run_one_cmd(t_data *data)
       data->chk_dolla = 127;
     else
       data->chk_dolla = 0;
+    //i should change the value for builtin tooo
+
     //if (waitpid(pid, &status, 0) == 0)
     //  printf("all good %d\n", status);
     //else if (waitpid(pid, &status, 0) == 127)
     //  printf("err no cmd %d\n", status);
     //else
     //  printf("err cmd + fleabag %d\n", status);
+    //if (data->v_cmd->f_in == 3)
+    //  close(data->v_cmd->f_in);
     if (data->v_cmd->cmd[0])
     {
       if (check_builtin(data->v_cmd->cmd[0]))
@@ -175,9 +181,16 @@ void  check_redirection(t_data *data)
       else if (trav->redirect->typ == O_APEND)
       {
         //this one not working well
-        if (access(trav->redirect->file, F_OK) != 0)
+        if (access(trav->redirect->file, F_OK) == 0)
+          fd = open(trav->redirect->file, O_RDWR | O_APPEND);
+        else
           fd = open(trav->redirect->file, O_RDWR | O_APPEND | O_CREAT, 0664);
         trav->f_out = fd;
+      }
+      else if (trav->redirect->typ == I_APEND)
+      {
+        trav->f_in = data->hrdoc_fd[0];
+        //printf("f_in == %d\n", trav->f_in);
       }
       else if (trav->redirect->typ == I_TRNC)
       {
@@ -194,8 +207,13 @@ void  check_redirection(t_data *data)
       //trav->f_out = fd;
       trav->redirect = trav->redirect->next;
       //machi db
-      //if (trav)
-      //  close(fd);
+      if (trav->redirect)
+      {
+        if (data->v_cmd->f_in > 0)
+          close(data->v_cmd->f_in);
+        if (data->v_cmd->f_out > 1)
+          close(data->v_cmd->f_out);
+      }
     }
     //trav->f_out = fd;
   }
@@ -205,10 +223,13 @@ void  check_redirection(t_data *data)
 
 void  execution(t_data *data)
 {
+  //char  ptr[10] = {0};
   //here loop for the parsing nodes and do four function one for single cmd and multiple cmd and redirection
   size_cmd(data);
   if (data->size_cmd == 1)
   {
+    //read(data->hrdoc_fd[0], ptr, 9);
+    //printf("%s\n", ptr);
     check_redirection(data);
     run_one_cmd(data);
     //maybe >> not working well
@@ -216,14 +237,20 @@ void  execution(t_data *data)
     if (data->chk_redct_exist == 1)
     {
       if (data->v_cmd->f_in > 0)
+      {
+        //printf("h\n");
         close(data->v_cmd->f_in);
+      }
       if (data->v_cmd->f_out > 1)
+      {
+        //printf("d\n");
         close(data->v_cmd->f_out);
+      }
       //close here file
       //data->v_cmd->f_in = 0;
       //data->v_cmd->f_out = 1;
     }
-    printf("in = %d || out = %d\n", data->v_cmd->f_in, data->v_cmd->f_out);
+    //printf("in = %d || out = %d\n", data->v_cmd->f_in, data->v_cmd->f_out);
     //ft_putstr_fd("okay", data->v_cmd->f_out);
     //here a fucntion to execute one cmd and check if it have redirection
       //execution normal
