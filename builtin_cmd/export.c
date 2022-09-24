@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 13:52:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/23 18:50:14 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/24 10:39:21 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,24 @@ void  print_env_of_export(t_env *env)
   }
 }
 
-void  alloc_node_of_export(t_env *lst, int len)
+t_env *alloc_node_of_export(int len)
 {
   int   i;
+  t_env *head;
   t_env *node;
+  t_env *tmp;
 
-  i = 0;
+  i = 1;
+  head = node_allocate();
+  tmp = head;
   while (i < len)
   {
     node = node_allocate();
-    lst->next = node;
-    lst = node;
+    head->next = node;
+    head = node;
     i++;
   }
+  return (tmp);
 }
 
 int check_if_equal_or_wrd(char *cmd)
@@ -102,6 +107,7 @@ int check_existence(t_data *data, char *cmd, int hold, t_env *env)
   int   i;
   char  *chk;
   t_env *trav;
+  char  *n_cmd;
 
   i = 0;
   trav = data->l_env;
@@ -114,15 +120,19 @@ int check_existence(t_data *data, char *cmd, int hold, t_env *env)
   chk[i] = 0;
   //take_off_the_equalsign(hold,);
   //here problem of new node that i add are empty 0 and strcmp doesnt return shiit i have to fix it 
+  //while (ft_strcmp(trav->sec, chk) && trav->next->sec && trav->next)
   while (ft_strcmp(trav->sec, chk) && trav->next)
     trav = trav->next;
   if (!ft_strcmp(trav->sec, chk))
   {
-    if (!ft_strcmp(trav->value, &cmd[++hold]))
+    n_cmd = &cmd[++hold];
+    //if (!ft_strcmp(trav->value, &cmd[++hold]))
+    if (!ft_strcmp(trav->value, n_cmd))
       return (1);
     else
     {
-      trav->value = ft_strdup(&cmd[++hold]);
+      trav->value = ft_strdup(n_cmd);
+      //trav->value = ft_strdup(&cmd[++hold]);
       //env->value = ft_strdup(&cmd[++hold]);
     }
     return (1);
@@ -184,9 +194,12 @@ char  *before_equal(char *cmd)
 void  if_exist_or_not(t_data *data, char **cmd, int *len)
 {
   int   i;
+  int   j;
   t_env  *trav;
 
-  *(len) = 1;
+  //*(len) = 1;
+  //*(len) = 0;
+  j = 0;
   trav = data->l_env;
   while (trav)
   {
@@ -194,10 +207,14 @@ void  if_exist_or_not(t_data *data, char **cmd, int *len)
     while (ft_strcmp(trav->sec, before_equal(cmd[i])) && cmd[i + 1])
       i++;
     if (!ft_strcmp(trav->sec, before_equal(cmd[i])))
-      *(len) += 1;
+      j++;
+    //if (ft_strcmp(trav->sec, before_equal(cmd[i])) && !cmd[i + 1])
+    //  *(len) += 1;
+    //  *(len) += 1;
       //*(len)++;
     trav = trav->next;
   }
+  *(len) = *(len) - j;
 }
 
 void  export_cmd(t_data *data)
@@ -206,35 +223,91 @@ void  export_cmd(t_data *data)
   int   len;
   int   chk;
   t_env *trav_e;
+  t_env *head;
+  t_env *hold;
   t_cmd *trav_c;
 
   i = 1;
+  head = 0;
   trav_e = data->l_env;
   trav_c = data->v_cmd;
-  len = len_of_args(trav_c->cmd) - 1;
-  if (!len)
+  //len = len_of_args(trav_c->cmd) - 1;
+  if (!&trav_c->cmd[i])
     print_env_of_export(trav_e);
   else
   {
     if_exist_or_not(data, &trav_c->cmd[i], &len);
     while (trav_e->next)
       trav_e = trav_e->next;
-    alloc_node_of_export(trav_e, len);
-    trav_e = trav_e->next;
-    while (trav_c->cmd[i] && trav_e)
+    if (len > 0)
+    {
+      head = alloc_node_of_export(len);
+      hold = head;
+    }
+    //trav_e = trav_e->next;
+    //while (trav_c->cmd[i] && trav_e)
+    while (trav_c->cmd[i])
     {
       if (!check_if_equal_or_wrd(trav_c->cmd[i]))
-        chk = dup_opt_wrd(data, trav_e, trav_c->cmd[i]);
+        chk = dup_opt_wrd(data, hold, trav_c->cmd[i]);
       else
-        chk = dup_opt_equal(data, trav_e, trav_c->cmd[i]);
+        chk = dup_opt_equal(data, hold, trav_c->cmd[i]);
       i++;
       if (chk == 1)
-        trav_e = trav_e->next;
+        hold = hold->next;
+        //trav_e = trav_e->next;
     }
+    trav_e->next = head;
   }
   //here func should sort the env
   //sort_env();
 }
+
+//void  export_cmd(t_data *data)
+//{
+//  int   i;
+//  int   len;
+//  int   chk;
+//  t_env *trav_e;
+//  t_env *head;
+//  t_env *hold;
+//  t_cmd *trav_c;
+//
+//  i = 1;
+//  head = 0;
+//  trav_e = data->l_env;
+//  trav_c = data->v_cmd;
+//  len = len_of_args(trav_c->cmd) - 1;
+//  if (!len)
+//    print_env_of_export(trav_e);
+//  else
+//  {
+//    if_exist_or_not(data, &trav_c->cmd[i], &len);
+//    while (trav_e->next)
+//      trav_e = trav_e->next;
+//    if (len > 0)
+//    {
+//      head = alloc_node_of_export(len);
+//      hold = head;
+//    }
+//    //trav_e = trav_e->next;
+//    //while (trav_c->cmd[i] && trav_e)
+//    while (trav_c->cmd[i])
+//    {
+//      if (!check_if_equal_or_wrd(trav_c->cmd[i]))
+//        chk = dup_opt_wrd(data, hold, trav_c->cmd[i]);
+//      else
+//        chk = dup_opt_equal(data, hold, trav_c->cmd[i]);
+//      i++;
+//      if (chk == 1)
+//        hold = hold->next;
+//        //trav_e = trav_e->next;
+//    }
+//    trav_e->next = head;
+//  }
+//  //here func should sort the env
+//  //sort_env();
+//}
 
 //we have two option export the cmd and options are wrd || wrd=wrd
 //wrd only just enter it with null in the value
