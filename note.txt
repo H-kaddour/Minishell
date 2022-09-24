@@ -242,3 +242,11 @@ maybe if i change pwd and i print pwd it always print the old pwd not the new on
 export === and other operators like that
 if an error happen in tokenizer don't execute **** echo | |
 change prompt in case if an error should use the str of err
+env of export are different of env of env
+handle signals in the main
+pipe of << heredoc i closed the file 
+return of $? in child process should be change if something happen
+in parsing return a var that checks if there's an error to not enter to execution
+in tokenizer count the len that u gonna alloc not a random number
+env when u print don't print the one that don't have =
+env ==== error a=1 a+=4 append and erro should not exit and it sort

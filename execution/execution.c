@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/23 16:45:08 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/24 19:21:47 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void  run_one_cmd(t_data *data)
     {
       if (check_builtin(data->v_cmd->cmd[0]))
         exit(0);
+      //while (1);
       if (data->chk_redct_exist == 1)
       {
         printf("in = %d || out = %d\n", data->v_cmd->f_in, data->v_cmd->f_out);
@@ -113,6 +114,7 @@ void  run_one_cmd(t_data *data)
         dup2(data->v_cmd->f_out, STDOUT_FILENO);
       }
       get_path(data);
+      //close(data->v_cmd->f_in);
     }
     //exit(0);
   }
@@ -207,13 +209,14 @@ void  check_redirection(t_data *data)
       //trav->f_out = fd;
       trav->redirect = trav->redirect->next;
       //machi db
-      if (trav->redirect)
-      {
-        if (data->v_cmd->f_in > 0)
-          close(data->v_cmd->f_in);
-        if (data->v_cmd->f_out > 1)
-          close(data->v_cmd->f_out);
-      }
+      //hena 7ta nesali
+      //if (trav->redirect)
+      //{
+      //  if (data->v_cmd->f_in > 0)
+      //    close(data->v_cmd->f_in);
+      //  if (data->v_cmd->f_out > 1)
+      //    close(data->v_cmd->f_out);
+      //}
     }
     //trav->f_out = fd;
   }

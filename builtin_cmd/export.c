@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 13:52:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/24 11:16:33 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/24 18:06:51 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,11 @@ void  export_cmd(t_data *data)
   //here func should sort the env
   //sort_env();
 }
+//pseudo of how to make export env
+//first enter the args that have = on them to env
+//then the one that don't have = put them in a double array
+//finally make a double array and put the env on it and add the args that don't have =
+//then sort them 
 
 //void  export_cmd(t_data *data)
 //{

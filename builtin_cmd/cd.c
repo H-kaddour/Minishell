@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:22:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/24 13:15:50 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/24 17:17:15 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void  execute_cmd_cd(t_data *data, char *cmd, char *path)
   get_pwd(data, path);
   get_old_pwd(data, 0);
   data->chk_dolla = 0;
-  prompt_changer(data);
+  //prompt_changer(data);
   //here add the path to pwd and oldpath and change the prompt path
 }
 
@@ -283,7 +283,7 @@ void  execute_cd_swap_old_pwd(t_data *data)
     return ;
   }
   data->chk_dolla = 0;
-  prompt_changer(data);
+  //prompt_changer(data);
 }
 
 void  cd_between_pwd_and_oldpwd(t_data *data, char *cmd)
