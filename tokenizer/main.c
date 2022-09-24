@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/24 13:19:37 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/24 17:18:36 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,15 +268,15 @@ void  sig_c(int c)
 //**  //return (0);
 //**}
 
-void  exit_cmd(t_data *data)
-{
-  (void)data;
-  //(void)data;
-  //free(data->line);
-  //free other shiit
-  //exit(2);
-  exit(0);
-}
+//void  exit_cmd(t_data *data)
+//{
+//  (void)data;
+//  //(void)data;
+//  //free(data->line);
+//  //free other shiit
+//  //exit(2);
+//  exit(0);
+//}
 
 void  *put_str(char *str, int len)
 {
@@ -706,10 +706,15 @@ void  prompt_changer(t_data *data)
   int   i;
   //char  *tmp = "~/";
   //char  *clr_err = "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30m";
-  char  *clr_err = "\e[103m \e[91m \e[40m\e[93m \e[97m \e[44m\e[30m\e[44m \e[30m";
-  char  *clr1 = "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30m";
+  //char  *clr_err = "\e[103m \e[91m \e[40m\e[93m \e[97m \e[44m\e[30m\e[44m \e[30m";
+  //char  *clr1 = "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30m";
+  char  *clr1;
   char  *clr2 = " \e[0m\e[34m \e[0m";
 
+  if (data->chk_dolla == 0)
+    clr1 = "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30m";
+  else
+    clr1 = "\e[103m \e[91m \e[40m\e[93m \e[97m \e[44m\e[30m\e[44m \e[30m";
   pwd = data->l_env;
   //home = data->l_env;
   while (ft_strcmp(pwd->sec, "PWD") && pwd->next)
@@ -821,7 +826,7 @@ int main(int ac, char **av, char **envp)
     data.env = envp;
     get_env(&data);
   }
-  prompt_changer(&data);
+  //**prompt_changer(&data);
   //maybe here i will print date and time and user name
   //also make a last login file to print in first 
   while (1)
@@ -830,6 +835,7 @@ int main(int ac, char **av, char **envp)
     signal(SIGINT, sig_c);
     signal(SIGQUIT, sig_c);
     //printf("%d\n", getpid());
+    prompt_changer(&data);
     data.line = readline(data.prompt);
     if (!data.line)
       return (0);

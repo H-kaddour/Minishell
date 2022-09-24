@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:12:08 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/23 12:44:11 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/24 19:02:17 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,11 +216,13 @@ void	heredoc_implement(t_data *data, char *det)
 	//	return ;
 	//while (ft_strncmp(heredoc, det, ft_strlen(det)))
 	//check error of pipe and fork
-	if (pipe(data->hrdoc_fd))
-	{
-		printf("error in pipe\n");
-		exit(1);
-	}
+	printf("**ana hna\n");
+	printf("%d\n", pipe(data->hrdoc_fd));
+	//if (pipe(data->hrdoc_fd))
+	//{
+	//	printf("error in pipe\n");
+	//	exit(1);
+	//}
 	//**chk_hrdoc_exit = 1;
 	//if (pipe(data->hrdoc_fd) != 0)
 	//	//error msg here
