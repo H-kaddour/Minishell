@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 11:38:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/21 14:09:38 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/24 13:43:46 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,20 @@
 void  exit_cmd(t_data *data)
 {
   //i will change the exit status later with it's number
+  int   i;
+  t_cmd *trav;
+
+  i = 1;
+  trav = data->v_cmd;
+  while (trav->cmd[i])
+  {
+
+  }
   exit(0);
 }
+
+//exit only exit with printing exit and exit with 0
+//if exit with number as args 1 don't exit and error msg
+//if exit with 9348 in one arg should exit but 2 args and more with number and char in second args dont exit and status in mishell 1
+//if exit with char exit 255 with a error msg
+//exit and redirection open file and boom exit

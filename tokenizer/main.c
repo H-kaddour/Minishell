@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/23 13:33:20 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/24 13:19:37 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -700,7 +700,8 @@ void  nl(void)
 void  prompt_changer(t_data *data)
 {
   t_env *pwd;
-  t_env *home;
+  //t_env *home;
+  char  *path_h; //this is for ~
   int   len;
   int   i;
   //char  *tmp = "~/";
@@ -710,17 +711,18 @@ void  prompt_changer(t_data *data)
   char  *clr2 = " \e[0m\e[34m \e[0m";
 
   pwd = data->l_env;
-  home = data->l_env;
+  //home = data->l_env;
   while (ft_strcmp(pwd->sec, "PWD") && pwd->next)
     pwd = pwd->next;
-  while (ft_strcmp(home->sec, "HOME") && home->next)
-    home = home->next;
-  if (!ft_strncmp(pwd->value, home->value, ft_strlen(home->value)))
+  //while (ft_strcmp(home->sec, "HOME") && home->next)
+  //  home = home->next;
+  path_h = getenv("HOME");
+  if (!ft_strncmp(pwd->value, path_h, ft_strlen(path_h)))
   {
-    if (ft_strlen(pwd->value) > ft_strlen(home->value))
+    if (ft_strlen(pwd->value) > ft_strlen(path_h))
     {
       //len = ft_strlen(pwd->value) - ft_strlen(home->value);
-      len = ft_strlen(home->value);
+      len = ft_strlen(path_h);
       data->prompt = malloc(sizeof(char) * len + 3);
       i = 0;
       //while (i < 2)
@@ -734,7 +736,7 @@ void  prompt_changer(t_data *data)
       data->prompt[i] = 0;
       data->prompt = ft_strjoin(clr1, ft_strjoin(data->prompt, clr2));
     }
-    else if (ft_strlen(pwd->value) == ft_strlen(home->value))
+    else if (ft_strlen(pwd->value) == ft_strlen(path_h))
     {
       data->prompt = "~";
       data->prompt = ft_strjoin(clr1, ft_strjoin(data->prompt, clr2));
@@ -868,7 +870,7 @@ int main(int ac, char **av, char **envp)
       tokenizer(&data);
       //printf("in = %d || out %d\n", data.hrdoc_fd[0], data.hrdoc_fd[1]);
       //here fucntion of execution
-      //if an error happen in tokenizer don't execute
+      //if an error happen in tokenizer don't execute ****
       execution(&data);
     }
     //here if up was error should not entre here i should do a var boolean

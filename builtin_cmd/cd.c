@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:22:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/22 15:21:31 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/24 13:15:50 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,30 @@ void  old_pwd_alloc(t_data *data)
   data->old_pwd_make = 1;
 }
 
-int get_home_path(t_data *data, t_env **trav_e)
+int get_home_path(t_data *data, t_env **trav_e, char *cmd)
 {
   t_env *trav;
 
   trav = data->l_env;
-  while (ft_strcmp(trav->sec, "HOME") && trav->next)
-    trav = trav->next;
-  if (!ft_strcmp(trav->sec, "HOME") && trav->next)
+  if (!cmd)
   {
-    *trav_e = trav;
-    return (0);
+    while (ft_strcmp(trav->sec, "HOME") && trav->next)
+      trav = trav->next;
+    //if (!ft_strcmp(trav->sec, "HOME") && trav->next)
+    if (!ft_strcmp(trav->sec, "HOME"))
+    {
+      *trav_e = trav;
+      return (0);
+    }
+    else
+    {
+      printf("minishell: cd: HOME not set\n");
+      return (1);
+    }
+    //here if i didn't find it 
   }
   else
-  {
-    printf("minishell: cd: HOME not set\n");
-    return (1);
-  }
-  //here if i didn't find it 
+    return (0);
 }
 
 void  get_pwd(t_data *data, char *path)
@@ -148,6 +154,11 @@ void  get_old_pwd(t_data *data, int chk)
 
 void  execute_cmd_cd(t_data *data, char *cmd, char *path)
 {
+  if (cmd)
+  {
+    if (cmd[0] == '~')
+      path = getenv("HOME");
+  }
   if (chdir(path) != 0)
   {
     //it should print the cmd not the path
@@ -176,7 +187,7 @@ void  cd_home_path(t_data *data, char *cmd)
   t_env *trav_e;
 
   i = 1;
-  if (get_home_path(data, &trav_e))
+  if (get_home_path(data, &trav_e, cmd))
     return ;
   //pass ~ direct to /
   if (!cmd)
@@ -474,7 +485,7 @@ void  cd_cmd(t_data *data)
 {
   t_cmd *trav_c;
   trav_c = data->v_cmd;
-  if (!trav_c->cmd[1] || trav_c->cmd[1][0] == '~')
+  if (!trav_c->cmd[1] || trav_c->cmd[1][0] == '~' || !trav_c->cmd[1][0])
     cd_home_path(data, trav_c->cmd[1]);
   else if (!ft_strcmp(trav_c->cmd[1], "."))
   {

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 13:52:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/24 10:39:21 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/24 11:16:33 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,15 +126,19 @@ int check_existence(t_data *data, char *cmd, int hold, t_env *env)
   if (!ft_strcmp(trav->sec, chk))
   {
     n_cmd = &cmd[++hold];
+    trav->value = ft_strdup(n_cmd);
     //if (!ft_strcmp(trav->value, &cmd[++hold]))
-    if (!ft_strcmp(trav->value, n_cmd))
-      return (1);
-    else
-    {
-      trav->value = ft_strdup(n_cmd);
-      //trav->value = ft_strdup(&cmd[++hold]);
-      //env->value = ft_strdup(&cmd[++hold]);
-    }
+    //if (trav->value)
+    //{
+    //  if (!ft_strcmp(trav->value, n_cmd))
+    //    return (1);
+    //}
+    //if (!trav->value && ft_strcmp(trav->value, n_cmd))
+    //{
+    //  trav->value = ft_strdup(n_cmd);
+    //  //trav->value = ft_strdup(&cmd[++hold]);
+    //  //env->value = ft_strdup(&cmd[++hold]);
+    //}
     return (1);
   }
   return (0);
@@ -191,40 +195,26 @@ char  *before_equal(char *cmd)
   return (chk);
 }
 
-void  if_exist_or_not(t_data *data, char **cmd, int *len)
+int if_exist_or_not(t_data *data, char *cmd)
 {
-  int   i;
-  int   j;
   t_env  *trav;
 
-  //*(len) = 1;
-  //*(len) = 0;
-  j = 0;
   trav = data->l_env;
-  while (trav)
-  {
-    i = 0;
-    while (ft_strcmp(trav->sec, before_equal(cmd[i])) && cmd[i + 1])
-      i++;
-    if (!ft_strcmp(trav->sec, before_equal(cmd[i])))
-      j++;
-    //if (ft_strcmp(trav->sec, before_equal(cmd[i])) && !cmd[i + 1])
-    //  *(len) += 1;
-    //  *(len) += 1;
-      //*(len)++;
+  while (ft_strcmp(trav->sec, before_equal(cmd)) && trav->next)
     trav = trav->next;
-  }
-  *(len) = *(len) - j;
+  if (!ft_strcmp(trav->sec, before_equal(cmd)))
+    return (0);
+  return (1);
 }
 
 void  export_cmd(t_data *data)
 {
   int   i;
-  int   len;
+  //int   len;
   int   chk;
   t_env *trav_e;
   t_env *head;
-  t_env *hold;
+  //t_env *hold;
   t_cmd *trav_c;
 
   i = 1;
@@ -232,32 +222,29 @@ void  export_cmd(t_data *data)
   trav_e = data->l_env;
   trav_c = data->v_cmd;
   //len = len_of_args(trav_c->cmd) - 1;
-  if (!&trav_c->cmd[i])
+  if (!trav_c->cmd[i])
     print_env_of_export(trav_e);
   else
   {
-    if_exist_or_not(data, &trav_c->cmd[i], &len);
     while (trav_e->next)
       trav_e = trav_e->next;
-    if (len > 0)
-    {
-      head = alloc_node_of_export(len);
-      hold = head;
-    }
-    //trav_e = trav_e->next;
-    //while (trav_c->cmd[i] && trav_e)
     while (trav_c->cmd[i])
     {
-      if (!check_if_equal_or_wrd(trav_c->cmd[i]))
-        chk = dup_opt_wrd(data, hold, trav_c->cmd[i]);
-      else
-        chk = dup_opt_equal(data, hold, trav_c->cmd[i]);
-      i++;
+      chk = if_exist_or_not(data, trav_c->cmd[i]);
       if (chk == 1)
-        hold = hold->next;
-        //trav_e = trav_e->next;
+        head = node_allocate();
+      if (!check_if_equal_or_wrd(trav_c->cmd[i]))
+        chk = dup_opt_wrd(data, head, trav_c->cmd[i]);
+      else
+        chk = dup_opt_equal(data, head, trav_c->cmd[i]);
+      if (chk == 1)
+      {
+        trav_e->next = head;
+        trav_e = trav_e->next;
+      }
+      i++;
     }
-    trav_e->next = head;
+    //trav_e->next = head;
   }
   //here func should sort the env
   //sort_env();
