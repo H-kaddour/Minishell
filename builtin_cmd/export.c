@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 13:52:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/24 18:06:51 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:51:15 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,16 @@ int if_exist_or_not(t_data *data, char *cmd)
   return (1);
 }
 
+int check_equal_error(char *cmd)
+{
+  //while (*cmd == '=' && *cmd)
+  //  cmd++;
+  //if ()
+  if (*cmd == '=')
+    return (1);
+  return (0);
+}
+
 void  export_cmd(t_data *data)
 {
   int   i;
@@ -230,18 +240,23 @@ void  export_cmd(t_data *data)
       trav_e = trav_e->next;
     while (trav_c->cmd[i])
     {
-      chk = if_exist_or_not(data, trav_c->cmd[i]);
-      if (chk == 1)
-        head = node_allocate();
-      if (!check_if_equal_or_wrd(trav_c->cmd[i]))
-        chk = dup_opt_wrd(data, head, trav_c->cmd[i]);
-      else
-        chk = dup_opt_equal(data, head, trav_c->cmd[i]);
-      if (chk == 1)
+      if (!check_equal_error(trav_c->cmd[i]))
       {
-        trav_e->next = head;
-        trav_e = trav_e->next;
+        chk = if_exist_or_not(data, trav_c->cmd[i]);
+        if (chk == 1)
+          head = node_allocate();
+        if (!check_if_equal_or_wrd(trav_c->cmd[i]))
+          chk = dup_opt_wrd(data, head, trav_c->cmd[i]);
+        else
+          chk = dup_opt_equal(data, head, trav_c->cmd[i]);
+        if (chk == 1)
+        {
+          trav_e->next = head;
+          trav_e = trav_e->next;
+        }
       }
+      else
+        printf("minishell: export: '%s': not a valid identifier\n", trav_c->cmd[i]);
       i++;
     }
     //trav_e->next = head;

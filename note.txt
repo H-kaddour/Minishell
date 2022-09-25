@@ -250,3 +250,13 @@ in parsing return a var that checks if there's an error to not enter to executio
 in tokenizer count the len that u gonna alloc not a random number
 env when u print don't print the one that don't have =
 env ==== error a=1 a+=4 append and erro should not exit and it sort
+work in *
+makefile
+fucntion update and look good name and shiit and norm
+pipeline
+every builtin with here error func
+pwd if not exist print dial system
+cmd permission in child process
+prompt if PWD not exist take dial oldpwd
+work in last time log
+<< << ctrl c just do it in waitpid and the status will give u how did u exit to see 

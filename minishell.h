@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/23 16:41:06 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:01:12 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ void  execution(t_data *data);
 
 /**** Function of builtin cmd **********/
 //void  builtin_cmd(t_data *data, char *cmd);
-int		check_builtin(char *cmd);
+int		check_builtin(char **cmd);
 void  builtin_cmd(t_data *data, char *cmd);
 void  cd_cmd(t_data *data);
 void  get_env(t_data *data);

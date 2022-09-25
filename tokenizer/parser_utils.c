@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:12:08 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/24 19:02:17 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/25 03:56:09 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,13 +216,13 @@ void	heredoc_implement(t_data *data, char *det)
 	//	return ;
 	//while (ft_strncmp(heredoc, det, ft_strlen(det)))
 	//check error of pipe and fork
-	printf("**ana hna\n");
-	printf("%d\n", pipe(data->hrdoc_fd));
-	//if (pipe(data->hrdoc_fd))
-	//{
-	//	printf("error in pipe\n");
-	//	exit(1);
-	//}
+	//printf("**ana hna\n");
+	//printf("%d\n", pipe(data->hrdoc_fd));
+	if (pipe(data->hrdoc_fd))
+	{
+		printf("error in pipe\n");
+		exit(1);
+	}
 	//**chk_hrdoc_exit = 1;
 	//if (pipe(data->hrdoc_fd) != 0)
 	//	//error msg here
@@ -248,19 +248,19 @@ void	heredoc_implement(t_data *data, char *det)
 		wait(0);
 		close(data->hrdoc_fd[1]);
 		//had zaml lichrali blan me3a pipe reading
-		//**if (access("/tmp/check.txt", F_OK) == 0)
-		//**{
-		//**	fd = open("/tmp/check.txt", O_RDONLY);
-		//**	read(fd, c, 1);
-		//**	close(fd);
-		//**	fd = open("/tmp/check.txt", O_RDONLY | O_TRNC);
-		//**	ft_putnbr_fd(0, fd);
-		//**	close(fd);
-		//**	//c[i] = 0;
-		//**	data->chk_hrdoc_exit = ft_atoi(c);
-		//**	//close(fd);
-		//**	//printf("%d\n", i);
-		//**}
+		if (access("/tmp/check.txt", F_OK) == 0)
+		{
+			fd = open("/tmp/check.txt", O_RDONLY);
+			read(fd, c, 1);
+			close(fd);
+			fd = open("/tmp/check.txt", O_RDONLY | O_TRNC);
+			ft_putnbr_fd(0, fd);
+			close(fd);
+			//c[i] = 0;
+			data->chk_hrdoc_exit = ft_atoi(c);
+			//close(fd);
+			//printf("%d\n", i);
+		}
 		//i will get this one back but not for now
 
 		//int	l;

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 12:11:41 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/23 13:23:06 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:32:00 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,8 +160,12 @@ void  env_cmd(t_data *data)
     data->chk_dolla = 0;
     while (trav)
     {
-      printf("%s=%s\n", trav->sec, trav->value);
-      trav = trav->next;
+      if (!trav->value)
+        trav = trav->next;
+      else
+        printf("%s=%s\n", trav->sec, trav->value);
+      if (trav)
+        trav = trav->next;
     }
   }
 }

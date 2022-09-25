@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 12:22:53 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/22 15:16:26 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:18:07 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void  pwd_cmd(t_data *data)
 {
+  //printf("%s\n", getenv("PWD"));
   t_env *trav;
 
   trav = data->l_env;

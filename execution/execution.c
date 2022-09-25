@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/24 19:21:47 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:07:44 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,21 @@ void  get_path(t_data *data)
   if (find_slash(*data->v_cmd->cmd))
   {
     cmd = *data->v_cmd->cmd;
-    if (access(cmd, X_OK) == 0)
+    if (access(cmd, F_OK) == 0)
     {
-      //execve(cmd, data->v_cmd->cmd, data->env);
-      execve(cmd, data->v_cmd->cmd, env_double_ptr(data));
-      return ;
+      if (access(cmd, X_OK) == 0)
+      {
+        //execve(cmd, data->v_cmd->cmd, data->env);
+        execve(cmd, data->v_cmd->cmd, env_double_ptr(data));
+        return ;
+      }
+      else
+      {
+         //data->chk_dolla = 126;
+         printf("minishell: %s: Permission denied\n", cmd);
+         exit(126);
+         //return ;
+      }
     }
     printf("minishell: command not found: %s\n", data->v_cmd->cmd[0]);
     exit(127);
@@ -69,15 +79,25 @@ void  get_path(t_data *data)
   {
     cmd = ft_strjoin(ft_strjoin(sp[i], "/"), data->v_cmd->cmd[0]);
     //if (access(ft_strjoin(ft_strjoin(sp[i], "/"), data->v_cmd->cmd[0]), F_OK) == 0)
-    if (access(cmd, X_OK) == 0)
+    if (access(cmd, F_OK) == 0)
     {
-      //execve(cmd, data->v_cmd->cmd, env_double_ptr(data));
-      execve(cmd, data->v_cmd->cmd, data->env);
-      //if (data->v_cmd->f_in == 3)
-      //  close(data->v_cmd->f_in);
-        //printf("retrun process execve failded\n");
-      free(cmd);
-      //exit(0);
+      if (access(cmd, X_OK) == 0)
+      {
+        //execve(cmd, data->v_cmd->cmd, env_double_ptr(data));
+        execve(cmd, data->v_cmd->cmd, data->env);
+        //if (data->v_cmd->f_in == 3)
+        //  close(data->v_cmd->f_in);
+          //printf("retrun process execve failded\n");
+        free(cmd);
+        //exit(0);
+      }
+      else
+      {
+         //data->chk_dolla = 126;
+         printf("minishell: %s: Permission denied\n", cmd);
+         exit(126);
+         //return ;
+      }
     }
     free(cmd);
     i++;
@@ -104,7 +124,7 @@ void  run_one_cmd(t_data *data)
   {
     if (data->v_cmd->cmd[0])
     {
-      if (check_builtin(data->v_cmd->cmd[0]))
+      if (check_builtin(&data->v_cmd->cmd[0]))
         exit(0);
       //while (1);
       if (data->chk_redct_exist == 1)
@@ -132,9 +152,12 @@ void  run_one_cmd(t_data *data)
     waitpid(pid, &status, 0);
     //printf("%d\n", status);
     //printf("cmd + garbage\n");
+    //printf("exit with %d\n", status);
     if (status == 256)
       data->chk_dolla = 1;
     //printf("no cmd existence\n");
+    else if (status == 32256)
+      data->chk_dolla = 126;
     else if (status == 32512)
       data->chk_dolla = 127;
     else
@@ -151,7 +174,7 @@ void  run_one_cmd(t_data *data)
     //  close(data->v_cmd->f_in);
     if (data->v_cmd->cmd[0])
     {
-      if (check_builtin(data->v_cmd->cmd[0]))
+      if (check_builtin(&data->v_cmd->cmd[0]))
         builtin_cmd(data, data->v_cmd->cmd[0]);
     }
     //check no need for 
@@ -161,11 +184,15 @@ void  run_one_cmd(t_data *data)
   }
 }
 
-void  check_redirection(t_data *data)
+int check_redirection(t_data *data)
 {
   t_cmd *trav;
+  int i;
   int fd;
+  int hrdoc_exist;
 
+  i = 0;
+  hrdoc_exist = 0;
   trav = data->v_cmd;
   //> this one delete the file if exist and make a new one
   //>> this one not
@@ -175,53 +202,130 @@ void  check_redirection(t_data *data)
     while (trav->redirect)
     {
       //I have to find a way to close fds
+      if (i > 0)
+      {
+        if (trav->redirect->typ == O_TRNC || trav->redirect->typ == O_APEND)
+        {
+          if (data->v_cmd->f_out > 1)
+            close(data->v_cmd->f_out);
+        }
+        else if (trav->redirect->typ == I_TRNC)
+        {
+          if (data->v_cmd->f_in > 0)
+            close(data->v_cmd->f_in);
+        }
+      }
       if (trav->redirect->typ == O_TRNC)
       {
-        fd = open(trav->redirect->file, O_RDWR | O_TRUNC | O_CREAT, 0664);
+        if (access(trav->redirect->file, F_OK) == 0)
+        {
+          if (access(trav->redirect->file, W_OK) == 0)
+            fd = open(trav->redirect->file, O_WRONLY | O_TRUNC);
+          else
+          {
+            data->chk_dolla = 126;
+            printf("minishell: %s: Permission denied\n", trav->redirect->file);
+            return (1);
+          }
+        }
+        fd = open(trav->redirect->file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
         trav->f_out = fd;
       }
       else if (trav->redirect->typ == O_APEND)
       {
         //this one not working well
+        //here check if there's permission
+        //if (access(trav->redirect->file, W_OK) == 0)
+        //if (access(trav->redirect->file, R_OK) == 0)
+        //if (access(trav->redirect->file, W_OK) == 0)
+        //  fd = open(trav->redirect->file, O_WRONLY | O_APPEND);
+        //{
+        //  fd = open(trav->redirect->file, O_RDWR | O_APPEND);
+        //  if (fd < 0)
+        //  {
+        //    if (access(trav->redirect->file, R_OK) == 0)
+        //      fd = open(trav->redirect->file, O_RDONLY | O_APPEND);
+        //    else if (access(trav->redirect->file, W_OK) == 0)
+        //      fd = open(trav->redirect->file, O_WRONLY | O_APPEND);
+        //    if (fd < 0)
+        //    {
+        //      data->chk_dolla = 1;
+        //      printf("minishell: %s: Permission denied\n", trav->redirect->file);
+        //      return (1);
+        //    }
+        //  }
+        //}
+        //else if (access(trav->redirect->file, R_OK) == 0)
+        //  fd = open(trav->redirect->file, O_RDWR | O_APPEND);
         if (access(trav->redirect->file, F_OK) == 0)
-          fd = open(trav->redirect->file, O_RDWR | O_APPEND);
+        {
+          if (access(trav->redirect->file, W_OK) == 0)
+            fd = open(trav->redirect->file, O_WRONLY | O_APPEND);
+          else
+          {
+            data->chk_dolla = 126;
+            printf("minishell: %s: Permission denied\n", trav->redirect->file);
+            return (1);
+          }
+        }
         else
-          fd = open(trav->redirect->file, O_RDWR | O_APPEND | O_CREAT, 0664);
+          fd = open(trav->redirect->file, O_RDWR | O_APPEND | O_CREAT, 0644);
         trav->f_out = fd;
       }
       else if (trav->redirect->typ == I_APEND)
-      {
-        trav->f_in = data->hrdoc_fd[0];
-        //printf("f_in == %d\n", trav->f_in);
-      }
+        hrdoc_exist = 1;
+      //{
+      //  trav->f_in = data->hrdoc_fd[0];
+      //  //printf("f_in == %d\n", trav->f_in);
+      //}
       else if (trav->redirect->typ == I_TRNC)
       {
         if (access(trav->redirect->file, F_OK) == 0)
-          fd = open(trav->redirect->file, O_RDONLY);
+        {
+          if (access(trav->redirect->file, R_OK) == 0)
+            fd = open(trav->redirect->file, O_RDONLY);
+          else
+          {
+            data->chk_dolla = 126;
+            printf("minishell: %s: Permission denied\n", trav->redirect->file);
+            return (1);
+          }
+        }
         else
         {
           data->chk_dolla = 1;
           printf("minishell: %s: No such file or directory\n", trav->redirect->file);
-          return ;
+          return (1);
         }
         trav->f_in = fd;
       }
       //trav->f_out = fd;
-      trav->redirect = trav->redirect->next;
+      //**trav->redirect = trav->redirect->next;
       //machi db
       //hena 7ta nesali
-      //if (trav->redirect)
+      //if (trav->redirect->next && trav->redirect->typ != I_APEND)
+      //if (trav->redirect->next)
       //{
-      //  if (data->v_cmd->f_in > 0)
-      //    close(data->v_cmd->f_in);
-      //  if (data->v_cmd->f_out > 1)
+      //  if (trav->redirect->typ == O_TRNC || trav->redirect->typ == O_APEND)
       //    close(data->v_cmd->f_out);
+      //  else if (trav->redirect->typ == I_TRNC)
+      //    close(data->v_cmd->f_in);
+      //  //if (data->v_cmd->f_in > 0)
+      //  //  close(data->v_cmd->f_in);
+      //  //if (data->v_cmd->f_out > 1)
+      //  //  close(data->v_cmd->f_out);
       //}
+      trav->redirect = trav->redirect->next;
+      i++;
     }
+    if (hrdoc_exist == 1)
+      trav->f_in = data->hrdoc_fd[0];
+
     //trav->f_out = fd;
   }
-  else
-    return ;
+  //else
+  //  return (0);
+  return (0);
 }
 
 void  execution(t_data *data)
@@ -233,8 +337,13 @@ void  execution(t_data *data)
   {
     //read(data->hrdoc_fd[0], ptr, 9);
     //printf("%s\n", ptr);
-    check_redirection(data);
-    run_one_cmd(data);
+    //i have to return an error code to exit to not entre run cmd in case of error
+    //cat > l < file  this file not exist
+
+    //**if (check_redirection(data))
+    //**  return ;
+    if (!check_redirection(data))
+      run_one_cmd(data);
     //maybe >> not working well
     //also i should close fd >> > > > a lot in the above func
     if (data->chk_redct_exist == 1)
