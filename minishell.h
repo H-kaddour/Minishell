@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/25 09:01:12 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/25 10:54:09 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ typedef struct s_data
 	char		*old_pwd_value; //this one is for cd env oldpwd to dup the old path of cd
 	int			old_pwd_make;
 	int			chk_redct_exist; //var to chk if redirection exist in run_one_cmd
+	int			chk_export_plus; //this var is for hey+=kjsdk
 	/*end of execution*/
 	//for prompt
 	char *prompt;

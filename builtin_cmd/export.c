@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 13:52:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/25 09:51:15 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/25 14:19:38 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,18 @@ int check_existence(t_data *data, char *cmd, int hold, t_env *env)
     trav = trav->next;
   if (!ft_strcmp(trav->sec, chk))
   {
-    n_cmd = &cmd[++hold];
-    trav->value = ft_strdup(n_cmd);
+    //n_cmd = &cmd[++hold];
+    if (data->chk_export_plus == 1)
+    {
+      hold +=2;
+      n_cmd = &cmd[hold];
+      trav->value = ft_strjoin(trav->value, n_cmd);
+    }
+    else
+    {
+      n_cmd = &cmd[++hold];
+      trav->value = ft_strdup(n_cmd);
+    }
     //if (!ft_strcmp(trav->value, &cmd[++hold]))
     //if (trav->value)
     //{
@@ -151,7 +161,10 @@ int dup_opt_equal(t_data *data, t_env *env, char *cmd)
 
   i = 0;
   //hold = &cmd[ft_strcspn(cmd, "=")];
-  hold = ft_strcspn(cmd, "=");
+  if (data->chk_export_plus == 1)
+    hold = ft_strcspn(cmd, "+");
+  else
+    hold = ft_strcspn(cmd, "=");
   if (check_existence(data, cmd, hold, env) == 1)
     return (0);
 
@@ -163,9 +176,15 @@ int dup_opt_equal(t_data *data, t_env *env, char *cmd)
     i++;
   }
   env->sec[i] = 0;
-  hold++;
+  if (cmd[hold] == '+')
+    hold += 2;
+  else
+    hold++;
   i = 0;
+  //env->value = malloc(sizeof(char) * ft_strlen(&cmd[hold]) + 1);
   env->value = malloc(sizeof(char) * ft_strlen(&cmd[hold]) + 1);
+  //if (cmd[hold] == '+')
+  //  hold++;
   while (cmd[hold])
     env->value[i++] = cmd[hold++];
   env->value[i] = 0;
@@ -184,6 +203,8 @@ char  *before_equal(char *cmd)
   else
   {
     hold = ft_strcspn(cmd, "=");
+    if (cmd[hold - 1] == '+')
+      hold--;
     chk = malloc(sizeof(char) * hold + 1);
     while (i < hold)
     {
@@ -207,14 +228,48 @@ int if_exist_or_not(t_data *data, char *cmd)
   return (1);
 }
 
-int check_equal_error(char *cmd)
+int check_export_error(t_data *data, char *cmd)
 {
   //while (*cmd == '=' && *cmd)
   //  cmd++;
   //if ()
-  if (*cmd == '=')
+  int hold;
+  int i;
+
+  i = 0;
+  if (cmd[i] == '=' || cmd[i] == '+')
     return (1);
+  while (cmd[i] != '=' && cmd[i])
+    i++;
+  if (cmd[i] == 0)
+  {
+    i = 0;
+    while (cmd[i] != '+' && cmd[i])
+      i++;
+    if (cmd[i] == 0)
+      return (0);
+    else
+      return (1);
+  }
+    //return (0);
+  hold = ft_strcspn(cmd, "=");
+  i = 0;
+  if (cmd[hold - 1] == '+')
+    hold--;
+  while (i < hold)
+  {
+    if (cmd[i] == '+')
+      return (1);
+    i++;
+  }
+  if (cmd[hold] == '+')
+    data->chk_export_plus = 1;
   return (0);
+}
+
+void  sort_env(t_data *data)
+{
+  
 }
 
 void  export_cmd(t_data *data)
@@ -240,7 +295,8 @@ void  export_cmd(t_data *data)
       trav_e = trav_e->next;
     while (trav_c->cmd[i])
     {
-      if (!check_equal_error(trav_c->cmd[i]))
+      data->chk_export_plus = 0;
+      if (!check_export_error(data, trav_c->cmd[i]))
       {
         chk = if_exist_or_not(data, trav_c->cmd[i]);
         if (chk == 1)
@@ -256,9 +312,14 @@ void  export_cmd(t_data *data)
         }
       }
       else
+      {
+        data->chk_dolla = 1;
         printf("minishell: export: '%s': not a valid identifier\n", trav_c->cmd[i]);
+      }
       i++;
     }
+    //here sort them
+    sort_env(data);
     //trav_e->next = head;
   }
   //here func should sort the env

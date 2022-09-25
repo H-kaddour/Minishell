@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/25 09:07:44 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/25 12:21:01 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -378,9 +378,9 @@ void  execution(t_data *data)
     //  return ;
     //  //execution with redirection
   }
-  //else
-  //{
+  else
+  {
 
-  //}
+  }
   //printf("%d\n", data->size_cmd);
 }
