@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:22:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/25 03:45:59 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/25 14:50:17 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,8 +168,13 @@ void  execute_cmd_cd(t_data *data, char *cmd, char *path)
   if (cmd)
   {
     //if (cmd[0] == '~')
-    if (check_if_home_only(cmd))
-      path = getenv("HOME");
+    if (cmd[0] != '/')
+    {
+      if (check_if_home_only(cmd))
+        path = getenv("HOME");
+    }
+    //else if (check_if_home_only(cmd))
+    //  path = getenv("HOME");
   }
   if (chdir(path) != 0)
   {
