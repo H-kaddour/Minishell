@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:22:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/25 14:50:17 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/25 19:11:53 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,10 @@ void  get_pwd(t_data *data, char *path)
       trav->value = ft_strdup(path);
     }
   }
+  else
+  {
+    data->old_pwd_value = getenv("PWD");
+  }
   //here if didn't find it
 }
 
@@ -97,12 +101,13 @@ char  *alloc_old_pwd(t_data *data)
   trav = data->l_env;
   while (ft_strcmp(trav->sec, "PWD") && trav->next)
     trav = trav->next;
-  //if (!ft_strcmp(trav->sec, "PWD"))
-  //{
-  //  return (ft_strdup(trav->value));
-  //}
+  if (!ft_strcmp(trav->sec, "PWD"))
+  {
+    return (ft_strdup(trav->value));
+  }
   //error here else
-  return (ft_strdup(trav->value));
+  return (ft_strdup(getenv("PWD")));
+  //return (ft_strdup(trav->value));
 }
 
 void  get_old_pwd(t_data *data, int chk)
@@ -303,6 +308,19 @@ void  execute_cd_swap_old_pwd(t_data *data)
   //prompt_changer(data);
 }
 
+int check_old_pwd(t_data *data)
+{
+  t_env *trav;
+
+  trav = data->l_env;
+  while (ft_strcmp(trav->sec, "OLDPWD") && trav->next)
+    trav = trav->next;
+  if (!ft_strcmp(trav->sec, "OLDPWD"))
+    return (0);
+  else
+    return (1);
+}
+
 void  cd_between_pwd_and_oldpwd(t_data *data, char *cmd)
 {
   int i;
@@ -316,8 +334,10 @@ void  cd_between_pwd_and_oldpwd(t_data *data, char *cmd)
   else
   {
     //means it's not exist yet
-    if (data->old_pwd_make == 0)
+    //if (data->old_pwd_make == 0)
+    if (check_old_pwd(data))
     {
+      data->old_pwd_make = 0;
       printf("minishell: cd: OLDPWD not set\n");
       return ;
     }
@@ -498,8 +518,23 @@ void  cd_path_and_folders(t_data *data, char *cmd)
   }
 }
 
+int check_if_pwd_exist(t_data *data)
+{
+  t_env *trav;
+
+  trav = data->l_env;
+  while (ft_strcmp(trav->sec, "PWD") && trav->next)
+    trav = trav->next;
+  if (!ft_strcmp(trav->sec, "PWD"))
+    return (1);
+  //data->chk_dolla = 1;
+  //printf("minishell: cd: OLDPWD not set\n");
+  return (0);
+}
+
 void  cd_cmd(t_data *data)
 {
+  char  *path;
   t_cmd *trav_c;
   trav_c = data->v_cmd;
   if (!trav_c->cmd[1] || trav_c->cmd[1][0] == '~' || !trav_c->cmd[1][0])
@@ -509,6 +544,12 @@ void  cd_cmd(t_data *data)
     if (data->old_pwd_make == 0)
       old_pwd_alloc(data);
     get_old_pwd(data, 1);
+    //if (check_if_pwd_exist(data))
+    //{
+    if (check_if_pwd_exist(data) == 1)
+      path = alloc_old_pwd(data);
+    else
+      path = getenv("PWD");
     if (chdir(alloc_old_pwd(data)))
     {
       data->chk_dolla = 1;
@@ -516,6 +557,7 @@ void  cd_cmd(t_data *data)
       return ;
     }
     data->chk_dolla = 0;
+    //}
     return ;
   }
   else if (trav_c->cmd[1][0] == '-')

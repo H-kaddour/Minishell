@@ -262,3 +262,5 @@ work in last time log
 << << ctrl c just do it in waitpid and the status will give u how did u exit to see 
 leakssss
 Segfault in cd -
+cd /
+env redirection to file

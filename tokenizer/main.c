@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/24 17:18:36 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/25 18:09:04 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -699,9 +699,10 @@ void  nl(void)
 //had fucntion is named leaks cuz it got alot of them
 void  prompt_changer(t_data *data)
 {
-  t_env *pwd;
+  //t_env *pwd;
   //t_env *home;
   char  *path_h; //this is for ~
+  char  *path_pw; //if pwd not exist in env i unset it get dial system
   int   len;
   int   i;
   //char  *tmp = "~/";
@@ -715,16 +716,17 @@ void  prompt_changer(t_data *data)
     clr1 = "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30m";
   else
     clr1 = "\e[103m \e[91m \e[40m\e[93m \e[97m \e[44m\e[30m\e[44m \e[30m";
-  pwd = data->l_env;
+  //pwd = data->l_env;
   //home = data->l_env;
-  while (ft_strcmp(pwd->sec, "PWD") && pwd->next)
-    pwd = pwd->next;
+  //while (ft_strcmp(pwd->sec, "PWD") && pwd->next)
+  //  pwd = pwd->next;
   //while (ft_strcmp(home->sec, "HOME") && home->next)
   //  home = home->next;
+  path_pw = getenv("PWD");
   path_h = getenv("HOME");
-  if (!ft_strncmp(pwd->value, path_h, ft_strlen(path_h)))
+  if (!ft_strncmp(path_pw, path_h, ft_strlen(path_h)))
   {
-    if (ft_strlen(pwd->value) > ft_strlen(path_h))
+    if (ft_strlen(path_pw) > ft_strlen(path_h))
     {
       //len = ft_strlen(pwd->value) - ft_strlen(home->value);
       len = ft_strlen(path_h);
@@ -736,12 +738,12 @@ void  prompt_changer(t_data *data)
       //  i++;
       //}
       data->prompt[i++] = '~';
-      while (pwd->value[len])
-        data->prompt[i++] = pwd->value[len++];
+      while (path_pw[len])
+        data->prompt[i++] = path_pw[len++];
       data->prompt[i] = 0;
       data->prompt = ft_strjoin(clr1, ft_strjoin(data->prompt, clr2));
     }
-    else if (ft_strlen(pwd->value) == ft_strlen(path_h))
+    else if (ft_strlen(path_pw) == ft_strlen(path_h))
     {
       data->prompt = "~";
       data->prompt = ft_strjoin(clr1, ft_strjoin(data->prompt, clr2));
@@ -749,7 +751,7 @@ void  prompt_changer(t_data *data)
   }
   else
   {
-    data->prompt = ft_strjoin(clr1, ft_strjoin(pwd->value, clr2));
+    data->prompt = ft_strjoin(clr1, ft_strjoin(path_pw, clr2));
     //just join the color with path
   }
   //if (!ft_strcmp(pwd->sec, "PWD") && !ft_strcmp(home->sec, "HOME"))
