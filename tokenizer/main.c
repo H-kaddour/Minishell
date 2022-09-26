@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/25 18:09:04 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/26 19:35:11 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,31 +278,31 @@ void  sig_c(int c)
 //  exit(0);
 //}
 
-void  *put_str(char *str, int len)
-{
-  int   i;
-  char  *ptr;
-
-  i = 0;
-  //if (!str)
-  //  str = "/";
-  //if (len < i)
-  //{
-  //  ptr = malloc(2);
-  //  ptr[i++] = '/';
-  //  ptr[i] = 0;
-  //}
-  ptr = malloc(sizeof(char) * len + 1);
-  if (!ptr)
-    return (NULL);
-  while (i <= len)
-  {
-    ptr[i] = str[i];
-    i++;
-  }
-  ptr[i] = 0;
-  return (ptr);
-}
+//void  *put_str(char *str, int len)
+//{
+//  int   i;
+//  char  *ptr;
+//
+//  i = 0;
+//  //if (!str)
+//  //  str = "/";
+//  //if (len < i)
+//  //{
+//  //  ptr = malloc(2);
+//  //  ptr[i++] = '/';
+//  //  ptr[i] = 0;
+//  //}
+//  ptr = malloc(sizeof(char) * len + 1);
+//  if (!ptr)
+//    return (NULL);
+//  while (i <= len)
+//  {
+//    ptr[i] = str[i];
+//    i++;
+//  }
+//  ptr[i] = 0;
+//  return (ptr);
+//}
 
 //void  cd_cmd(t_data *data)
 //{
@@ -699,7 +699,7 @@ void  nl(void)
 //had fucntion is named leaks cuz it got alot of them
 void  prompt_changer(t_data *data)
 {
-  //t_env *pwd;
+  t_env *pwd;
   //t_env *home;
   char  *path_h; //this is for ~
   char  *path_pw; //if pwd not exist in env i unset it get dial system
@@ -716,14 +716,30 @@ void  prompt_changer(t_data *data)
     clr1 = "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30m";
   else
     clr1 = "\e[103m \e[91m \e[40m\e[93m \e[97m \e[44m\e[30m\e[44m \e[30m";
-  //pwd = data->l_env;
+  pwd = data->l_env;
   //home = data->l_env;
-  //while (ft_strcmp(pwd->sec, "PWD") && pwd->next)
-  //  pwd = pwd->next;
+  while (ft_strcmp(pwd->sec, "PWD") && pwd->next)
+    pwd = pwd->next;
+  if (!ft_strcmp(pwd->sec, "PWD"))
+    path_pw = pwd->value;
+  else
+    path_pw = data->pwd_of_mysys;
+  //else if (ft_strcmp(pwd->sec, "PWD") && data->pwd_of_mysys)
+  //  path_pw = data->pwd_of_mysys;
+  //else
+  //{
+  //  char  *env;
+  //  env = malloc(sizeof(char) * 1024);
+  //  path_pw = getcwd(env, 1024);
+  //}
+    
   //while (ft_strcmp(home->sec, "HOME") && home->next)
   //  home = home->next;
-  path_pw = getenv("PWD");
+  //path_pw = getenv("PWD");
+  //path_h = 
   path_h = getenv("HOME");
+  if (!path_h)
+    path_h = "/Users/hkaddour";
   if (!ft_strncmp(path_pw, path_h, ft_strlen(path_h)))
   {
     if (ft_strlen(path_pw) > ft_strlen(path_h))
@@ -751,6 +767,7 @@ void  prompt_changer(t_data *data)
   }
   else
   {
+    //return ;
     data->prompt = ft_strjoin(clr1, ft_strjoin(path_pw, clr2));
     //just join the color with path
   }
@@ -767,8 +784,10 @@ void  make_myown_env(t_data *data)
   int   i;
   char  **sp1;
   char  **sp2;
-  char  *sec = "PATH SHLVL";
-  char  *val = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin 1";
+  //char  *sec = "PATH SHLVL";
+  char  *sec = "SHLVL";
+  //char  *val = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin 1";
+  char  *val = "1";
 
   i = 0;
   sp1 = ft_split(sec, ' ');
@@ -777,8 +796,9 @@ void  make_myown_env(t_data *data)
   head->sec = "PWD";
   head->value = malloc(1024);
   getcwd(head->value, 1024);
+  data->pwd_of_mysys = head->value;
   data->l_env = head;
-  while (i < 2)
+  while (i < 1)
   {
     node = node_allocate();
     node->sec = sp1[i];
@@ -794,6 +814,19 @@ void  make_myown_env(t_data *data)
   //  head = head->next;
   //}
   //while(1);
+}
+
+void  add_pwd(t_data *data)
+{
+  t_env *env;
+
+  env = data->l_env;
+  while (env->next)
+    env = env->next;
+  env->next = node_allocate();
+  env = env->next;
+  env->sec = "PWD";
+  env->value = data->pwd_of_mysys;
 }
 
 int main(int ac, char **av, char **envp)
@@ -827,7 +860,19 @@ int main(int ac, char **av, char **envp)
   {
     data.env = envp;
     get_env(&data);
+    //this one should be in both if env exist and also in env not exist
+    data.pwd_of_mysys = myown_getenv(&data, "PWD", &data.status_of_oldpwd);
+    if (!data.pwd_of_mysys)
+    {
+      char  *env;
+      env = malloc(sizeof(char) * 1024);
+      data.pwd_of_mysys = getcwd(env, 1024);
+      //if i start minishell with unseting PWD i will make my own here
+      add_pwd(&data);
+    }
   }
+
+  //**data.chk_o_p_sys = 0;
   //**prompt_changer(&data);
   //maybe here i will print date and time and user name
   //also make a last login file to print in first 
@@ -837,6 +882,7 @@ int main(int ac, char **av, char **envp)
     signal(SIGINT, sig_c);
     signal(SIGQUIT, sig_c);
     //printf("%d\n", getpid());
+    //printf("%s\n", getenv("PWD"));
     prompt_changer(&data);
     data.line = readline(data.prompt);
     if (!data.line)
@@ -879,6 +925,7 @@ int main(int ac, char **av, char **envp)
       //printf("in = %d || out %d\n", data.hrdoc_fd[0], data.hrdoc_fd[1]);
       //here fucntion of execution
       //if an error happen in tokenizer don't execute ****
+      //if (data.chk_hrdoc_exit != 1)
       execution(&data);
     }
     //here if up was error should not entre here i should do a var boolean

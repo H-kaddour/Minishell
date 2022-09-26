@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 13:52:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/25 14:19:38 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/26 21:59:28 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,22 @@ int if_exist_or_not(t_data *data, char *cmd)
   return (1);
 }
 
+int only_accepted_char(char *cmd, int hold)
+{
+  int i;
+
+  i = 1;
+  if (ft_isdigit(cmd[0]))
+    return (1);
+  while (i < hold)
+  {
+    if (!ft_isdigit(cmd[i]) && !ft_isalnum(cmd[i]))
+      return (1);
+    i++;
+  }
+  return (0);
+}
+
 int check_export_error(t_data *data, char *cmd)
 {
   //while (*cmd == '=' && *cmd)
@@ -237,6 +253,9 @@ int check_export_error(t_data *data, char *cmd)
   int i;
 
   i = 0;
+  hold = ft_strcspn(cmd, "=");
+  if (only_accepted_char(cmd, hold))
+    return (1);
   if (cmd[i] == '=' || cmd[i] == '+')
     return (1);
   while (cmd[i] != '=' && cmd[i])
@@ -252,7 +271,9 @@ int check_export_error(t_data *data, char *cmd)
       return (1);
   }
     //return (0);
-  hold = ft_strcspn(cmd, "=");
+  //hold = ft_strcspn(cmd, "=");
+  //if (only_accepted_char(cmd, hold))
+  //  return (1);
   i = 0;
   if (cmd[hold - 1] == '+')
     hold--;
@@ -267,9 +288,62 @@ int check_export_error(t_data *data, char *cmd)
   return (0);
 }
 
+//int env_len(t_env *head)
+//{
+//  int i;
+//
+//  i = 0;
+//  while (head)
+//  {
+//    head = head->next;
+//    i++;
+//  }
+//  return (i);
+//}
+
+int	compare(char *one, char *two)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	if (ft_strlen(one) > ft_strlen(two))
+		len = ft_strlen(one);
+	else
+		len = ft_strlen(two);
+	while (i < len)
+	{
+		if (one[i] > two[i])
+			return (1);
+		else if (one[i] < two[i])
+			return (0);
+		i++;
+	}
+	return (0);
+}
+
 void  sort_env(t_data *data)
 {
-  
+  t_env *trav;
+  char  *hold_s;
+  char  *hold_v;
+
+  trav = data->l_env;
+  while (trav->next)
+  {
+    if (compare(trav->sec, trav->next->sec))
+    {
+      hold_s = trav->sec;
+      hold_v = trav->value;
+      trav->sec = trav->next->sec;
+      trav->value = trav->next->value;
+      trav->next->sec = hold_s;
+      trav->next->value = hold_v;
+      trav = data->l_env;
+    }
+    else
+      trav = trav->next;
+  }
 }
 
 void  export_cmd(t_data *data)
@@ -287,6 +361,7 @@ void  export_cmd(t_data *data)
   trav_e = data->l_env;
   trav_c = data->v_cmd;
   //len = len_of_args(trav_c->cmd) - 1;
+  //maybe in print too should be sorted
   if (!trav_c->cmd[i])
     print_env_of_export(trav_e);
   else
@@ -319,11 +394,11 @@ void  export_cmd(t_data *data)
       i++;
     }
     //here sort them
-    sort_env(data);
+    //sort_env(data);
     //trav_e->next = head;
   }
   //here func should sort the env
-  //sort_env();
+  sort_env(data);
 }
 //pseudo of how to make export env
 //first enter the args that have = on them to env

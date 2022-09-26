@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/25 12:21:01 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/26 22:04:29 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,15 +349,9 @@ void  execution(t_data *data)
     if (data->chk_redct_exist == 1)
     {
       if (data->v_cmd->f_in > 0)
-      {
-        //printf("h\n");
         close(data->v_cmd->f_in);
-      }
       if (data->v_cmd->f_out > 1)
-      {
-        //printf("d\n");
         close(data->v_cmd->f_out);
-      }
       //close here file
       //data->v_cmd->f_in = 0;
       //data->v_cmd->f_out = 1;
@@ -380,7 +374,7 @@ void  execution(t_data *data)
   }
   else
   {
-
+    pipeline(data);
   }
   //printf("%d\n", data->size_cmd);
 }

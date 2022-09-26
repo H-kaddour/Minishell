@@ -264,3 +264,10 @@ leakssss
 Segfault in cd -
 cd /
 env redirection to file
+gad prompt shower in case of unset in the PWD
+and pwd will show the pwdofmysys
+open file of heredoc pipe giving me and error msg:
+ > minishell(21125,0x109afb5c0) malloc: *** error for object 0x7fdae1408680: pointer being freed was not allocated
+ > minishell(21125,0x109afb5c0) malloc: *** set a breakpoint in malloc_error_break to debug
+ it's just because when ctrl c in parsing will not go to execution
+export if i started with number 9kdl=kk error but if kl3=4 works also operators only numbers and alphabet

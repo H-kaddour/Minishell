@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 12:11:41 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/25 12:10:46 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/26 19:40:32 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char **env_double_ptr(t_data *data)
   }
   env[i] = 0;
   return (env);
+  //this one also should be freed
 }
 
 void  get_env(t_data *data)

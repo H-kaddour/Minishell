@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 12:22:53 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/25 09:18:07 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/26 17:30:00 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,22 @@ void  pwd_cmd(t_data *data)
     trav = trav->next;
   if (!ft_strcmp(trav->sec, "PWD"))
   {
-    printf("%s\n", trav->value);
+    printf("PWD = %s\n", trav->value);
+    //if (!ft_strcmp(trav->sec, "OLDPWD"))
+    //  printf("OLDPWD = %s\n", trav->value);
   }
   else
   {
-    data->chk_dolla = 1;
-    printf("minishell: cd: PWD not set\n");
-    return ;
+    if (!data->pwd_of_mysys)
+      printf("PWD = %s\n", getenv("PWD"));
+    else
+      printf("PWD = %s\n", data->pwd_of_mysys);
   }
+  //else
+  //{
+  //  data->chk_dolla = 1;
+  //  printf("minishell: cd: PWD not set\n");
+  //  return ;
+  //}
   //error
 }

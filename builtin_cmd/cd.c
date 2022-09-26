@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:22:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/25 19:11:53 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/26 19:09:17 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,25 @@
 //cd .
 //when u remove a 
 //always change pwd and oldpath new path in env 
+
+char *myown_getenv(t_data *data, char *sec, int *status)
+{
+  t_env *env;
+
+  env = data->l_env;
+  while (ft_strcmp(env->sec, sec) && env->next)
+    env = env->next;
+  if (!ft_strcmp(env->sec, sec))
+  {
+    *(status) = 1;
+    return (ft_strdup(env->value));
+  }
+  else
+  {
+    *(status) = 0;
+    return (0);
+  }
+}
 
 void  old_pwd_alloc(t_data *data)
 {
@@ -83,13 +102,23 @@ void  get_pwd(t_data *data, char *path)
       return ;
     else
     {
-      free(trav->value);
+      //free(trav->value);
       trav->value = ft_strdup(path);
+      data->pwd_of_mysys = ft_strdup(path);
+      //data->pwd_of_mysys = trav->value;
     }
   }
   else
   {
-    data->old_pwd_value = getenv("PWD");
+    data->old_pwd_value = data->pwd_of_mysys;
+    //if (!data->pwd_of_mysys && data->chk_o_p_sys == 0)
+    //{
+    //  data->old_pwd_value = getenv("PWD");
+    //  data->chk_o_p_sys = 1;
+    //}
+    //else
+    //  data->old_pwd_value = data->pwd_of_mysys;
+    data->pwd_of_mysys = ft_strdup(path);
   }
   //here if didn't find it
 }
@@ -106,7 +135,10 @@ char  *alloc_old_pwd(t_data *data)
     return (ft_strdup(trav->value));
   }
   //error here else
-  return (ft_strdup(getenv("PWD")));
+  //else if (ft_strcmp(trav->sec, "PWD") && !data->pwd_of_mysys)
+  //  return (ft_strdup(getenv("PWD")));
+  return (ft_strdup(data->pwd_of_mysys));
+  //return (ft_strdup(getenv("PWD")));
   //return (ft_strdup(trav->value));
 }
 
@@ -129,14 +161,14 @@ void  get_old_pwd(t_data *data, int chk)
     {
       if (chk == 0)
       {
-        if (trav->value)
-          free(trav->value);
+        //if (trav->value)
+        //  free(trav->value);
         trav->value = data->old_pwd_value;
       }
       else
       {
-        if (trav->value)
-          free(trav->value);
+        //if (trav->value)
+        //  free(trav->value);
         trav->value = alloc_old_pwd(data);
       }
       //if (trav->value[0] != 0)
@@ -150,37 +182,38 @@ void  get_old_pwd(t_data *data, int chk)
     //  return ;
     //}
   }
-  else
-  {
-    printf("minishell: cd: OLDPWD not set\n");
-    return ;
-  }
+  //else
+  //{
+  //  printf("minishell: cd: OLDPWD not set\n");
+  //  return ;
+  //}
 }
 
-int check_if_home_only(char *cmd)
-{
-  while (*cmd)
-  {
-    if (*cmd != '~' && *cmd != '/')
-      return (0);
-    cmd++;
-  }
-  return (1);
-}
+//int check_if_home_only(char *cmd)
+//{
+//  while (*cmd)
+//  {
+//    if (*cmd != '~' && *cmd != '/')
+//      return (0);
+//    cmd++;
+//  }
+//  return (1);
+//}
 
 void  execute_cmd_cd(t_data *data, char *cmd, char *path)
 {
-  if (cmd)
-  {
-    //if (cmd[0] == '~')
-    if (cmd[0] != '/')
-    {
-      if (check_if_home_only(cmd))
-        path = getenv("HOME");
-    }
-    //else if (check_if_home_only(cmd))
-    //  path = getenv("HOME");
-  }
+  //if (cmd)
+  //{
+  //  //if (cmd[0] == '~')
+  //  if (cmd[0] != '/')
+  //  {
+  //    if (check_if_home_only(cmd))
+  //      path = getenv("HOME");
+  //  }
+  //  //else if (check_if_home_only(cmd))
+  //  //  path = getenv("HOME");
+  //}
+  printf("jkk\n");
   if (chdir(path) != 0)
   {
     //it should print the cmd not the path
@@ -199,6 +232,17 @@ void  execute_cmd_cd(t_data *data, char *cmd, char *path)
   //here add the path to pwd and oldpath and change the prompt path
 }
 
+int slash_loop(char *cmd)
+{
+  if (!cmd)
+    return (1);
+  while (*cmd == '/' && *cmd)
+    cmd++;
+  if (*cmd == 0)
+    return (1);
+  return (0);
+}
+
 //here just send cmd what it point to the one index
 void  cd_home_path(t_data *data, char *cmd)
 {
@@ -209,6 +253,30 @@ void  cd_home_path(t_data *data, char *cmd)
   t_env *trav_e;
 
   i = 1;
+  //if (cmd)
+  //{
+  //  if (cmd[0] == '~' && !slash_loop(&cmd[1]))
+  //  {
+  //    if (get_home_path(data, &trav_e, cmd))
+  //      return ;
+  //  }
+  //  else
+  //    execute_cmd_cd(data, cmd, getenv("HOME"));
+  //    //trav_e->value = getenv("HOME");
+  //}
+  if (cmd)
+  {
+    if (cmd[0] == '~' && slash_loop(&cmd[1]))
+    {
+      if (!getenv("HOME"))
+      {
+        printf("minishell: cd: HOME not set\n");
+        return ;
+      }
+      execute_cmd_cd(data, cmd, getenv("HOME"));
+      return ;
+    }
+  }
   if (get_home_path(data, &trav_e, cmd))
     return ;
   //pass ~ direct to /
@@ -269,6 +337,7 @@ void  execute_cd_swap_old_pwd(t_data *data)
   t_env *trav_pwd;
   t_env *trav_o_p;
   char  *path;
+  char  *val;
 
   trav_pwd = data->l_env;
   trav_o_p = data->l_env;
@@ -276,29 +345,53 @@ void  execute_cd_swap_old_pwd(t_data *data)
     trav_pwd = trav_pwd->next;
   while (ft_strcmp(trav_o_p->sec, "OLDPWD") && trav_o_p->next)
     trav_o_p = trav_o_p->next;
-  if (!ft_strcmp(trav_pwd->sec, "PWD"))
-  {
-    path = trav_pwd->value;
-    trav_pwd->value = trav_o_p->value;
-  }
-  else
-  {
-    data->chk_dolla = 1;
-    printf("minishell: cd: PWD not set\n");
-    return ;
-  }
-  if (!ft_strcmp(trav_o_p->sec, "OLDPWD"))
-  {
-    trav_o_p->value = path;
-  }
-  else
+  if (ft_strcmp(trav_o_p->sec, "OLDPWD"))
   {
     data->chk_dolla = 1;
     printf("minishell: cd: OLDPWD not set\n");
     return ;
   }
+
+  val = trav_o_p->value;
+  //trav_o_p->value = ft_strdup(trav_pwd->value);
+  if (!ft_strcmp(trav_pwd->sec, "PWD"))
+  {
+    trav_o_p->value = ft_strdup(trav_pwd->value);
+    trav_pwd->value = ft_strdup(val);
+    data->pwd_of_mysys = ft_strdup(val);
+    //val = ft_strdup(trav_pwd->value);
+    //trav_pwd->value = trav_o_p->value;
+  }
+  else
+  {
+    trav_o_p->value = ft_strdup(data->pwd_of_mysys);
+    data->pwd_of_mysys = ft_strdup(val);
+    //val = ft_strdup(data->pwd_of_mysys);
+    //data->pwd_of_mysys = trav_o_p->value;
+  }
+  //path = val;
+  //val = trav_o_p->value;
+  //**trav_o_p->value = val;
+  //else
+  //{
+  //  data->chk_dolla = 1;
+  //  printf("minishell: cd: PWD not set\n");
+  //  return ;
+  //}
+  //if (!ft_strcmp(trav_o_p->sec, "OLDPWD"))
+  //{
+  //  trav_o_p->value = path;
+  //}
+  //else
+  //{
+  //  data->chk_dolla = 1;
+  //  printf("minishell: cd: OLDPWD not set\n");
+  //  return ;
+  //}
   //check error if OLDPWD if does not exist
-  if (chdir(trav_pwd->value) != 0)
+  //if (chdir(trav_pwd->value) != 0)
+  //**if (chdir(val) != 0)
+  if (chdir(val) != 0)
   {
     data->chk_dolla = 1;
     printf("minishell: cd: %s: No such file or directory\n", trav_pwd->value);
@@ -328,7 +421,7 @@ void  cd_between_pwd_and_oldpwd(t_data *data, char *cmd)
   i = 0;
   if (cmd[1] != 0)
   {
-    printf("minishell: cd: -: invalid option");
+    printf("minishell: cd: -: invalid option\n");
     return ;
   }
   else
@@ -337,7 +430,7 @@ void  cd_between_pwd_and_oldpwd(t_data *data, char *cmd)
     //if (data->old_pwd_make == 0)
     if (check_old_pwd(data))
     {
-      data->old_pwd_make = 0;
+      //data->old_pwd_make = 0;
       printf("minishell: cd: OLDPWD not set\n");
       return ;
     }
@@ -364,14 +457,22 @@ void  cd_double_dot(t_data *data, char *cmd)
   int   lst;
   t_env *trav;
   char  *path;
+  char  *val;
 
   trav = data->l_env;
   while (ft_strcmp(trav->sec, "PWD") && trav->next)
     trav = trav->next;
-  if (!ft_strcmp(trav->sec, "PWD") && trav->next)
+  //if (!ft_strcmp(trav->sec, "PWD") && trav->next)
+  if (1)
   {
+    if (!ft_strcmp(trav->sec, "PWD"))
+      val = trav->value;
+    //else if (ft_strcmp(trav->sec, "PWD") && !data->pwd_of_mysys)
+    //  val = getenv("PWD");
+    else
+      val = data->pwd_of_mysys;
     //path = trav->value;
-    lst = ft_strlen(trav->value) - 1;
+    lst = ft_strlen(val) - 1;
     //here send it to exection direct cuz it's the root /
     //this one blash
     //if (trav->value[lst] == '/')
@@ -379,33 +480,33 @@ void  cd_double_dot(t_data *data, char *cmd)
     //  execute_cmd_cd(data, "/");
     //  return ;
     //}
-    while (trav->value[lst] != '/')
+    while (val[lst] != '/')
       lst--;
     //means / root
     //if (ft_strlen(trav->value[lst]) == 1)
     //len_for_root(&trav->value[0], &trav->value[lst]);
     //if (trav->value[lst] == '/')
-    if (len_for_root(&trav->value[0], &trav->value[lst]) == 1)
+    if (len_for_root(&val[0], &val[lst]) == 1)
     {
       execute_cmd_cd(data, cmd, "/");
       return ;
     }
     path = malloc(sizeof(char) * lst);
     i = 0;
-    while (&trav->value[i] != &trav->value[lst])
+    while (&val[i] != &val[lst])
     {
-      path[i] = trav->value[i];
+      path[i] = val[i];
       i++;
     }
     path[i] = 0;
     execute_cmd_cd(data, cmd, path);
   }
-  else
-  {
-    data->chk_dolla = 1;
-    printf("minishell: cd: PWD not set\n");
-    return ;
-  }
+  //else
+  //{
+  //  data->chk_dolla = 1;
+  //  printf("minishell: cd: PWD not set\n");
+  //  return ;
+  //}
   //error here
 }
 
@@ -498,23 +599,39 @@ void  cd_path_and_folders(t_data *data, char *cmd)
     //this one make a function that get u pwd
     while (ft_strcmp(trav->sec, "PWD") && trav->next)
       trav = trav->next;
-    if (!ft_strcmp(trav->sec, "PWD"))
+    //if (!ft_strcmp(trav->sec, "PWD") || data->pwd_of_mysys)
+    if (1)
     {
       path = take_off_the_lst_slash(cmd);
       //what if pwd equal 1 and that one it's not / it's * or somth
-      if (trav->value[1] == 0)
-        path = ft_strjoin(trav->value, path);
+      if (!ft_strcmp(trav->sec, "PWD"))
+      {
+        //baghi nefhm hadi ******
+        //means ila kan pwd root /
+        if (trav->value[1] == 0)
+          path = ft_strjoin(trav->value, path);
+        else
+          path = ft_strjoin(trav->value, ft_strjoin("/", path));
+      }
       else
-        path = ft_strjoin(trav->value, ft_strjoin("/", path));
+      {
+        //if (!data->pwd_of_mysys)
+        //  data->pwd_of_mysys = getenv("PWD");
+        if (data->pwd_of_mysys[1] == '/')
+          path = ft_strjoin(data->pwd_of_mysys, path);
+        else
+          path = ft_strjoin(data->pwd_of_mysys, ft_strjoin("/", path));
+      }
       execute_cmd_cd(data, cmd, path);
     }
     //else an error msg if we take the env down
-    else
-    {
-      data->chk_dolla = 1;
-      printf("minishell: cd: PWD not set\n");
-      return ;
-    }
+    //else
+    //{
+    //  //data->chk_dolla = 1;
+    //  //printf("minishell: cd: PWD not set\n");
+
+    //  return ;
+    //}
   }
 }
 
@@ -537,6 +654,8 @@ void  cd_cmd(t_data *data)
   char  *path;
   t_cmd *trav_c;
   trav_c = data->v_cmd;
+
+  //myown_getenv(data, "OLDPWD", &data->status_of_oldpwd);
   if (!trav_c->cmd[1] || trav_c->cmd[1][0] == '~' || !trav_c->cmd[1][0])
     cd_home_path(data, trav_c->cmd[1]);
   else if (!ft_strcmp(trav_c->cmd[1], "."))
@@ -546,10 +665,10 @@ void  cd_cmd(t_data *data)
     get_old_pwd(data, 1);
     //if (check_if_pwd_exist(data))
     //{
-    if (check_if_pwd_exist(data) == 1)
-      path = alloc_old_pwd(data);
-    else
-      path = getenv("PWD");
+    //if (check_if_pwd_exist(data) == 1)
+    //  path = alloc_old_pwd(data);
+    //else
+    //  path = getenv("PWD");
     if (chdir(alloc_old_pwd(data)))
     {
       data->chk_dolla = 1;

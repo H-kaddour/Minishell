@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/25 10:54:09 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/26 22:04:40 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,9 +154,12 @@ typedef struct s_data
 	int			old_pwd_make;
 	int			chk_redct_exist; //var to chk if redirection exist in run_one_cmd
 	int			chk_export_plus; //this var is for hey+=kjsdk
+	int			status_of_oldpwd;
+	char		*pwd_of_mysys; //this one keep my pwd in case if i unset pwd
+	//int			chk_o_p_sys;
 	/*end of execution*/
 	//for prompt
-	char *prompt;
+	char		*prompt;
 }	t_data;
 
 /******* Function of tokenizer *********/
@@ -202,6 +205,8 @@ void  export_cmd(t_data *data);
 void  unset_cmd(t_data *data);
 t_env *node_allocate(void);
 char	**env_double_ptr(t_data *data);
+char	*myown_getenv(t_data *data, char *sec, int *status);
+void  pipeline(t_data *data);
 //void  cd_cmd(t_data *data);
 
 //this one in the main but should go to cd

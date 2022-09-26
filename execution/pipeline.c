@@ -1,24 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalnum.c                                       :+:      :+:    :+:   */
+/*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkaddour <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/01 12:09:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/26 21:49:25 by hkaddour         ###   ########.fr       */
+/*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
+/*   Updated: 2022/09/26 22:04:58 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
 
-int	ft_isalnum(int arg)
+#include "minishell.h"
+
+void  pipeline(t_data *data)
 {
-	//if (arg >= '0' && arg <= '9')
-	//	return (1);
-	if ((arg >= 'a' && arg <= 'z') || (arg >= 'A' && arg <= 'Z'))
-		return (1);
-	else if (arg == '+')
-		return (1);
-	else
-		return (0);
+
 }

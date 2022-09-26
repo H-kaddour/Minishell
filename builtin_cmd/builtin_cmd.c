@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:54:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/25 09:08:47 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/26 19:37:12 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int  check_builtin(char **cmd)
       return (1);
     i++;
   }
-
   return (0);
 }
 
