@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:22:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/26 19:09:17 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/27 15:42:21 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,6 @@ void  execute_cmd_cd(t_data *data, char *cmd, char *path)
   //  //else if (check_if_home_only(cmd))
   //  //  path = getenv("HOME");
   //}
-  printf("jkk\n");
   if (chdir(path) != 0)
   {
     //it should print the cmd not the path
@@ -651,7 +650,7 @@ int check_if_pwd_exist(t_data *data)
 
 void  cd_cmd(t_data *data)
 {
-  char  *path;
+  //char  *path;
   t_cmd *trav_c;
   trav_c = data->v_cmd;
 

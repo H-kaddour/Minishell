@@ -6,20 +6,21 @@
 #    By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/09 11:07:05 by hkaddour          #+#    #+#              #
-#    Updated: 2022/09/27 15:02:58 by hkaddour         ###   ########.fr        #
+#    Updated: 2022/09/27 16:00:07 by hkaddour         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
 HEADER = minishell.h
-FLAGS = -Wall -Wextra -Werror
+#FLAGS = -Wall -Wextra -Werror
+FLAGS = -g
 #R_LINE = -L/usr/local/lib -I/usr/local/include -lreadline
 #R_LINE = -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include -lreadline -L/usr/local/lib -I/usr/local/include
 LIB = libft.a
 READLINE = $(shell brew --prefix  readline)
-OFILES = out_files
-SRC = tokenizer/main.c \
+OFILES = objdir
+SRC = main.c \
 			tokenizer/allocate_tokens.c \
 			tokenizer/allocate_tokens_utils.c \
 			tokenizer/tokenizer.c \
@@ -27,8 +28,8 @@ SRC = tokenizer/main.c \
 			tokenizer/tokenizer_utils.c \
 			tokenizer/lexer_pt1.c \
 			tokenizer/lexer_pt2.c \
-			tokenizer/parser.c \
-			tokenizer/parser_utils.c \
+			parser/parser.c \
+			parser/parser_utils.c \
 			execution/execution.c \
 			execution/pipeline.c \
 			builtin_cmd/builtin_cmd.c \
@@ -44,13 +45,17 @@ OBJS = $(SRC:.c=.o)
 #move *.o to a build file
 all: $(NAME)
 #flag shows where the sigfault happen and force to check everything -fsanitize=address
+#$(NAME): $(LIB) $(OFILES) $(OBJS)
 $(NAME): $(LIB) $(OBJS)
-	@$(CC) $(OBJS) $(LIB) -o $(NAME) -L $(READLINE)/lib -lreadline
+	$(CC) $(OBJS) $(LIB) -o $(NAME) -L $(READLINE)/lib -lreadline $(FLAGS)
 
-$(OFILES)%/.o: %.c
-	@mkdir -p $(@D)
-	@$(CC) -I$(READLINE)/include -I./include $(HEADER) $(FLAGS) -o $@ -c $^
+$(OBJFILES)/%.o: %.c
+	$(CC) -I $(READLINE)/include -I ./include $(HEADER) -c $^ -g
+#$(CC) -I $(READLINE)/include -I./include $(HEADER) $(FLAGS) -o $@ -c $^ -g
 
+#$(OFILES):
+#	@mkdir -p $(@)
+	
 $(LIB):
 	@make -C ./libft
 	@mv libft/$(LIB) .
@@ -61,7 +66,7 @@ clean:
 
 fclean:
 	@make fclean -C ./libft
-	@rm -rf $(NAME) $(LIB) 
+	@rm -rf $(NAME) $(LIB) $(OBJS) *.dSYM
 #@make fclean -C ./libft
 
 re: fclean all

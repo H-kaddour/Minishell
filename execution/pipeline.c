@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/27 12:26:54 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/27 17:20:53 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void  pipeline(t_data *data)
   //**}
   trav = data->v_cmd;
   i = 0;
+  char ptr[10] = {0};
   //pipe(fd);
   while (trav)
   {
@@ -76,10 +77,20 @@ void  pipeline(t_data *data)
 
       //here i should close pipe of fork so i should loop for the pipe
       //printf("cmd = %s    in = %d    out = %d\n", trav->cmd[0], trav->f_in, trav->f_out);
-      if (trav->f_in > 0)
-        dup2(trav->f_in, STDIN_FILENO);
-      if (trav->f_out > 1)
+      //if (trav->f_in > 0)
+      //close(trav->f_in);
+      //**dup2(trav->f_in, STDIN_FILENO);
+      //if (trav->f_out > 1)
+      if (trav->next)
+      {
+        //close(trav->f_in);
         dup2(trav->f_out, STDOUT_FILENO);
+      }
+      if (!trav->next)
+      {
+        //close(trav->f_out);
+        dup2(trav->f_in, STDIN_FILENO);
+      }
       //close(trav->f_in);
       //if (trav->f_out > 1)
       //  close(trav->f_out);
@@ -87,6 +98,9 @@ void  pipeline(t_data *data)
       get_path(data, trav);
       //exit(0);
     }
+    read(trav->f_out, &ptr, 9);
+    printf("**%s**\n", ptr);
+    //while (1);
     //if (pid == 1)
     //{
 		//  //signal(SIGINT, SIG_IGN);
@@ -105,16 +119,23 @@ void  pipeline(t_data *data)
   //  trav = trav->next;
   //}
   //i = 0;
-  trav = data->v_cmd;
-  while (i < 2)
+  //trav = data->v_cmd;
+  while(1)
   {
-    wait(0);
-    //exit(0);
-    //if (trav->f_in > 0)
-    //  close(trav->f_in);
-    i++;
-    trav = trav->next;
+    if (waitpid(-1, NULL, 0) == -1)
+      break;
   }
+  //close(trav->f_in);
+  //close(trav->f_out);
+  //while (i < 2)
+  //{
+  //  wait(0);
+  //  //exit(0);
+  //  //if (trav->f_in > 0)
+  //  //  close(trav->f_in);
+  //  i++;
+  //  trav = trav->next;
+  //}
 }
 //pseudo code:
 //first i will make the pipes for the size_of_cmd - 1

@@ -273,3 +273,4 @@ open file of heredoc pipe giving me and error msg:
 export if i started with number 9kdl=kk error but if kl3=4 works also operators only numbers and alphabet
 kill -s SIGSEGV cmd to send signals to a process
 protect malloc
+^C to not show and start ne9i lcode

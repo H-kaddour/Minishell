@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/27 12:57:36 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/27 15:38:20 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,15 +94,6 @@ typedef	struct cmd
 	struct cmd	*next;
 } t_cmd;
 //******
-
-//i don't need this one anymore
-typedef struct grab_line
-{
-	char	*ptr;
-	char	*tmp;
-	char	*buff;
-	char	*line;
-}	t_gnl;
 
 typedef struct s_data
 {
