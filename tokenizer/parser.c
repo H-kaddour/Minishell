@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 10:32:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/24 19:13:45 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/27 13:06:59 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,7 +357,10 @@ void  parser(t_data *data)
   {
     get_cmd_parsing(data);
     if (data->chk_hrdoc_exit == 1)
+    {
+      data->error_lexer = 1;
       return ;
+    }
     if (!data->trav)
       break ;
     //here i should see the next too "ls | cool |"

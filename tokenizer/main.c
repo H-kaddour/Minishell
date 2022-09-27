@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/26 19:35:11 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/27 13:08:21 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -926,7 +926,11 @@ int main(int ac, char **av, char **envp)
       //here fucntion of execution
       //if an error happen in tokenizer don't execute ****
       //if (data.chk_hrdoc_exit != 1)
-      execution(&data);
+      if (data.error_lexer == 0)
+      {
+        //printf("hey\n");
+        execution(&data);
+      }
     }
     //here if up was error should not entre here i should do a var boolean
     //execution(&data);

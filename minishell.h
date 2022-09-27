@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/26 22:04:40 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/27 12:57:36 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,10 @@ typedef struct s_data
 	//v_cmd		*valid_cmd;
 	//d_cmd		*data_cmd;
 	//char		**split_cmd;
+
+	//error of lexer var
+	int			error_lexer;
+
 	/*var of execution*/
 	int			size_cmd;
 	char		*old_pwd_value; //this one is for cd env oldpwd to dup the old path of cd
@@ -207,6 +211,8 @@ t_env *node_allocate(void);
 char	**env_double_ptr(t_data *data);
 char	*myown_getenv(t_data *data, char *sec, int *status);
 void  pipeline(t_data *data);
+int		check_redirection(t_data *data, t_cmd *cmd);
+void  get_path(t_data *data, t_cmd *n_cmd);
 //void  cd_cmd(t_data *data);
 
 //this one in the main but should go to cd

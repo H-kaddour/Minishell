@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/26 22:04:29 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/27 10:57:30 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int find_slash(char *cmd)
   return (0);
 }
 
-void  get_path(t_data *data)
+void  get_path(t_data *data, t_cmd *n_cmd)
 {
   int i;
   char **sp;
@@ -47,15 +47,15 @@ void  get_path(t_data *data)
   i = 0;
   trav = data->l_env;
   //still need to fix this chick over here
-  if (find_slash(*data->v_cmd->cmd))
+  if (find_slash(*n_cmd->cmd))
   {
-    cmd = *data->v_cmd->cmd;
+    cmd = *n_cmd->cmd;
     if (access(cmd, F_OK) == 0)
     {
       if (access(cmd, X_OK) == 0)
       {
         //execve(cmd, data->v_cmd->cmd, data->env);
-        execve(cmd, data->v_cmd->cmd, env_double_ptr(data));
+        execve(cmd, n_cmd->cmd, env_double_ptr(data));
         return ;
       }
       else
@@ -66,7 +66,7 @@ void  get_path(t_data *data)
          //return ;
       }
     }
-    printf("minishell: command not found: %s\n", data->v_cmd->cmd[0]);
+    printf("minishell: command not found: %s\n", n_cmd->cmd[0]);
     exit(127);
     //return ;
   }
@@ -77,14 +77,15 @@ void  get_path(t_data *data)
   sp = ft_split(trav->value, ':');
   while (sp[i])
   {
-    cmd = ft_strjoin(ft_strjoin(sp[i], "/"), data->v_cmd->cmd[0]);
+    cmd = ft_strjoin(ft_strjoin(sp[i], "/"), n_cmd->cmd[0]);
     //if (access(ft_strjoin(ft_strjoin(sp[i], "/"), data->v_cmd->cmd[0]), F_OK) == 0)
     if (access(cmd, F_OK) == 0)
     {
       if (access(cmd, X_OK) == 0)
       {
         //execve(cmd, data->v_cmd->cmd, env_double_ptr(data));
-        execve(cmd, data->v_cmd->cmd, data->env);
+        //**execve(cmd, n_cmd->cmd, data->env);
+        execve(cmd, n_cmd->cmd, env_double_ptr(data));
         //if (data->v_cmd->f_in == 3)
         //  close(data->v_cmd->f_in);
           //printf("retrun process execve failded\n");
@@ -103,7 +104,7 @@ void  get_path(t_data *data)
     i++;
   }
   //here an error
-  printf("minishell: command not found: %s\n", data->v_cmd->cmd[0]);
+  printf("minishell: command not found: %s\n", n_cmd->cmd[0]);
   exit(127);
 }
 
@@ -133,7 +134,7 @@ void  run_one_cmd(t_data *data)
         dup2(data->v_cmd->f_in, STDIN_FILENO);
         dup2(data->v_cmd->f_out, STDOUT_FILENO);
       }
-      get_path(data);
+      get_path(data, data->v_cmd);
       //close(data->v_cmd->f_in);
     }
     //exit(0);
@@ -184,7 +185,7 @@ void  run_one_cmd(t_data *data)
   }
 }
 
-int check_redirection(t_data *data)
+int check_redirection(t_data *data, t_cmd *cmd)
 {
   t_cmd *trav;
   int i;
@@ -193,7 +194,9 @@ int check_redirection(t_data *data)
 
   i = 0;
   hrdoc_exist = 0;
-  trav = data->v_cmd;
+  //*trav = data->v_cmd;
+  trav = cmd;
+
   //> this one delete the file if exist and make a new one
   //>> this one not
   if (trav->redirect)
@@ -342,7 +345,7 @@ void  execution(t_data *data)
 
     //**if (check_redirection(data))
     //**  return ;
-    if (!check_redirection(data))
+    if (!check_redirection(data, data->v_cmd))
       run_one_cmd(data);
     //maybe >> not working well
     //also i should close fd >> > > > a lot in the above func

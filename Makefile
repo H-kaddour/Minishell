@@ -6,7 +6,7 @@
 #    By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/09 11:07:05 by hkaddour          #+#    #+#              #
-#    Updated: 2022/09/25 15:29:55 by hkaddour         ###   ########.fr        #
+#    Updated: 2022/09/27 15:02:58 by hkaddour         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC = tokenizer/main.c \
 			tokenizer/parser.c \
 			tokenizer/parser_utils.c \
 			execution/execution.c \
+			execution/pipeline.c \
 			builtin_cmd/builtin_cmd.c \
 			builtin_cmd/cd.c \
 			builtin_cmd/env.c \

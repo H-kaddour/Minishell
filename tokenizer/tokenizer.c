@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/23 13:33:01 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/27 13:00:50 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,7 @@ void	tokenizer(t_data *data)
 	//those var should not be here
 	data->index = 0;
 	data->check = 1;
+	data->error_lexer = 0;
 	//those two var should init in the main one time init
 	data->chk_hrdoc = 0;
 	//**data->chk_dolla = 0;
@@ -188,6 +189,7 @@ void	tokenizer(t_data *data)
 			{
 				//double free
 				//free_token_node(data);
+				data->error_lexer = 1;
 				return ;
 			}
 			//also '' "" now is entring in node of wrd
@@ -203,7 +205,10 @@ void	tokenizer(t_data *data)
 	}
 	//here token pt 2 maybe i will put it in if or not
 	if (lexer_pt2(data))
+	{
+		data->error_lexer = 1;
 		return ;
+	}
 	parser(data);
 
 	//here to write the arg that i entred in the nodes
