@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 19:35:09 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/05 09:43:23 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/28 10:36:09 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int	pipe_grammar(t_token *trav, int i)
 {
-	//check if | was the last element in the list and not in the first
 	if (trav->next && i != 0)
 	{
 		if (trav->next->type == W_SPACE)
@@ -34,10 +33,6 @@ static int	pipe_grammar(t_token *trav, int i)
 	}
 	else
 		return (0);
-	//if (trav->type == PIPE && i != 0 && trav)
-	//{
-
-	//}
 }
 
 static int	redirection_grammar(t_token *trav)
@@ -64,6 +59,23 @@ static int	redirection_grammar(t_token *trav)
 		return (0);
 }
 
+int	lexer_pt2_helper(t_token *trav)
+{
+	if (!redirection_grammar(trav))
+	{
+		if (trav->type == O_TRNC)
+			printf("minishell: syntax error near unexpected token '>'\n");
+		else if (trav->type == O_APEND)
+			printf("minishell: syntax error near unexpected token '>>'\n");
+		else if (trav->type == I_TRNC)
+			printf("minishell: syntax error near unexpected token '<'\n");
+		else if (trav->type == I_APEND)
+			printf("minishell: syntax error near unexpected token '<<'\n");
+		return (1);
+	}
+	return (0);
+}
+
 int	lexer_pt2(t_data *data)
 {
 	t_token *trav;
@@ -77,7 +89,6 @@ int	lexer_pt2(t_data *data)
 		{
 			if (!pipe_grammar(trav, i))
 			{
-				free_token_node(data);
 				printf("minishell: syntax error near unexpected token '|'\n");
 				return (1);
 			}
@@ -85,31 +96,11 @@ int	lexer_pt2(t_data *data)
 		else if (trav->type == O_TRNC || trav->type == O_APEND \
 				|| trav->type == I_TRNC || trav->type == I_APEND)
 		{
-			if (!redirection_grammar(trav))
-			{
-				free_token_node(data);
-				if (trav->type == O_TRNC)
-					printf("minishell: syntax error near unexpected token '>'\n");
-				else if (trav->type == O_APEND)
-					printf("minishell: syntax error near unexpected token '>>'\n");
-				else if (trav->type == I_TRNC)
-					printf("minishell: syntax error near unexpected token '<'\n");
-				else if (trav->type == I_APEND)
-					printf("minishell: syntax error near unexpected token '<<'\n");
+			if (lexer_pt2_helper(trav))
 				return (1);
-			}
 		}
 		trav = trav->next;
 		i++;
-		//if (pipe_grammar(trav, i))
-		//{
-		//}
-		//if (redirection_grammar(trav, i))
-		//{
-		//	free_token_node(data);
-		//	return (1);
-		//}
 	}
 	return (0);
 }
-//redirection should not be in the end with no file name 

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:22:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/27 15:42:21 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/28 10:59:47 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,14 @@ char *myown_getenv(t_data *data, char *sec, int *status)
     env = env->next;
   if (!ft_strcmp(env->sec, sec))
   {
-    *(status) = 1;
+    if (status)
+      *(status) = 1;
     return (ft_strdup(env->value));
   }
   else
   {
-    *(status) = 0;
+    if (status)
+      *(status) = 0;
     return (0);
   }
 }

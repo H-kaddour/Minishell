@@ -6,7 +6,7 @@
 #    By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/09 11:07:05 by hkaddour          #+#    #+#              #
-#    Updated: 2022/09/27 16:00:07 by hkaddour         ###   ########.fr        #
+#    Updated: 2022/09/28 15:22:30 by hkaddour         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,6 @@ SRC = main.c \
 			parser/parser.c \
 			parser/parser_utils.c \
 			execution/execution.c \
-			execution/pipeline.c \
 			builtin_cmd/builtin_cmd.c \
 			builtin_cmd/cd.c \
 			builtin_cmd/env.c \

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/27 15:38:20 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/28 11:55:28 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,7 @@ int		check_redirection(t_data *data, t_cmd *cmd);
 void  get_path(t_data *data, t_cmd *n_cmd);
 //void  cd_cmd(t_data *data);
 
+char *myown_getenv(t_data *data, char *sec, int *status);
 //this one in the main but should go to cd
 void  prompt_changer(t_data *data);
 

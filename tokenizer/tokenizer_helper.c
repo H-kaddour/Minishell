@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:44 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/04 17:45:48 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/28 09:53:12 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,7 @@ int	is_dolla(t_data *data, char *n_line)
 		i++;
 		while (n_line[i] != ' ' && !(n_line[i] >= 9 && n_line[i] <= 13) \
 				&& n_line[i] != '|' && n_line[i] != '>' && n_line[i] != '<' && n_line[i])
-		{
-			//if (n_line[i] == '$')
-			//{
-			//	i++;
-			//	break ;
-			//}
 			i++;
-		}
 	}
 	ft_init_tokenizer(data, &n_line[i], i, DOLLA);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 13:30:14 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/06 17:31:17 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/28 11:14:35 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	add_dolla_helper(t_data *data, int len)
 {
 	char	*dolla;
+	char	*hold;
 	t_env	*trav_env;
 
 	trav_env = data->l_env;
@@ -26,18 +27,9 @@ static void	add_dolla_helper(t_data *data, int len)
 	while (ft_acceptable_char(data->beg_line[data->i]))
 		dolla[len++] = data->beg_line[data->i++];
 	dolla[len] = 0;
-	while (ft_strncmp(trav_env->sec, dolla, len) && trav_env->next != NULL)
-		trav_env = trav_env->next;
-	if (!ft_strncmp(trav_env->sec, dolla, len))
-	{
-		free(dolla);
-		dolla = ft_strdup(trav_env->value);
-	}
-	else
-	{
-		free(dolla);
-		dolla = ft_strdup("");
-	}
+	hold = dolla;
+	dolla = myown_getenv(data, dolla, 0);
+	free(hold);
 	len = 0;
 	while (dolla[len])
 		data->node->value[data->j++] = dolla[len++];
@@ -70,13 +62,8 @@ void	add_dolla(t_data *data)
 	}
 }
 
-//void	add_dolla_begin(t_data *data)
-int	add_dolla_begin(t_data *data)
+int	dolla_begin_pt1(t_data *data)
 {
-	int		i;
-	char	*ptr;
-
-	i = 0;
 	if (data->beg_line[data->i + 1] == ' ')
 	{
 		data->node->value[data->j++] = data->beg_line[data->i++];
@@ -96,7 +83,14 @@ int	add_dolla_begin(t_data *data)
 		data->node->value[data->j++] = data->beg_line[data->i++];
 		return (1);
 	}
-	else if (data->beg_line[data->i + 1] == '0')
+	return (0);
+}
+
+int	dolla_begin_pt2(t_data *data)
+{
+	int	i;
+
+	if (data->beg_line[data->i + 1] == '0')
 	{
 		i = 2;
 		while (data->args[0][i])
@@ -110,7 +104,15 @@ int	add_dolla_begin(t_data *data)
 		data->i += 2;
 		return (1);
 	}
-	else if (data->beg_line[data->i + 1] == '?')
+	return (0);
+}
+
+int	dolla_begin_pt3(t_data *data)
+{
+	int	i;
+	char	*ptr;
+
+	if (data->beg_line[data->i + 1] == '?')
 	{
 		data->i += 2;
 		//mabye here i should free too
@@ -131,5 +133,17 @@ int	add_dolla_begin(t_data *data)
 		}
 		return (1);
 	}
+	return (0);
+}
+
+//void	add_dolla_begin(t_data *data)
+int	add_dolla_begin(t_data *data)
+{
+	if (dolla_begin_pt1(data))
+		return (1);
+	if (dolla_begin_pt2(data))
+		return (1);
+	if (dolla_begin_pt3(data))
+		return (1);
 	return (0);
 }

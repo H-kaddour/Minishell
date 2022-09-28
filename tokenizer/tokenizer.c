@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/27 13:00:50 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/28 09:51:35 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,56 +46,61 @@ static int	is_space(t_data *data, char *n_line)
 	return (1);
 }
 
-//here for example okay'ckj' should be in one arg
-static int	is_word(t_data *data, char *n_line)
+char	is_word_typ_changer(t_data *data, char *n_line, int *typ)
 {
 	char	c;
-	char	*sp;
+
+	c = n_line[data->i];
+	if (n_line[0] == c)
+	{
+		if (c == '\'')
+			*typ = S_QUOT;
+		else if (c == '\"')
+			*typ = D_QUOT;
+	}
+	return (c);
+}
+
+void	is_word_helper(t_data *data, char *n_line, int *typ)
+{
+	char	c;
 	int		quote;
+
+	quote = 0;
+	if (n_line[data->i] == '\"' || n_line[data->i] == '\'')
+	{
+		c = is_word_typ_changer(data, n_line, typ);
+		quote++;
+		data->i++;
+		while (n_line[data->i])
+		{
+			if (n_line[data->i] == c)
+				quote++;
+			if ((n_line[data->i] == ' ' || (n_line[data->i] >= 9 && n_line[data->i] <= 13) ||\
+						n_line[data->i] == '|' || n_line[data->i] == '>' || n_line[data->i] == '<')\
+					&& quote % 2 == 0)
+				break ;
+			data->i++;
+		}
+		if (n_line[data->i] == c)
+			data->i++;
+	}
+}
+
+static int	is_word(t_data *data, char *n_line)
+{
+	char	*sp;
 	int		typ;
 
-	///sp = "<|\">'$ ";
 	sp = "<|>$\t\v\r\f ";
-	//\t\v\r\f
 	data->i = 0;
-	quote = 0;
 	typ = WRD;
 	while (n_line[data->i])
 	{
 		data->j = 0;
-		if (n_line[data->i] == '\"' || n_line[data->i] == '\'')
-		{
-			c = n_line[data->i];
-			if (n_line[0] == c)
-			{
-				if (c == '\'')
-					typ = S_QUOT;
-				else if (c == '\"')
-					typ = D_QUOT;
-			}
-			//else
-			//	typ = WRD;
-			quote++;
-			data->i++;
-			//while (beg_line[data->i] != ' ')
-			while (n_line[data->i])
-			{
-				//if (n_line[data->i] == '\'' || n_line[data->i] == '\"')
-				if (n_line[data->i] == c)
-					quote++;
-				if ((n_line[data->i] == ' ' || (n_line[data->i] >= 9 && n_line[data->i] <= 13) ||\
-							n_line[data->i] == '|' || n_line[data->i] == '>' || n_line[data->i] == '<')\
-						&& quote % 2 == 0)
-					break ;
-				data->i++;
-			}
-			if (n_line[data->i] == c)
-				data->i++;
-		}
+		is_word_helper(data, n_line, &typ);
 		while (sp[data->j])
 		{
-			//if (beg_line[data->i] == sp[data->j] \
-			//		&& (sp[data->j] == '\"' || sp[data->j] == '\''))
 			if (n_line[data->i] == sp[data->j])
 				break ;
 			data->j++;
@@ -152,31 +157,21 @@ char	*spaces_takeoff(char *str)
 	return (ptr);
 }
 
-void	tokenizer(t_data *data)
+void	init_var_tokenizer(t_data *data)
 {
-	//here maybe i should check all whitespace also in is_space
-	//if (data->line[0] == ' ' || (data->line[0]))
-	//**data->beg_line = spaces_first(data->line);
-		//data->beg_line = ft_strchr(data->line, ' ');
-	//strchr it's not working and take off the whitespaces too
-	//**else
-	//**	data->beg_line = data->line;
-	//take off the end spaces
-	//data->beg_line = spaces_takeoff(data->beg_line);
-	data->beg_line = spaces_takeoff(data->line);
-	if (!data->beg_line)
-		return ;
-	//those var should not be here
 	data->index = 0;
 	data->check = 1;
 	data->error_lexer = 0;
-	//those two var should init in the main one time init
 	data->chk_hrdoc = 0;
-	//**data->chk_dolla = 0;
 	ft_init_tokenizer(data, data->beg_line, 0, 0);
-	//if (!lexer(data))
-	//	return ;
-	//while (data->line[data->index])
+}
+
+void	tokenizer(t_data *data)
+{
+	data->beg_line = spaces_takeoff(data->line);
+	if (!data->beg_line)
+		return ;
+	init_var_tokenizer(data);
 	while (*data->beg_line)
 	{
 		if (is_word(data, data->n_line) || is_space(data, data->n_line) || \
@@ -187,39 +182,15 @@ void	tokenizer(t_data *data)
 		{
 			if (add_node(data, data->typ))
 			{
-				//double free
-				//free_token_node(data);
 				data->error_lexer = 1;
 				return ;
 			}
-			//also '' "" now is entring in node of wrd
-			//before u return u should free the token node and return an error msg with color and print newline prompt
 		}
-		//if (is_word(data, data->n_line) || is_space(data, data->n_line) || \
-		//		is_d_quote(data, data->n_line) || is_dolla(data, data->n_line))
-		//	add_node(data, data->typ);
-		//if (is_pipe(data, data->n_line) || is_s_quote(data, data->n_line) || \
-		//		is_i_redirection(data, data->n_line) || \
-		//		is_o_redirection(data, data->n_line))
-		//	add_node(data, data->typ);
 	}
-	//here token pt 2 maybe i will put it in if or not
 	if (lexer_pt2(data))
 	{
 		data->error_lexer = 1;
 		return ;
 	}
 	parser(data);
-
-	//here to write the arg that i entred in the nodes
-	//**t_token	*trav;
-
-	//**trav = data->t_token;
-	//**while (trav)
-	//**{
-	//**	printf("| %d |\n", trav->type);
-	//**	printf("| %s |\n", trav->value);
-	//**	printf("\n");
-	//**	trav = trav->next;
-	//**}
 }
