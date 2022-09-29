@@ -6,21 +6,11 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:12:08 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/29 12:00:52 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/29 12:06:58 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 == *s2 && *s1 && *s2)
-	{
-		s1++;
-		s2++;
-	}
-	return ((unsigned char)*s1 - (unsigned char)*s2);
-}
 
 void	heredoc_alloc(t_data *data, char *dolla, char *ptr)
 {

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/29 10:53:19 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/29 18:14:12 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
+# define MOVE_UP_RIGHRT "\033[1A\033[12C"
 //# include "~/.brew/opt/readline/include/readline"
 //# include "../.brew/opt/readline/include/readline/readline.h"
 //# include "../.brew/opt/readline/include/readline/rlstdc.h"
@@ -179,7 +180,7 @@ int	lexer_pt2(t_data *data);
 int	lexer_pt1(t_data *data, t_types typ);
 
 /******* Function of parser ************/
-int		ft_strcmp(const char *s1, const char *s2);
+//int		ft_strcmp(const char *s1, const char *s2);
 void	heredoc_implement(t_data *data, char *det);
 void  parser(t_data *data);
 
@@ -205,11 +206,13 @@ void  pipeline(t_data *data);
 int		check_redirection(t_data *data, t_cmd *cmd);
 void  get_path(t_data *data, t_cmd *n_cmd);
 void  error_execution(t_data *data, char *msg);
+void  execute_sys_cmd(t_data *data, t_cmd *cmd);
 //void  cd_cmd(t_data *data);
 
 char *myown_getenv(t_data *data, char *sec, int *status);
 //this one in the main but should go to cd
 void  prompt_changer(t_data *data);
+void  sig_exec(int c);
 
 
 //i gotta sperate the function prototype

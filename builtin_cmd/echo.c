@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:15:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/23 13:47:37 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/29 15:43:05 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int check_nline_option(char **cmd)
       j++;
     }
     i++;
+    if (!cmd[i])
+      return (i);
   }
   return (i);
 }
@@ -42,7 +44,12 @@ void  echo_cmd(t_data *data)
 
   trav = data->v_cmd;
   if (trav->cmd[1])
+  {
     chk = check_nline_option(trav->cmd);
+    //if (!trav->cmd[chk + 1])
+    //if (!ft_strncmp(trav->cmd[chk + 1], "-n", 2))
+    //  return ;
+  }
   else
   {
     ft_putchar_fd('\n', trav->f_out);

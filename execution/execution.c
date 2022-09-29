@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/28 15:21:17 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/29 18:12:33 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void  exec_cmd_path(t_data *data, t_cmd *cmd, char **sp)
     {
       if (access(path, X_OK) == 0)
       {
+        signal(SIGQUIT, SIG_DFL);
         execve(path, cmd->cmd, env_double_ptr(data));
         free(path);
       }
@@ -299,6 +300,6 @@ void  execution(t_data *data)
         close(data->v_cmd->f_out);
     }
   }
-  //else
-  //  pipeline(data);
+  else
+    pipeline(data);
 }

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/28 12:49:32 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/29 15:22:09 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,12 @@
 
 void  sig_c(int c)
 {
-  if (c == SIGINT) {
+  if (c == SIGINT)
+  {
     printf("\n");
     rl_on_new_line();
     rl_replace_line("", 0);
     rl_redisplay();
-  }
-  else if (c == SIGQUIT)
-  {
-    printf("\n");
-    //rl_on_new_line();
-    //rl_redisplay();
-    exit(0);
   }
 }
 
@@ -152,23 +146,27 @@ int main(int ac, char **av, char **envp)
   if (ac == 1)
   {
     init_shell_elem(&data, av, envp);
-    //signal(SIGINT, sig_c);
-    //signal(SIGQUIT, sig_c);
     while (1)
     {
+      rl_catch_signals = 0;
       signal(SIGINT, sig_c);
-      signal(SIGQUIT, sig_c);
+      signal(SIGQUIT, SIG_IGN);
       prompt_changer(&data);
       data.line = readline(data.prompt);
       if (!data.line)
-        return (0);
+      {
+      	printf(MOVE_UP_RIGHRT "\t\texit\n");
+        exit(131);
+      }
       if (data.line[0] == 0)
         new_prompt();
       else
       {
         tokenizer(&data);
         if (!data.error_lexer)
+        {
           execution(&data);
+        }
       }
       add_shell_history(&data);
       free(data.line);

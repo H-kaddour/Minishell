@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/28 09:51:35 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/29 14:30:08 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,8 @@ char	*spaces_takeoff(char *str)
 	if (!str)
 		return (0);
 	str = spaces_first(str);
+	if (!str)
+		return (0);
 	len = ft_strlen(str) - 1;
 	if (str[len] == ' ' || (str[len] >= 9 && str[len] <= 13))
 	{
@@ -170,7 +172,10 @@ void	tokenizer(t_data *data)
 {
 	data->beg_line = spaces_takeoff(data->line);
 	if (!data->beg_line)
+	{
+		data->error_lexer = 1;
 		return ;
+	}
 	init_var_tokenizer(data);
 	while (*data->beg_line)
 	{

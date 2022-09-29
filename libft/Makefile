@@ -6,7 +6,7 @@
 #    By: hkaddour <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/04 20:10:00 by hkaddour          #+#    #+#              #
-#    Updated: 2022/07/05 16:48:02 by hkaddour         ###   ########.fr        #
+#    Updated: 2022/09/29 12:05:27 by hkaddour         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,8 @@ srcs =	ft_atoi.c \
 		ft_itoa.c \
 		ft_putendl_fd.c \
 		ft_strlcpy.c \
-		ft_toupper.c
+		ft_toupper.c \
+		ft_strcmp.c
 
 objs = $(srcs:.c=.o)
 BGreen=\033[1;32m
