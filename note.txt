@@ -274,3 +274,4 @@ export if i started with number 9kdl=kk error but if kl3=4 works also operators 
 kill -s SIGSEGV cmd to send signals to a process
 protect malloc
 ^C to not show and start ne9i lcode
+heredoc and main ctrl \ and ctrl C not to show

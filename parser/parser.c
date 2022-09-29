@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 10:32:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/28 18:31:17 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/29 10:45:34 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,46 +116,42 @@ void  parsing_get_len_alloc_cmd_arr(t_data *data, int *len, int *red_len)
   }
 }
 
-void  parsing_alloc_red_space(t_data *data, t_token *trav, int *chk, t_red *trav_red)
+t_token *parsing_alloc_red_space(t_data *data, t_token *trav, int *chk, t_red *trav_red)
 {
-  if (trav->next->type == W_SPACE)
+  trav_red->typ = trav->type;
+  if (trav->type != I_APEND)
+    trav_red->file = ft_strdup(trav->next->next->value);
+  else
   {
-    trav_red->typ = trav->type;
-    if (trav->type != I_APEND)
-      trav_red->file = ft_strdup(trav->next->next->value);
-    else
-    {
-      trav_red->determiner = ft_strdup(trav->next->next->value);
-      if (*chk != 0)
-        close(data->hrdoc_fd[0]);
-      heredoc_implement(data, trav_red->determiner);
-      if (data->chk_hrdoc_exit == 1)
-        return ;
-      *(chk) = 1;
-    }
-    trav = trav->next->next->next;
+    trav_red->determiner = ft_strdup(trav->next->next->value);
+    if (*chk != 0)
+      close(data->hrdoc_fd[0]);
+    heredoc_implement(data, trav_red->determiner);
+    if (data->chk_hrdoc_exit == 1)
+      return (trav);
+    *(chk) = 1;
   }
+  trav = trav->next->next->next;
+  return (trav);
 }
 
-void  parsing_alloc_red_no_space(t_data *data, t_token *trav, int *chk, t_red *trav_red)
+t_token *parsing_alloc_red_no_space(t_data *data, t_token *trav, int *chk, t_red *trav_red)
 {
-  if (trav->next->type != W_SPACE)
+  trav_red->typ = trav->type;
+  if (trav->type != I_APEND)
+    trav_red->file = ft_strdup(trav->next->value);
+  else
   {
-    trav_red->typ = trav->type;
-    if (trav->type != I_APEND)
-      trav_red->file = ft_strdup(trav->next->value);
-    else
-    {
-      trav_red->determiner = ft_strdup(trav->next->value);
-      if (*chk != 0)
-        close(data->hrdoc_fd[0]);
-      heredoc_implement(data, trav_red->determiner);
-      if (data->chk_hrdoc_exit == 1)
-        return ;
-      *(chk) = 1;
-    }
-    trav = trav->next->next;
+    trav_red->determiner = ft_strdup(trav->next->value);
+    if (*chk != 0)
+      close(data->hrdoc_fd[0]);
+    heredoc_implement(data, trav_red->determiner);
+    if (data->chk_hrdoc_exit == 1)
+      return (trav);
+    *(chk) = 1;
   }
+  trav = trav->next->next;
+  return (trav);
 }
 
 int get_cmd_parsing_helper(t_data *data, t_token **trav, t_red *trav_red, int *i)
@@ -175,8 +171,10 @@ int get_cmd_parsing_helper(t_data *data, t_token **trav, t_red *trav_red, int *i
   else if (trav[0]->type == O_TRNC || trav[0]->type == O_APEND \
       || trav[0]->type == I_TRNC || trav[0]->type == I_APEND)
   {
-    parsing_alloc_red_space(data, trav[0], &chk, trav_red);
-    parsing_alloc_red_no_space(data, trav[0], &chk, trav_red);
+    if (trav[0]->next->type == W_SPACE)
+      *trav = parsing_alloc_red_space(data, *trav, &chk, trav_red);
+    else
+      *trav = parsing_alloc_red_no_space(data, *trav, &chk, trav_red);
     if (data->chk_hrdoc_exit == 1)
       return (1);
     trav_red = trav_red->next;
@@ -187,9 +185,10 @@ int get_cmd_parsing_helper(t_data *data, t_token **trav, t_red *trav_red, int *i
 static void get_cmd_parsing(t_data *data)
 {
   t_token *trav;
+  t_red   *trav_red;
   int     red_len;
   int     cmd_len;
-  int i;
+  int     i;
 
   i = 0;
   red_len = 0;
@@ -198,7 +197,6 @@ static void get_cmd_parsing(t_data *data)
   parsing_get_len_alloc_cmd_arr(data, &cmd_len, &red_len);
   data->trav_cmd->cmd = malloc(sizeof(char *) * cmd_len + 1);
   allocate_red_node(data, red_len);
-  t_red *trav_red;
   trav_red = data->trav_cmd->redirect;
   while (trav)
   {
@@ -234,48 +232,3 @@ void  parser(t_data *data)
       data->trav = data->trav->next;
   }
 }
-//problem sending & address of trav
-//#include <stdio.h>
-//#include <stdlib.h>
-//typedef struct ll
-//{
-//  char *var;
-//  struct ll *next;
-//} t_ll;
-//
-//void  lele(t_ll **node)
-//{
-//  *node = node[0]->next;
-//}
-//
-//void cool(t_ll **node, int i)
-//{
-//  *node = node[0]->next;
-//    lele(node);
-//}
-//
-//void  hey(t_ll **node)
-//{
-//  t_ll *tmp;
-//  int   i;
-//  
-//  i = 0;
-//  tmp = node;
-//    cool(node, i);
-//
-//}
-//
-//int main()
-//{
-//  t_ll  *node;
-//  t_ll  *head;
-//  node = malloc(sizeof(t_ll));
-//  node->var = "hicham";
-//  node->next = malloc(sizeof(t_ll));
-//  node->next->var = "kaddouri";
-//  node->next->next = malloc(sizeof(t_ll));
-//  node->next->next->var = "lele";
-//  node->next->next->next = 0;
-//  hey(&node);
-//  return 0;
-//}

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 13:30:14 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/28 11:14:35 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/09/29 11:32:32 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static void	add_dolla_helper(t_data *data, int len)
 	dolla[len] = 0;
 	hold = dolla;
 	dolla = myown_getenv(data, dolla, 0);
+	if (!dolla)
+		dolla = ft_strdup("");
 	free(hold);
 	len = 0;
 	while (dolla[len])
