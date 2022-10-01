@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/29 18:14:12 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/01 10:28:01 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
+# include <errno.h>
 # define MOVE_UP_RIGHRT "\033[1A\033[12C"
 //# include "~/.brew/opt/readline/include/readline"
 //# include "../.brew/opt/readline/include/readline/readline.h"
@@ -213,6 +214,7 @@ char *myown_getenv(t_data *data, char *sec, int *status);
 //this one in the main but should go to cd
 void  prompt_changer(t_data *data);
 void  sig_exec(int c);
+char *take_off_the_lst_slash(char *cmd);
 
 
 //i gotta sperate the function prototype

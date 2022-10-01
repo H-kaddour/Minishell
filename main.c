@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/29 15:22:09 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/01 09:26:56 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,9 +164,7 @@ int main(int ac, char **av, char **envp)
       {
         tokenizer(&data);
         if (!data.error_lexer)
-        {
           execution(&data);
-        }
       }
       add_shell_history(&data);
       free(data.line);

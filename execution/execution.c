@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/29 18:12:33 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/01 09:31:14 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void  exec_cmd_path(t_data *data, t_cmd *cmd, char **sp)
       {
         signal(SIGQUIT, SIG_DFL);
         execve(path, cmd->cmd, env_double_ptr(data));
-        free(path);
       }
       else
       {

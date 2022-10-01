@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/29 21:02:14 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/01 09:21:59 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,16 @@ void  run(t_data *data, char *cmd)
     ll = "ls -la";
     sp = ft_split(ll, ' ');
   }
-  else
+  else if (cmd[0] == 'g')
   {
     c1 = ft_strjoin("/usr/bin/", cmd);
     ll = "grep gi";
+    sp = ft_split(ll, ' ');
+  }
+  else if (cmd[0] == 'w')
+  {
+    c1 = ft_strjoin("/usr/bin/", cmd);
+    ll = "wc -l";
     sp = ft_split(ll, ' ');
   }
   execve(c1, sp, data->env);
@@ -39,6 +45,7 @@ void  pipeline(t_data *data)
   int   i;
   int   pid;
   int   fd[2];
+  //char  rd[10] = {0};
   //int   fd_hold;
 
   i = 0;
@@ -66,16 +73,17 @@ void  pipeline(t_data *data)
   i = 0;
   //char ptr[10] = {0};
   //pipe(fd);
+  //while (i < 2)
   while (trav)
   {
     //pipe(fd);
     //printf("cmd = %s    in = %d    out = %d\n", trav->cmd[0], trav->f_in, trav->f_out);
-    printf("cmd = %s    in = %d    out = %d\n", trav->cmd[0], trav->f_in, trav->f_out);
+    //printf("cmd = %s    in = %d    out = %d\n", trav->cmd[0], trav->f_in, trav->f_out);
     pid = fork();
     if (pid < 0)
     {
       printf("error in fork\n");
-      exit(0);
+      exit(2);
     }
     if (pid == 0)
     {
@@ -113,26 +121,40 @@ void  pipeline(t_data *data)
       //**  //close(trav->f_out);
       //**  dup2(trav->f_in, STDIN_FILENO);
       //**}
+      //if (i != 3)
         dup2(trav->f_out, STDOUT_FILENO);
+      //if (i != 0)
         dup2(trav->f_in, STDIN_FILENO);
       //close(trav->f_in);
       //if (trav->f_out > 1)
       //  close(trav->f_out);
       //printf("in = %d    out = %d\n", trav->f_in, trav->f_out);
       //get_path(data, trav);
-      //execute_sys_cmd(data, trav);
-      //run(data, trav->cmd[0]);
+      execute_sys_cmd(data, trav);
+      //*run(data, trav->cmd[0]);
       //exit(0);
+      //*read(trav->f_in, &rd, 9);
+      //*printf("%s\n", rd);
+      //free(rd);
+      //printf("hey \n");
+      break ;
+      //return ;
+      //exit(1);
     }
     //read(trav->f_out, &ptr, 9);
     //printf("**%s**\n", ptr);
     //while (1);
-    //if (pid == 1)
+    //else
     //{
-		//  signal(SIGINT, SIG_IGN);
-    //  wait(0);
+		//  //signal(SIGINT, SIG_IGN);
+    //  //wait(0);
+    //  waitpid(pid, NULL, 0);
+    //  //if (read(trav->f_in, &rd, 9) <= 0)
+    //  //  printf("file empty\n");
+    //  //printf("\n**%s\n", rd);
     //  //close(fd[0]);
     //  //fd_hold = fd[1];
+    //  trav = trav->next;
     //}
     trav = trav->next;
     //i++;
@@ -146,11 +168,25 @@ void  pipeline(t_data *data)
   //}
   //i = 0;
   //trav = data->v_cmd;
+
+  //**this one works
+  //while ((wait(0) != -1 || errno != ECHILD))
+  //{
+  //  printf("hey\n");
+  //}
   while(1)
   {
-    if (waitpid(-1, NULL, 0) == -1)
+    //waitpid(trav->pid, NULL, 0);
+    //wait(0);
+    //trav = trav->next;
+    //if (wait(0))
+    //if (waitpid(-1, NULL, 0) == -1)
+    if (waitpid(pid, NULL, 0) == -1)
+    {
       break;
+    }
   }
+
   //close(trav->f_in);
   //close(trav->f_out);
   //while (i < 2)

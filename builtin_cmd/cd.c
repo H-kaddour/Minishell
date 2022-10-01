@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:22:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/29 12:50:51 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/01 12:05:37 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,50 +303,112 @@ void  cd_between_pwd_and_oldpwd(t_data *data, char *cmd)
   }
 }
 
-int len_for_root(char *start, char *end)
+//int len_for_root(char *start, char *end)
+//{
+//  if (&start[0] == &end[0])
+//    return (1);
+//  else
+//    return (0);
+//}
+
+int check_errors(char *cmd)
 {
-  if (&start[0] == &end[0])
-    return (1);
-  else
-    return (0);
+  int i;
+
+  i = 0;
+  while (cmd[i])
+  {
+    if (cmd[i] == '.')
+    {
+      if (ft_strcmp(cmd, "..") && ft_strcmp(cmd, "."))
+        return (1);
+      else
+      {
+        if (!ft_strcmp(cmd, ".."))
+          i += 2;
+        else if (!ft_strcmp(cmd, "."))
+          i++;
+      }
+    }
+    if (cmd[i] == '/')
+      i++;
+    i++;
+  }
+  return (0);
 }
 
 void  cd_double_dot(t_data *data, char *cmd)
 {
   int   i;
-  int   lst;
-  t_env *trav;
+  int   len;
+  char  *pwd;
   char  *path;
-  char  *val;
 
-  trav = data->l_env;
-  while (ft_strcmp(trav->sec, "PWD") && trav->next)
-    trav = trav->next;
-  if (1)
+  i = 0;
+  if (chdir(cmd) != 0)
   {
-    if (!ft_strcmp(trav->sec, "PWD"))
-      val = trav->value;
-    else
-      val = data->pwd_of_mysys;
-    lst = ft_strlen(val) - 1;
-    while (val[lst] != '/')
-      lst--;
-    if (len_for_root(&val[0], &val[lst]) == 1)
-    {
-      execute_cmd_cd(data, cmd, "/");
-      return ;
-    }
-    path = malloc(sizeof(char) * lst);
-    i = 0;
-    while (&val[i] != &val[lst])
-    {
-      path[i] = val[i];
-      i++;
-    }
-    path[i] = 0;
-    execute_cmd_cd(data, cmd, path);
+    printf("minishell: cd: %s: No such file or directory\n", cmd);
+    return ;
   }
+  pwd = malloc(sizeof(char) * 1024);
+  getcwd(pwd, 1024);
+  printf("%s\n", pwd);
+  //pwd = myown_getenv(data, "PWD", 0);
+  //if (!pwd)
+  //  pwd = data->pwd_of_mysys;
+  //if (check_errors(cmd))
+  //{
+  //  printf("minishell: cd: %s: No such file or directory\n", cmd);
+  //  return ;
+  //  //error here
+  //}
+  //path = take_off_the_lst_slash(cmd);
+  
+  //if (path[0] == '/')
+  //{
+  //  while (path[i])
+  //}
+  //else
+  //here check if / or not
+
 }
+
+//void  cd_double_dot(t_data *data, char *cmd)
+//{
+//  int   i;
+//  int   lst;
+//  t_env *trav;
+//  char  *path;
+//  char  *val;
+//
+//  trav = data->l_env;
+//  while (ft_strcmp(trav->sec, "PWD") && trav->next)
+//    trav = trav->next;
+//  if (1)
+//  {
+//    if (!ft_strcmp(trav->sec, "PWD"))
+//      val = trav->value;
+//    else
+//      val = data->pwd_of_mysys;
+//    lst = ft_strlen(val) - 1;
+//    while (val[lst] != '/')
+//      lst--;
+//    if (len_for_root(&val[0], &val[lst]) == 1)
+//    {
+//      execute_cmd_cd(data, cmd, "/");
+//      return ;
+//    }
+//    path = malloc(sizeof(char) * lst);
+//    i = 0;
+//    while (&val[i] != &val[lst])
+//    {
+//      path[i] = val[i];
+//      i++;
+//    }
+//    path[i] = 0;
+//    execute_cmd_cd(data, cmd, path);
+//  }
+//}
 
 int cd_to_root(t_data *data, char *cmd)
 {
@@ -457,22 +519,31 @@ void  cd_cmd(t_data *data)
   t_cmd *trav_c;
   trav_c = data->v_cmd;
 
-  if (!trav_c->cmd[1] || trav_c->cmd[1][0] == '~' || !trav_c->cmd[1][0])
-    cd_home_path(data, trav_c->cmd[1]);
-  else if (!ft_strcmp(trav_c->cmd[1], "."))
-  {
-    cd_period(data);
-    return ;
-  }
-  else if (trav_c->cmd[1][0] == '-')
-    cd_between_pwd_and_oldpwd(data, trav_c->cmd[1]);
-  else if (!ft_strcmp(trav_c->cmd[1], ".."))
+  //if (!trav_c->cmd[1] || trav_c->cmd[1][0] == '~' || !trav_c->cmd[1][0])
+  //  cd_home_path(data, trav_c->cmd[1]);
+  //else if (!ft_strcmp(trav_c->cmd[1], "."))
+  //{
+  //  cd_period(data);
+  //  return ;
+  //}
+  //else if (trav_c->cmd[1][0] == '-')
+  //  cd_between_pwd_and_oldpwd(data, trav_c->cmd[1]);
+  //else if (!ft_strncmp(trav_c->cmd[1], "..", 2))
     cd_double_dot(data, trav_c->cmd[1]);
-  else if (trav_c->cmd[1][0] != '-' && trav_c->cmd[1][0] != '~' && trav_c->cmd[1][0] != '.' && trav_c->cmd[1])
-    cd_path_and_folders(data, trav_c->cmd[1]);
-  else
-  {
-    data->chk_dolla = 1;
-    printf("minishell: cd: %s: No such file or directory\n", trav_c->cmd[1]);
-  }
+  //else if (trav_c->cmd[1][0] != '-' && trav_c->cmd[1][0] != '~' && trav_c->cmd[1][0] != '.' && trav_c->cmd[1])
+  //  cd_path_and_folders(data, trav_c->cmd[1]);
+  //else
+  //{
+  //  data->chk_dolla = 1;
+  //  printf("minishell: cd: %s: No such file or directory\n", trav_c->cmd[1]);
+  //}
 }
+
+//now i will add .. and . and path and / in one function it runs and then i get the path\
+//with getcwd and put it in env
+//then check all possible way of cd
+//and gad norminette 
+//and start in * in parsing 
+//and free leaks
+//and after malloc put bzero in the address
+//in tokenizer count len of malloc
