@@ -6,7 +6,7 @@
 /*   By: hkaddour <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 12:31:35 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/29 12:04:38 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/02 01:13:43 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int		ft_toupper(int arg);
 size_t	ft_strlen(const	char *str);
 size_t	ft_strlcpy(char *dst, const char *src, size_t n);
 size_t	ft_strlcat(char *dst, const char *src, size_t size_dst);
+size_t	ft_strcspn(const char *s, const char *reject);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_memcmp(const void *str1, const void *str2, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);

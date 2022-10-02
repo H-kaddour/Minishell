@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/01 10:28:01 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/02 06:25:32 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,10 @@ typedef struct s_data
 	/*end of execution*/
 	//for prompt
 	char		*prompt;
+	//env of execve double array pointer
+	char		**env_exec;
+	//len of tokenizer value
+	int			tok_len;
 }	t_data;
 
 /******* Function of tokenizer *********/
@@ -174,66 +178,90 @@ int		is_s_quote(t_data *data, char *n_line);
 int		is_dolla(t_data *data, char *n_line);
 int		is_d_quote(t_data *data, char *n_line);
 void	tokenizer(t_data *data);
+/******* Function of tokenizer count len *********/
+int		get_len(t_data *data);
+int		count_dolla_begin(t_data *data);
+void	count_dolla(t_data *data);
 
 /******* Function of lexer ************/
-//int	lexer(t_data *data, t_types typ);
 int	lexer_pt2(t_data *data);
 int	lexer_pt1(t_data *data, t_types typ);
 
 /******* Function of parser ************/
-//int		ft_strcmp(const char *s1, const char *s2);
 void	heredoc_implement(t_data *data, char *det);
 void  parser(t_data *data);
 
-/**** Function of execution **********/
-void  execution(t_data *data);
-
 /**** Function of builtin cmd **********/
-//void  builtin_cmd(t_data *data, char *cmd);
 int		check_builtin(char **cmd);
 void  builtin_cmd(t_data *data, char *cmd);
 void  cd_cmd(t_data *data);
-void  get_env(t_data *data);
-void  env_cmd(t_data *data);
 void  pwd_cmd(t_data *data);
 void  exit_cmd(t_data *data);
 void  echo_cmd(t_data *data);
 void  export_cmd(t_data *data);
 void  unset_cmd(t_data *data);
-t_env *node_allocate(void);
-char	**env_double_ptr(t_data *data);
-char	*myown_getenv(t_data *data, char *sec, int *status);
 void  pipeline(t_data *data);
-int		check_redirection(t_data *data, t_cmd *cmd);
-void  get_path(t_data *data, t_cmd *n_cmd);
-void  error_execution(t_data *data, char *msg);
-void  execute_sys_cmd(t_data *data, t_cmd *cmd);
-//void  cd_cmd(t_data *data);
 
-char *myown_getenv(t_data *data, char *sec, int *status);
 //this one in the main but should go to cd
 void  prompt_changer(t_data *data);
 void  sig_exec(int c);
 char *take_off_the_lst_slash(char *cmd);
 
 
-//i gotta sperate the function prototype
-//**t_env *node_allocate(t_data *data);
-//**void  export_cmd(t_data *data);
-//**void  reinit_env(t_data *data);
-//**void  echo_cmd(t_data *data);
-//**void  env_cmd(t_data *data);
-//**void  pwd_cmd(t_data *data);
-//**void  get_env(t_data *data);
-//**void  error(char *msg, int check);
-//**void  lexer(t_data *data);
-//**void  tokenizer(t_data *data);
-//**void  unset_cmd(t_data *data);
-void  nl(void);
-//int		ft_acceptable_char(int c);
 
-//**
+
+/**** Function of one_cmd execution ****/
+void  fds_closer(t_cmd *cmd, t_red *red);
+void  run_one_cmd(t_data *data);
+void  exit_status(int *exit_stat, int status);
+void  error_execution(t_data *data, char *msg);
+int		find_slash(char *cmd);
+int		check_redirection(t_data *data, t_cmd *cmd);
+void  run_one_cmd(t_data *data);
+void  execute_sys_cmd(t_data *data, t_cmd *cmd);
+void  execution(t_data *data);
+
+
+
+/**** Function of builtin cmd **********/
+void  cd_cmd(t_data *data);
+void  echo_cmd(t_data *data);
+void  pwd_cmd(t_data *data);
+void 	env_cmd(t_data *data);
+void  export_cmd(t_data *data);
+void  unset_cmd(t_data *data);
+void  exit_cmd(t_data *data);
+
+
+/**** Function of cd **********/
+void  cd_between_pwd_and_oldpwd(t_data *data, char *cmd);
+void  error_cd(t_data *data, char *msg);
+void  cd_everywhere_at_once(t_data *data, char *cmd);
+void  change_oldpwd(t_data *data);
+void  change_pwd(t_data *data, char *path);
+void  old_pwd_alloc(t_data *data);
+
+
+/**** Function of env **********/
+void  sort_env(t_data *data);
+char	*myown_getenv(t_data *data, char *sec, int *status);
+t_env	*getenv_addr(t_data *data, char *sec);
+t_env	*node_allocate(void);
+char	**env_double_ptr(t_data *data);
+void  get_env(t_data *data);
+
+
+/**** Function of export **********/
+int 	check_export_error(t_data *data, char *cmd);
+int 	if_exist_or_not(t_data *data, char *cmd);
+int 	check_if_equal_or_wrd(char *cmd);
+int 	dup_opt_wrd(t_data *data, t_env *env, char *cmd);
+int 	check_existence(t_data *data, char *cmd, int hold, t_env *env);
+void  dup_opt_equal_helper(t_env **env, char *cmd, int *hold);
+
+
+
+
 void  token_s_quote(t_data *data);
-//char  *grab_line(int fd);
 
 #endif

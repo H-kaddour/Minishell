@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_strcspn.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/20 12:22:53 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 03:34:08 by hkaddour         ###   ########.fr       */
+/*   Created: 2022/10/02 01:12:19 by hkaddour          #+#    #+#             */
+/*   Updated: 2022/10/02 01:13:15 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-void	pwd_cmd(t_data *data)
+size_t	ft_strcspn(const char *s, const char *reject)
 {
-	t_env	*trav;
+	int	i;
+	int	j;
 
-	trav = data->l_env;
-	while (ft_strcmp(trav->sec, "PWD") && trav->next)
-		trav = trav->next;
-	if (!ft_strcmp(trav->sec, "PWD"))
-		printf("%s\n", trav->value);
-	else
-		printf("%s\n", data->pwd_of_mysys);
+	i = 0;
+	while (s[i])
+	{
+		j = 0;
+		while (reject[j])
+		{
+			if (s[i] == reject[j])
+				return (i);
+			j++;
+		}
+		i++;
+	}
+	return (i);
 }

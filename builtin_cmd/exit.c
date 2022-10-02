@@ -6,65 +6,52 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 11:38:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/24 17:04:39 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/02 03:38:22 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int check_nbr(char *arg)
+static void	exit_stat(char *cmd, int stat, int chk)
 {
-  while (*arg)
-  {
-    if (!ft_isdigit(*arg))
-      return (0);
-    arg++;
-  }
-  return (1);
+	printf("exit\n");
+	if (chk == 1)
+		printf("minishell: exit: %s: too many arguments\n", cmd);
+	exit(stat);
 }
 
-void  exit_cmd(t_data *data)
+static int	check_nbr(char *arg)
 {
-  //i will change the exit status later with it's number
-  int   i;
-  t_cmd *trav;
-
-  i = 1;
-  trav = data->v_cmd;
-  if (!trav->cmd[i])
-  {
-    printf("exit\n");
-    exit(0);
-  }
-  else
-  {
-    if (check_nbr(trav->cmd[i]))
-    {
-      i++;
-      if (!trav->cmd[i])
-      {
-        printf("exit\n");
-        exit(255);
-      }
-      else
-      {
-        data->chk_dolla = 1;
-        printf("exit\n");
-        printf("minishell: exit: too many arguments\n");
-      }
-    }
-    else
-    {
-      printf("exit\n");
-      printf("minishell: exit: %s: too many arguments\n", trav->cmd[i]);
-      exit(255);
-    }
-  }
-  //exit(0);
+	while (*arg)
+	{
+		if (!ft_isdigit(*arg))
+			return (0);
+		arg++;
+	}
+	return (1);
 }
 
-//exit only exit with printing exit and exit with 0
-//if exit with number as args 1 don't exit and error msg
-//if exit with 9348 in one arg should exit but 2 args and more with number and char in second args dont exit and status in mishell 1
-//if exit with char exit 255 with a error msg
-//exit and redirection open file and boom exit
+void	exit_cmd(t_data *data)
+{
+	t_cmd	*trav;
+
+	trav = data->v_cmd;
+	if (!trav->cmd[1])
+		exit_stat(0, 0, 0);
+	else
+	{
+		if (check_nbr(trav->cmd[1]))
+		{
+			if (!trav->cmd[2])
+				exit_stat(0, 255, 0);
+			else
+			{
+				data->chk_dolla = 1;
+				printf("exit\n");
+				printf("minishell: exit: too many arguments\n");
+			}
+		}
+		else
+			exit_stat(trav->cmd[1], 255, 1);
+	}
+}

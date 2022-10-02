@@ -275,3 +275,14 @@ kill -s SIGSEGV cmd to send signals to a process
 protect malloc
 ^C to not show and start ne9i lcode
 heredoc and main ctrl \ and ctrl C not to show
+
+Todo:
+- gad cd .. and path
+- tst all builtin if there's any sig and address and malloc in cd
+- norminette and function name and optimize the code
+- tokenizer count len of malloc
+- tokenizer and parsing calloc
+- leaks
+- add * in tokenizer and and parsing and builtin too maybe
+prompt changer if didn't find HOME it print and the path
+norminette of libft
