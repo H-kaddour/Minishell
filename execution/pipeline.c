@@ -6,38 +6,38 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/03 14:57:23 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/03 15:17:58 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void  run(t_data *data, char *cmd)
-{
-  char *c1;
-  char *ll;
-  char **sp;
-
-  if (cmd[0] == 'l')
-  {
-    c1 = ft_strjoin("/bin/", cmd);
-    ll = "ls -la";
-    sp = ft_split(ll, ' ');
-  }
-  else if (cmd[0] == 'g')
-  {
-    c1 = ft_strjoin("/usr/bin/", cmd);
-    ll = "grep gi";
-    sp = ft_split(ll, ' ');
-  }
-  else if (cmd[0] == 'w')
-  {
-    c1 = ft_strjoin("/usr/bin/", cmd);
-    ll = "wc -l";
-    sp = ft_split(ll, ' ');
-  }
-  execve(c1, sp, data->env);
-}
+//void  run(t_data *data, char *cmd)
+//{
+//  char *c1;
+//  char *ll;
+//  char **sp;
+//
+//  if (cmd[0] == 'l')
+//  {
+//    c1 = ft_strjoin("/bin/", cmd);
+//    ll = "ls -la";
+//    sp = ft_split(ll, ' ');
+//  }
+//  else if (cmd[0] == 'g')
+//  {
+//    c1 = ft_strjoin("/usr/bin/", cmd);
+//    ll = "grep gi";
+//    sp = ft_split(ll, ' ');
+//  }
+//  else if (cmd[0] == 'w')
+//  {
+//    c1 = ft_strjoin("/usr/bin/", cmd);
+//    ll = "wc -l";
+//    sp = ft_split(ll, ' ');
+//  }
+//  execve(c1, sp, data->env);
+//}
 
 void  pipeline(t_data *data)
 {
@@ -81,18 +81,19 @@ void  pipeline(t_data *data)
   trav->tab_pipe[i++] = fd[1];
   trav->tab_pipe[i] = fd[0];
 
-  trav = data->v_cmd;
-  while (trav)
-  {
-    i = 0;
-    while (i < 2)
-    {
-      printf("%d ", trav->tab_pipe[i]);
-      i++;
-    }
-    printf("\n");
-    trav = trav->next;
-  }
+  //print the files in tab_pipe
+  //trav = data->v_cmd;
+  //while (trav)
+  //{
+  //  i = 0;
+  //  while (i < 2)
+  //  {
+  //    printf("%d ", trav->tab_pipe[i]);
+  //    i++;
+  //  }
+  //  printf("\n");
+  //  trav = trav->next;
+  //}
 
   //**trav = data->v_cmd;
   //**while (trav)
@@ -155,13 +156,13 @@ void  pipeline(t_data *data)
       //close(trav->f_in);
       //close(trav->f_out);
     }
-    if (pid >= 1)
-    {
-      close(trav->tab_pipe[0]);
-      close(trav->tab_pipe[1]);
-      waitpid(pid, NULL, 0);
-      //trav = trav->next;
-    }
+    //if (pid >= 1)
+    //{
+    //  close(trav->tab_pipe[0]);
+    //  close(trav->tab_pipe[1]);
+    //  waitpid(pid, NULL, 0);
+    //  //trav = trav->next;
+    //}
     trav = trav->next;
     i++;
   }
@@ -172,37 +173,36 @@ void  pipeline(t_data *data)
   //while(1)
   //while(p_trav)
   //while(1)
-  //while(p_trav)
-  //{
-  //  //close(fd[0]);
-  //  //close(fd[1]);
-  //    //printf("in parent %d\n", i);
-  //    printf("in parent %s\n", p_trav->cmd[0]);
-  //    //printf("in parent dial trav %s\n", trav->cmd[0]);
-  //    //if (p_trav->next)
-  //    //{
-  //      printf("parent closing file\n");
-  //      close(p_trav->tab_pipe[0]);
-  //      close(p_trav->tab_pipe[1]);
-  //    //}
-  //  //waitpid(trav->pid, NULL, 0);
-  //  //wait(0);
-  //  //trav = trav->next;
-  //  //if (wait(0))
-  //  //if (waitpid(-1, NULL, 0) == -1)
-  //  //waitpid(pid, NULL, 0);
-  //    //p_trav = p_trav->next;
-  //  if (waitpid(pid, &status, 0) == 0)
-  //  {
-  //    p_trav = p_trav->next;
-  //    printf("hye\n");
-  //    //trav = trav->next;
-  //    break;
-  //  }
-  //  printf("status %d\n", status);
-  //  printf("end of loop\n");
-  //  //p_trav = p_trav->next;
-  //}
+  while(p_trav)
+  {
+    //close(fd[0]);
+    //close(fd[1]);
+      //printf("in parent %d\n", i);
+      printf("in parent %s\n", p_trav->cmd[0]);
+      //printf("in parent dial trav %s\n", trav->cmd[0]);
+      //if (p_trav->next)
+      //{
+        printf("parent closing file\n");
+        close(p_trav->tab_pipe[0]);
+        close(p_trav->tab_pipe[1]);
+      //}
+    //waitpid(trav->pid, NULL, 0);
+    //wait(0);
+    //trav = trav->next;
+    //if (wait(0))
+    //if (waitpid(-1, NULL, 0) == -1)
+    //waitpid(pid, NULL, 0);
+      //p_trav = p_trav->next;
+    if (waitpid(pid, 0, 0) == -1)
+    {
+      p_trav = p_trav->next;
+      printf("hye\n");
+      //trav = trav->next;
+      break;
+    }
+    printf("end of loop\n");
+    //p_trav = p_trav->next;
+  }
   //printf("im out\n");
 
 }
