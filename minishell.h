@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 06:25:32 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/03 13:23:03 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef	struct cmd
 	t_red	*redirect;
 	int		f_in;
 	int		f_out;
+	int		*tab_pipe;
 	struct cmd	*next;
 } t_cmd;
 //******

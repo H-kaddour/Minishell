@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 05:36:06 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 06:25:58 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/02 12:05:36 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,9 @@ static void	get_len_helper(t_data *data)
 
 int	get_len(t_data *data)
 {
-	data->tok_len = 0;
 	data->i = 0;
+	data->tok_len = 0;
+	data->chk_q_hrdoc = 0;
 	while (&data->beg_line[data->i] != &data->n_line[0] \
 			&& data->beg_line[data->i])
 	{
@@ -150,7 +151,10 @@ int	get_len(t_data *data)
 			break ;
 		if (data->beg_line[data->i] != '\"' && \
 				data->beg_line[data->i] != '\'' && data->beg_line[data->i])
+		{
+			data->i++;
 			data->tok_len++;
+		}
 	}
 	return (data->tok_len);
 }

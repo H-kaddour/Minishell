@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 06:11:06 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 06:29:43 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/02 12:17:23 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,6 @@ static void	add_dolla_helper(t_data *data, int len)
 		dolla = ft_strdup("");
 	free(hold);
 	data->tok_len += ft_strlen(dolla);
-	//len = 0;
-	//while (dolla[len])
-	//	data->node->value[data->j++] = dolla[len++];
-	//free(dolla);
 }
 
 void	count_dolla(t_data *data)
@@ -124,20 +120,11 @@ int	count_dolla_begin_pt2(t_data *data)
 
 int	count_dolla_begin_pt3(t_data *data)
 {
-	int	i;
-	char	*ptr;
-
 	if (data->beg_line[data->i + 1] == '?')
 	{
 		data->i += 2;
 		//mabye here i should free too
-		ptr = ft_itoa(data->chk_dolla);
-		i = 0;
-		while (ptr[i])
-		{
-			i++;
-			data->tok_len++;
-		}
+		data->tok_len += ft_strlen(ft_itoa(data->chk_dolla));
 		return (1);
 	}
 	else if (data->beg_line[data->i + 1] == '$')

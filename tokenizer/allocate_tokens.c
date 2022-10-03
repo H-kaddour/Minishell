@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:46:07 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 05:49:54 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/02 12:21:04 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,9 +155,6 @@ int	add_node(t_data *data, t_types typ)
 {
 	t_env	*trav_env;
 
-	data->i = 0;
-	data->j = 0;
-	data->chk_q_hrdoc = 0;
 	trav_env = data->l_env;
 	if (lexer_pt1(data, typ))
 		return (1);
@@ -167,12 +164,12 @@ int	add_node(t_data *data, t_types typ)
 	if (data->check == 1)
 		data->t_token = data->node;
 	data->node->type = typ;
-	//i gotta count the lenght for this node
-	//here where the program craches 
-	//data->node->value = malloc(sizeof(char) * 500);
 	data->node->value = malloc(sizeof(char) * get_len(data) + 1);
 	if (!data->node->value)
 		return (0);
+	data->i = 0;
+	data->j = 0;
+	data->chk_q_hrdoc = 0;
 	loop_for_the_arg(data);
 	data->beg_line = &data->beg_line[data->i];
 	data->node->value[data->j] = 0;

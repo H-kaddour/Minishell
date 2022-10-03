@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:54:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 03:30:11 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/02 15:02:19 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,19 @@ char	*if_upper_lower_them(char *cmd)
 	return (ptr);
 }
 
+void	free_sp(char **sp)
+{
+	int	i;
+
+	i = 0;
+	while (sp[i])
+	{
+		free(sp[i]);
+		i++;
+	}
+	free(sp);
+}
+
 int	cmd_only_exec_lower(char *cmd)
 {
 	int		i;
@@ -43,9 +56,13 @@ int	cmd_only_exec_lower(char *cmd)
 	while (sp[i])
 	{
 		if (!ft_strcmp(sp[i], cmd))
+		{
+			free_sp(sp);
 			return (1);
+		}
 		i++;
 	}
+	free_sp(sp);
 	return (0);
 }
 
@@ -69,9 +86,13 @@ int	check_builtin(char **cmd)
 	while (sp[i])
 	{
 		if (!ft_strcmp(sp[i], *cmd))
+		{
+			free_sp(sp);
 			return (1);
+		}
 		i++;
 	}
+	free_sp(sp);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 02:54:40 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 04:29:01 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/03 10:35:44 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,39 @@ char	*before_equal(char *cmd)
 	char	*chk;
 
 	i = 0;
-	if (!check_if_equal_or_wrd(cmd))
-		return (cmd);
-	else
+	hold = ft_strcspn(cmd, "=");
+	if (cmd[hold - 1] == '+')
+		hold--;
+	chk = malloc(sizeof(char) * hold + 1);
+	while (i < hold)
 	{
-		hold = ft_strcspn(cmd, "=");
-		if (cmd[hold - 1] == '+')
-			hold--;
-		chk = malloc(sizeof(char) * hold + 1);
-		while (i < hold)
-		{
-			chk[i] = cmd[i];
-			i++;
-		}
-		chk[i] = 0;
+		chk[i] = cmd[i];
+		i++;
 	}
+	chk[i] = 0;
 	return (chk);
 }
 
 int	if_exist_or_not(t_data *data, char *cmd)
 {
 	t_env	*trav;
+	char	*ptr;
+	int		chk;
 
-	trav = data->l_env;
-	while (ft_strcmp(trav->sec, before_equal(cmd)) && trav->next)
-		trav = trav->next;
-	if (!ft_strcmp(trav->sec, before_equal(cmd)))
+	chk = 0;
+	ptr = cmd;
+	if (check_if_equal_or_wrd(cmd))
+	{
+		ptr = before_equal(cmd);
+		chk = 1;
+	}
+	trav = getenv_addr(data, ptr);
+	if (chk)
+		free(ptr);
+	if (trav)
 		return (0);
-	return (1);
+	else
+		return (1);
 }
 
 int	only_accepted_char(char *cmd, int hold)

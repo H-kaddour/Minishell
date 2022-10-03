@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 03:26:20 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/02 17:24:02 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,38 @@ void	new_prompt(void)
 void	prompt_changer(t_data *data)
 {
 	t_env	*pwd;
+	t_env	*home;
 	char	*path_h;
 	char	*path_pw;
 	int		len;
 	int		i;
 	char	*clr1;
 	char	*clr2 = " \e[0m\e[34m \e[0m";
+	char	*tmp;
 
+	if (data->prompt)
+		free(data->prompt);
 	if (data->chk_dolla == 0)
 		clr1 = "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30m";
 	else
 		clr1 = "\e[103m \e[91m \e[40m\e[93m \e[97m \e[44m\e[30m\e[44m \e[30m";
-	pwd = data->l_env;
+	//pwd = data->l_env;
 	pwd = getenv_addr(data, "PWD");
 	if (pwd)
 		path_pw = pwd->value;
 	else
 		path_pw = data->pwd_of_mysys;
-	path_h = getenv("HOME");
+	//path_h = myown_getenv(data, "HOME", 0);
+	home = getenv_addr(data, "HOME");
+	if (home)
+		path_h = home->value;
+	else
+		path_h = getenv("HOME");
 	if (!path_h)
 	{
-		data->prompt = ft_strjoin(clr1, ft_strjoin(path_pw, clr2));
+		tmp = ft_strjoin(path_pw, clr2);
+		data->prompt = ft_strjoin(clr1, tmp);
+		free(tmp);
 		return ;
 	}
 	if (!ft_strncmp(path_pw, path_h, ft_strlen(path_h)))
@@ -63,16 +74,24 @@ void	prompt_changer(t_data *data)
 			while (path_pw[len])
 				data->prompt[i++] = path_pw[len++];
 			data->prompt[i] = 0;
-			data->prompt = ft_strjoin(clr1, ft_strjoin(data->prompt, clr2));
+			tmp = ft_strjoin(data->prompt, clr2);
+			free(data->prompt);
+			data->prompt = ft_strjoin(clr1, tmp);
+			free(tmp);
 		}
 		else if (ft_strlen(path_pw) == ft_strlen(path_h))
 		{
-			data->prompt = "~";
-			data->prompt = ft_strjoin(clr1, ft_strjoin(data->prompt, clr2));
+			tmp = ft_strjoin("~", clr2);
+			data->prompt = ft_strjoin(clr1, tmp);
+			free(tmp);
 		}
 	}
 	else
-		data->prompt = ft_strjoin(clr1, ft_strjoin(path_pw, clr2));
+	{
+		tmp = ft_strjoin(path_pw, clr2);
+		data->prompt = ft_strjoin(clr1, tmp);
+		free(tmp);
+	}
 }
 
 void	make_myown_env(t_data *data)
@@ -107,6 +126,7 @@ void	init_shell_elem(t_data *data, char **av, char **env)
 	data->chk_redct_exist = 0;
 		data->chk_dolla = 0;
 	data->old_pwd_value = ft_strdup("");
+	data->prompt = 0;
 	if (!env[0])
 		make_myown_env(data);
 	else
@@ -137,9 +157,53 @@ void	add_shell_history(t_data *data)
 	}
 }
 
+void	free_all(t_data *data)
+{
+	t_token	*token;
+	t_cmd		*parse;
+	t_red		*red;
+	int			i;
+
+	//always check if the address exist and then free in case tokenizer show error in first of implementing
+	token = data->t_token;
+	parse = data->v_cmd;
+	while (token)
+	{
+		free(token->value);
+		free(token);
+		token = token->next;
+	}
+	while (parse)
+	{
+		i = 0;
+		while (parse->cmd[i])
+		{
+			free(parse->cmd[i]);
+			i++;
+		}
+		free(parse->cmd);
+		if (parse->redirect)
+		{
+			red = parse->redirect;
+			while (red)
+			{
+				if (red->file)
+					free(red->file);
+				if (red->determiner)
+					free(red->determiner);
+				free(red);
+				red = red->next;
+			}
+		}
+		free(parse);
+		parse = parse->next;
+	}
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_data	data;
+	int	i = 0;
 
 	if (ac == 1)
 	{
@@ -151,6 +215,7 @@ int	main(int ac, char **av, char **envp)
 			signal(SIGQUIT, SIG_IGN);
 			prompt_changer(&data);
 			data.line = readline(data.prompt);
+			//data.line = readline("cool> ");
 			if (!data.line)
 			{
 				printf(MOVE_UP_RIGHRT "\t\texit\n");
@@ -166,11 +231,7 @@ int	main(int ac, char **av, char **envp)
 			}
 			add_shell_history(&data);
 			free(data.line);
-			//**here should free tokenizer in case of error or normal and parsing nodes
-			//this func free all token nodes
-			//***here make a condition to free the tokenizer node
-				//***free_token_node(&data);
-			//free also env of exev
+			free_all(&data);
 		}
 		//and here program end should free all shiit
 	}

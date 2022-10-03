@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 22:53:53 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 03:43:46 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/03 09:53:52 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,28 @@
 
 static int	cd_to_home(t_data *data, char **cmd)
 {
-	char	*home;
+	//char	*home;
+	t_env	*home;
 
-	home = myown_getenv(data, "HOME", 0);
+	//home = myown_getenv(data, "HOME", 0);
+	home = getenv_addr(data, "HOME");
 	if (!home)
 	{
 		error_cd(data, "minishell: cd: HOME not set");
 		return (1);
 	}
-	*cmd = ft_strdup(home);
+	*cmd = ft_strdup(home->value);
+	//free(home);
 	return (0);
 }
 
 static int	join_home_and_path(t_data *data, char **cmd)
 {
+	t_env	*e_home;
 	char	*home;
 
-	home = myown_getenv(data, "HOME", 0);
-	if (!home)
+	e_home = getenv_addr(data, "HOME");
+	if (!e_home)
 	{
 		home = getenv("HOME");
 		if (!home)
@@ -39,8 +43,11 @@ static int	join_home_and_path(t_data *data, char **cmd)
 			error_cd(data, "minishell: cd: HOME not set");
 			return (1);
 		}
+		*cmd = ft_strjoin(home, &cmd[0][1]);
+		//free(home);
+		return (0);
 	}
-	*cmd = ft_strjoin(home, &cmd[0][1]);
+	*cmd = ft_strjoin(e_home->value, &cmd[0][1]);
 	return (0);
 }
 
@@ -60,23 +67,41 @@ static void	execute_cmd_cd(t_data *data, char *cmd)
 		old_pwd_alloc(data);
 	change_pwd(data, path);
 	change_oldpwd(data);
+	free(path);
 	data->chk_dolla = 0;
 }
 
 void	cd_everywhere_at_once(t_data *data, char *cmd)
 {
 	int	i;
+	int	chk;
 
 	i = 0;
+	chk = 0;
 	if (!cmd)
 	{
 		if (cd_to_home(data, &cmd))
 			return ;
+		chk = 1;
 	}
 	else if (cmd[0] == '~')
 	{
 		if (join_home_and_path(data, &cmd))
 			return ;
+		chk = 1;
 	}
 	execute_cmd_cd(data, cmd);
+	if (chk)
+		free(cmd);
 }
+//here a leak
+//ls
+//cd
+//cd
+//cd ..
+//cd ~
+//cd ..
+//cd ..
+//cd ..
+//cd 
+//clear

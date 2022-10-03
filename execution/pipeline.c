@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/01 09:21:59 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/03 14:57:23 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,12 @@ void  run(t_data *data, char *cmd)
 
 void  pipeline(t_data *data)
 {
+  //int   **pipe_fds;
+
+  //pipe_fds = malloc(sizeof(int *) * 2);
   t_cmd *trav;
   int   i;
+  //int   j;
   int   pid;
   int   fd[2];
   //char  rd[10] = {0};
@@ -50,18 +54,46 @@ void  pipeline(t_data *data)
 
   i = 0;
   trav = data->v_cmd;
+  //trav->tab_pipe = malloc(sizeof(int *) * data->size_cmd - 1);
   while (trav->next)
   {
+    i = 0;
     if (pipe(fd))
     {
 		  printf("error in pipe\n");
       return ;
     }
+    //pipe_fds[i] = malloc(sizeof(int) * 2);
+    //pipe_fds[i][j++] = fd[1];
+    //pipe_fds[i][j] = fd[0];
+    trav->tab_pipe = malloc(sizeof(int) * 2);
+    trav->tab_pipe[i++] = fd[1];
+    trav->tab_pipe[i] = fd[0];
     trav->f_out = fd[1];
     trav = trav->next;
     trav->f_in = fd[0];
+    //printf("%d  %d\n", pipe_fds[i][0], pipe_fds[i][1]);
+    //i++;
   }
-  
+  //j = 0;
+  i = 0;
+  trav->tab_pipe = malloc(sizeof(int) * 2);
+  trav->tab_pipe[i++] = fd[1];
+  trav->tab_pipe[i] = fd[0];
+
+  trav = data->v_cmd;
+  while (trav)
+  {
+    i = 0;
+    while (i < 2)
+    {
+      printf("%d ", trav->tab_pipe[i]);
+      i++;
+    }
+    printf("\n");
+    trav = trav->next;
+  }
+
   //**trav = data->v_cmd;
   //**while (trav)
   //**{
@@ -69,11 +101,20 @@ void  pipeline(t_data *data)
   //**  check_redirection(data, trav);
   //**  trav = trav->next;
   //**}
-  trav = data->v_cmd;
+  //printf("hey\n");
+  t_cmd *p_trav;
   i = 0;
-  //char ptr[10] = {0};
-  //pipe(fd);
-  //while (i < 2)
+
+  trav = data->v_cmd;
+  //p_trav = data->v_cmd;
+  //**printf("\n");
+  //**printf("%d  ", trav->tab_pipe[0]);
+  //**printf("%d", trav->tab_pipe[1]);
+  //**trav = trav->next;
+  //**printf("\n");
+  //**printf("%d  ", trav->tab_pipe[0]);
+  //**printf("%d", trav->tab_pipe[1]);
+  //i = 0;
   while (trav)
   {
     //pipe(fd);
@@ -87,117 +128,83 @@ void  pipeline(t_data *data)
     }
     if (pid == 0)
     {
+      //if (i == 0)
+      //  close(trav->f_in);
+      //if (!trav->next)
+      //  close(trav->f_out);
+      printf("%d\n", i);
+      printf("%s\n", trav->cmd[0]);
+      dup2(trav->f_out, STDOUT_FILENO);
+      dup2(trav->f_in, STDIN_FILENO);
+      //close(fd[0]);
       //close(fd[1]);
-      //if (i == 0)
-      //{
-      //  //dup2(0, STDIN_FILENO);
-      //  dup2(fd_hold, STDOUT_FILENO);
-      //  //dup2(fd[1], STDOUT_FILENO);
-      //}
-      //if (i != 0)
-      //{
-      //  dup2(fd[0], STDIN_FILENO);
-      //  //dup2(1, STDOUT_FILENO);
-      //}
-      //else
-      //  dup2(1, STDOUT_FILENO);
-      //if (i == 0)
-      //  dup2(0, STDIN_FILENO);
-
-
-      //here i should close pipe of fork so i should loop for the pipe
-      //printf("cmd = %s    in = %d    out = %d\n", trav->cmd[0], trav->f_in, trav->f_out);
+        close(trav->tab_pipe[0]);
+        close(trav->tab_pipe[1]);
       //if (trav->f_in > 0)
-      //close(trav->f_in);
-      //**dup2(trav->f_in, STDIN_FILENO);
-      //if (trav->f_out > 1)
-      //**if (trav->next)
-      //**{
-      //**  //close(trav->f_in);
-      //**  dup2(trav->f_out, STDOUT_FILENO);
-      //**}
-      //**if (!trav->next)
-      //**{
-      //**  //close(trav->f_out);
-      //**  dup2(trav->f_in, STDIN_FILENO);
-      //**}
-      //if (i != 3)
-        dup2(trav->f_out, STDOUT_FILENO);
-      //if (i != 0)
-        dup2(trav->f_in, STDIN_FILENO);
-      //close(trav->f_in);
+      //  close(trav->f_in);
       //if (trav->f_out > 1)
       //  close(trav->f_out);
-      //printf("in = %d    out = %d\n", trav->f_in, trav->f_out);
-      //get_path(data, trav);
+      //if (trav->cmd[0][0] == 'w')
+
+      //if (trav->cmd[0][0] == 'w')
+      //{
+      //  printf("here\n");
+      //  while (1);
+      //}
       execute_sys_cmd(data, trav);
-      //*run(data, trav->cmd[0]);
-      //exit(0);
-      //*read(trav->f_in, &rd, 9);
-      //*printf("%s\n", rd);
-      //free(rd);
-      //printf("hey \n");
-      break ;
-      //return ;
-      //exit(1);
+      //close(trav->f_in);
+      //close(trav->f_out);
     }
-    //read(trav->f_out, &ptr, 9);
-    //printf("**%s**\n", ptr);
-    //while (1);
-    //else
-    //{
-		//  //signal(SIGINT, SIG_IGN);
-    //  //wait(0);
-    //  waitpid(pid, NULL, 0);
-    //  //if (read(trav->f_in, &rd, 9) <= 0)
-    //  //  printf("file empty\n");
-    //  //printf("\n**%s\n", rd);
-    //  //close(fd[0]);
-    //  //fd_hold = fd[1];
-    //  trav = trav->next;
-    //}
-    trav = trav->next;
-    //i++;
-  }
-  //trav = data->v_cmd;
-  //while (trav)
-  //{
-  //  close(trav->f_in);
-  //  close(trav->f_out);
-  //  trav = trav->next;
-  //}
-  //i = 0;
-  //trav = data->v_cmd;
-
-  //**this one works
-  //while ((wait(0) != -1 || errno != ECHILD))
-  //{
-  //  printf("hey\n");
-  //}
-  while(1)
-  {
-    //waitpid(trav->pid, NULL, 0);
-    //wait(0);
-    //trav = trav->next;
-    //if (wait(0))
-    //if (waitpid(-1, NULL, 0) == -1)
-    if (waitpid(pid, NULL, 0) == -1)
+    if (pid >= 1)
     {
-      break;
+      close(trav->tab_pipe[0]);
+      close(trav->tab_pipe[1]);
+      waitpid(pid, NULL, 0);
+      //trav = trav->next;
     }
+    trav = trav->next;
+    i++;
   }
 
-  //close(trav->f_in);
-  //close(trav->f_out);
-  //while (i < 2)
+  //trav = data->v_cmd;
+  //while(p_trav)
+  p_trav = data->v_cmd;
+  //while(1)
+  //while(p_trav)
+  //while(1)
+  //while(p_trav)
   //{
-  //  wait(0);
-  //  //exit(0);
-  //  //if (trav->f_in > 0)
-  //  //  close(trav->f_in);
-  //  i++;
-  //  trav = trav->next;
+  //  //close(fd[0]);
+  //  //close(fd[1]);
+  //    //printf("in parent %d\n", i);
+  //    printf("in parent %s\n", p_trav->cmd[0]);
+  //    //printf("in parent dial trav %s\n", trav->cmd[0]);
+  //    //if (p_trav->next)
+  //    //{
+  //      printf("parent closing file\n");
+  //      close(p_trav->tab_pipe[0]);
+  //      close(p_trav->tab_pipe[1]);
+  //    //}
+  //  //waitpid(trav->pid, NULL, 0);
+  //  //wait(0);
+  //  //trav = trav->next;
+  //  //if (wait(0))
+  //  //if (waitpid(-1, NULL, 0) == -1)
+  //  //waitpid(pid, NULL, 0);
+  //    //p_trav = p_trav->next;
+  //  if (waitpid(pid, &status, 0) == 0)
+  //  {
+  //    p_trav = p_trav->next;
+  //    printf("hye\n");
+  //    //trav = trav->next;
+  //    break;
+  //  }
+  //  printf("status %d\n", status);
+  //  printf("end of loop\n");
+  //  //p_trav = p_trav->next;
   //}
+  //printf("im out\n");
+
 }
 //pseudo code:
 //first i will make the pipes for the size_of_cmd - 1

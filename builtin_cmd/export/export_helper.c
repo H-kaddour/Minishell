@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 01:44:45 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 04:25:19 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/03 10:41:19 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,12 @@ int	check_existence_helper(t_data *data, char *cmd, char *chk, int hold)
 {
 	t_env	*trav;
 	char	*n_cmd;
+	char	*hld;
 
 	trav = getenv_addr(data, chk);
 	if (trav)
 	{
+		hld = trav->value;
 		if (data->chk_export_plus == 1)
 		{
 			hold += 2;
@@ -48,6 +50,7 @@ int	check_existence_helper(t_data *data, char *cmd, char *chk, int hold)
 			n_cmd = &cmd[++hold];
 			trav->value = ft_strdup(n_cmd);
 		}
+		free(hld);
 		return (1);
 	}
 	return (0);
@@ -69,7 +72,11 @@ int	check_existence(t_data *data, char *cmd, int hold, t_env *env)
 	}
 	chk[i] = 0;
 	if (check_existence_helper(data, cmd, chk, hold))
+	{
+		free(chk);
 		return (1);
+	}
+	free(chk);
 	return (0);
 }
 
@@ -78,13 +85,19 @@ int	dup_opt_wrd(t_data *data, t_env *env, char *cmd)
 	t_env	*trav;
 
 	trav = data->l_env;
-	while (ft_strcmp(trav->sec, cmd) && trav->next)
-		trav = trav->next;
-	if (!ft_strcmp(trav->sec, cmd))
+	trav = getenv_addr(data, cmd);
+	if (trav)
 		return (0);
 	else
 		env->sec = ft_strdup(cmd);
 	return (1);
+	//while (ft_strcmp(trav->sec, cmd) && trav->next)
+	//	trav = trav->next;
+	//if (!ft_strcmp(trav->sec, cmd))
+	//	return (0);
+	//else
+	//	env->sec = ft_strdup(cmd);
+	//return (1);
 }
 
 int	check_if_equal_or_wrd(char *cmd)
