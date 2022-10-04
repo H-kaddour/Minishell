@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 04:54:30 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 05:27:10 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:21:33 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	run_one_cmd(t_data *data)
 		if (data->v_cmd->cmd[0])
 		{
 			if (check_builtin(&data->v_cmd->cmd[0]))
-				builtin_cmd(data, data->v_cmd->cmd[0]);
+				builtin_cmd(data, data->v_cmd);
 		}
 		return ;
 	}

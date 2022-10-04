@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 13:52:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/03 10:18:09 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:16:29 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,15 @@ void	export_cmd_helper(t_data *data, t_env **trav_e, t_cmd *trav_c, int i)
 	}
 }
 
-void	export_cmd(t_data *data)
+void	export_cmd(t_data *data, t_cmd *trav_c)
 {
 	int		i;
 	t_env	*trav_e;
-	t_cmd	*trav_c;
+	//t_cmd	*trav_c;
 
 	i = 1;
 	trav_e = data->l_env;
-	trav_c = data->v_cmd;
+	//trav_c = data->v_cmd;
 	if (!trav_c->cmd[i])
 		print_env_of_export(trav_e);
 	else

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 11:38:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 03:38:22 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:18:47 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ static int	check_nbr(char *arg)
 	return (1);
 }
 
-void	exit_cmd(t_data *data)
+void	exit_cmd(t_data *data, t_cmd *trav)
 {
-	t_cmd	*trav;
+	//t_cmd	*trav;
 
-	trav = data->v_cmd;
+	//trav = data->v_cmd;
 	if (!trav->cmd[1])
 		exit_stat(0, 0, 0);
 	else

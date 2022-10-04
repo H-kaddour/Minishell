@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:15:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 03:33:22 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:11:36 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ static int	check_nline_option(char **cmd)
 	return (i);
 }
 
-void	echo_cmd(t_data *data)
+void	echo_cmd(t_data *data, t_cmd *trav)
 {
 	int		i;
 	int		chk;
-	t_cmd	*trav;
+	//t_cmd	*trav;
 
-	trav = data->v_cmd;
+	//trav = data->v_cmd;
 	if (trav->cmd[1])
 		chk = check_nline_option(trav->cmd);
 	else

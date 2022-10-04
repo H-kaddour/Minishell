@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 17:24:02 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:51:38 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,7 @@ int	main(int ac, char **av, char **envp)
 
 	if (ac == 1)
 	{
+		//make -h for the shell
 		init_shell_elem(&data, av, envp);
 		while (1)
 		{

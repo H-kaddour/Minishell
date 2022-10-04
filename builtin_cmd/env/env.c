@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 12:11:41 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 04:00:46 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:14:50 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ t_env	*getenv_addr(t_data *data, char *sec)
 		return (0);
 }
 
-void	env_cmd(t_data *data)
+void	env_cmd(t_data *data, t_cmd *cmd)
 {
 	t_env	*trav;
-	t_cmd	*cmd;
+	//t_cmd	*cmd;
 
 	trav = data->l_env;
-	cmd = data->v_cmd;
+	//cmd = data->v_cmd;
 	if (cmd->cmd[1] != 0)
 	{
 		data->chk_dolla = 1;

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:54:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 15:02:19 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:13:42 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,20 +96,20 @@ int	check_builtin(char **cmd)
 	return (0);
 }
 
-void	builtin_cmd(t_data *data, char *cmd)
+void	builtin_cmd(t_data *data, t_cmd *node)
 {
-	if (!ft_strcmp(cmd, "cd"))
-		cd_cmd(data);
-	else if (!ft_strcmp(cmd, "echo"))
-		echo_cmd(data);
-	else if (!ft_strcmp(cmd, "pwd"))
+	if (!ft_strcmp(node->cmd[0], "cd"))
+		cd_cmd(data, node);
+	else if (!ft_strcmp(node->cmd[0], "echo"))
+		echo_cmd(data, node);
+	else if (!ft_strcmp(node->cmd[0], "pwd"))
 		pwd_cmd(data);
-	else if (!ft_strcmp(cmd, "env"))
-		env_cmd(data);
-	else if (!ft_strcmp(cmd, "export"))
-		export_cmd(data);
-	else if (!ft_strcmp(cmd, "unset"))
-		unset_cmd(data);
-	else if (!ft_strcmp(cmd, "exit"))
-		exit_cmd(data);
+	else if (!ft_strcmp(node->cmd[0], "env"))
+		env_cmd(data, node);
+	else if (!ft_strcmp(node->cmd[0], "export"))
+		export_cmd(data, node);
+	else if (!ft_strcmp(node->cmd[0], "unset"))
+		unset_cmd(data, node);
+	else if (!ft_strcmp(node->cmd[0], "exit"))
+		exit_cmd(data, node);
 }

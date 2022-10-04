@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 13:30:14 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/29 11:32:32 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:54:04 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ int	dolla_begin_pt3(t_data *data)
 	if (data->beg_line[data->i + 1] == '?')
 	{
 		data->i += 2;
-		//mabye here i should free too
 		ptr = ft_itoa(data->chk_dolla);
+		free(ptr);
 		i = 0;
 		while (ptr[i])
 			data->node->value[data->j++] = ptr[i++];

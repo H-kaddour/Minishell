@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 09:42:40 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:51:00 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,26 +125,26 @@ void  pipeline(t_data *data)
   trav->tab_pipe[i] = fd[0];
 
   //print the files in tab_pipe
+  //trav = data->v_cmd;
+  //while (trav)
+  //{
+  //  i = 0;
+  //  while (i < 2)
+  //  {
+  //    printf("%d ", trav->tab_pipe[i]);
+  //    i++;
+  //  }
+  //  printf("\n");
+  //  trav = trav->next;
+  //}
+
   trav = data->v_cmd;
   while (trav)
   {
-    i = 0;
-    while (i < 2)
-    {
-      printf("%d ", trav->tab_pipe[i]);
-      i++;
-    }
-    printf("\n");
+    //here if cmd have redirection close here pipe where it reads or write depends
+    check_redirection(data, trav);
     trav = trav->next;
   }
-
-  //**trav = data->v_cmd;
-  //**while (trav)
-  //**{
-  //**  //here if cmd have redirection close here pipe where it reads or write depends
-  //**  check_redirection(data, trav);
-  //**  trav = trav->next;
-  //**}
   //printf("hey\n");
 
   //*t_cmd *p_trav;
@@ -165,15 +165,39 @@ void  pipeline(t_data *data)
     {
 			//printf("|child: cmd = %s\n", trav->cmd[0]);
 			//printf("	-->child:in = %d		out = %d\n", trav->f_in, trav->f_out);
-      dup2(trav->f_out, STDOUT_FILENO);
-      dup2(trav->f_in, STDIN_FILENO);
-      close(trav->tab_pipe[0]);
-      close(trav->tab_pipe[1]);
-      execute_sys_cmd(data, trav);
+      //dup2(trav->f_out, STDOUT_FILENO);
+      //dup2(trav->f_in, STDIN_FILENO);
+      //close(trav->tab_pipe[0]);
+      //close(trav->tab_pipe[1]);
+			if (check_builtin(&trav->cmd[0]))
+      {
+        //printf("Kid\n");
+				builtin_cmd(data, trav);
+        exit(1);
+      }
+      else
+      {
+        //printf("Cudi\n");
+        dup2(trav->f_out, STDOUT_FILENO);
+        dup2(trav->f_in, STDIN_FILENO);
+        close(trav->tab_pipe[0]);
+        close(trav->tab_pipe[1]);
+        execute_sys_cmd(data, trav);
+      }
     }
     if (pid > 0)
     {
-      wait(0);
+		  signal(SIGINT, SIG_IGN);
+		  waitpid(pid, 0, 0);
+      //now just exit status $?
+      //fix cat 
+      //wait(0);
+			//if (!check_builtin(&trav->cmd[0]))
+      //{
+      //  if (p_trav)
+      //    close(p_trav->tab_pipe[1]);
+      //  close(trav->tab_pipe[0]);
+      //}
       if (p_trav)
         close(p_trav->tab_pipe[1]);
       close(trav->tab_pipe[0]);
@@ -187,108 +211,3 @@ void  pipeline(t_data *data)
 //loop for the cmd nodes and initialize in and out with their pipes values
 //then check if there's redirection if yes close in or out pipe in node and replace it with red files
 //make another loop on cmd nodes and start execting the cmd
-//
-//
-//
-//#include <stdlib.h>
-//#include <unistd.h>
-//#include <stdio.h>
-//
-///*
-// * loop over commands by sharing
-// * pipes.
-// */
-//static void
-//pipeline(char ***cmd)
-//{
-//	int fd[2];
-//	pid_t pid;
-//	int fdd = 0;				/* Backup */
-//
-//	while (*cmd != NULL) {
-//		pipe(fd);
-//		if ((pid = fork()) == -1) {
-//			perror("fork");
-//			exit(1);
-//		}
-//		else if (pid == 0) {
-//			dup2(fdd, 0);
-//			if (*(cmd + 1) != NULL) {
-//				dup2(fd[1], 1);
-//			}
-//			close(fd[0]);
-//			execvp((*cmd)[0], *cmd);
-//			exit(1);
-//		}
-//		else {
-//			wait(NULL); 		/* Collect childs */
-//			close(fd[1]);
-//			fdd = fd[0];
-//			cmd++;
-//		}
-//	}
-//}
-//
-///*
-// * Compute multi-pipeline based
-// * on a command list.
-// */
-//int
-//main(int argc, char *argv[])
-//{
-//	char *ls[] = {"ls", "-al", NULL};
-//	char *rev[] = {"rev", NULL};
-//	char *nl[] = {"nl", NULL};
-//	char *cat[] = {"cat", "-e", NULL};
-//	char **cmd[] = {ls, rev, nl, cat, NULL};
-//
-//	pipeline(cmd);
-//	return (0);
-//}
-//
-//
-//
-//
-//
-//	cmd = data->v_cmd;
-//	while (cmd)
-//	{
-//		//if (pipe(fd) == 0)
-//		//{
-//		//	printf("pipe = in=%d --- out=%d\n", fd[0], fd[1]);
-//		//}
-//		if ((pid = fork()) == -1)
-//		{
-//			perror("fork");
-//			exit(1);
-//		}
-//		else if (pid == 0)
-//		{
-//			printf("|child: cmd = %s\n", cmd->cmd[0]);
-//			printf("	-->child:in = %d		out = %d\n", fdd, fd[1]);
-//			//printf("	-->child:in = %d		out = %d	p fdd= %d\n", fd[0], fd[1], fdd);
-//			dup2(fdd, 0);
-//			if (cmd->next)
-//			{
-//				dup2(fd[1], 1);
-//			}
-//			close(fd[0]);
-//			printf("child: %s close %d\n", cmd->cmd[0], fd[0]);
-//			//close(fd[1]);
-//			execute_sys_cmd(data, cmd);
-//			//exit(1);
-//		}
-//		else
-//		{
-//			wait(NULL);
-//			close(fd[1]);
-//			printf("parent: %s close %d\n", cmd->cmd[0], fd[1]);
-//			fdd = fd[0];
-//			//while(1);
-//			//printf("|parent: cmd = %s\n", cmd->cmd[0]);
-//			//printf("	-->child:in = %d		out = %d\n", fdd, fd[1]);
-//			//printf("parent: cmd= %s		in = %d		out = %d\n", cmd->cmd[0], fd[0], fd[1]);
-//			cmd = cmd->next;
-//		}
-//	}
-

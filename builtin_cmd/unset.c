@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:18:49 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 03:36:13 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:17:33 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ static void	find_that_element(t_data *data, char *elem)
 		return ;
 }
 
-void	unset_cmd(t_data *data)
+void	unset_cmd(t_data *data, t_cmd *trav_c)
 {
 	int		i;
-	t_cmd	*trav_c;
+	//t_cmd	*trav_c;
 
 	i = 1;
-	trav_c = data->v_cmd;
+	//trav_c = data->v_cmd;
 	if (!trav_c->cmd[1])
 		return ;
 	while (trav_c->cmd[i])

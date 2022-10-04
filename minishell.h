@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/03 13:23:03 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:19:25 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,13 +194,14 @@ void  parser(t_data *data);
 
 /**** Function of builtin cmd **********/
 int		check_builtin(char **cmd);
-void  builtin_cmd(t_data *data, char *cmd);
-void  cd_cmd(t_data *data);
-void  pwd_cmd(t_data *data);
-void  exit_cmd(t_data *data);
-void  echo_cmd(t_data *data);
-void  export_cmd(t_data *data);
-void  unset_cmd(t_data *data);
+//void  builtin_cmd(t_data *data, char *cmd);
+void	builtin_cmd(t_data *data, t_cmd *node);
+//void  cd_cmd(t_data *data);
+//void  pwd_cmd(t_data *data);
+//void  exit_cmd(t_data *data);
+//void  echo_cmd(t_data *data);
+//void  export_cmd(t_data *data);
+//void  unset_cmd(t_data *data);
 void  pipeline(t_data *data);
 
 //this one in the main but should go to cd
@@ -225,13 +226,19 @@ void  execution(t_data *data);
 
 
 /**** Function of builtin cmd **********/
-void  cd_cmd(t_data *data);
-void  echo_cmd(t_data *data);
+//void  cd_cmd(t_data *data);
+//void  echo_cmd(t_data *data);
+//void 	env_cmd(t_data *data);
+//void  export_cmd(t_data *data);
+//void  unset_cmd(t_data *data);
+//void  exit_cmd(t_data *data);
+void	cd_cmd(t_data *data, t_cmd *node);
+void	echo_cmd(t_data *data, t_cmd *trav);
 void  pwd_cmd(t_data *data);
-void 	env_cmd(t_data *data);
-void  export_cmd(t_data *data);
-void  unset_cmd(t_data *data);
-void  exit_cmd(t_data *data);
+void	env_cmd(t_data *data, t_cmd *cmd);
+void	export_cmd(t_data *data, t_cmd *trav_c);
+void	unset_cmd(t_data *data, t_cmd *trav_c);
+void	exit_cmd(t_data *data, t_cmd *trav);
 
 
 /**** Function of cd **********/
