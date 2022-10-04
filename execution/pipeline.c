@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 10:51:00 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 18:05:52 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ void  pipeline(t_data *data)
   //*t_cmd *p_trav;
   //*i = 0;
 
+  int status;
   i = 0;
   trav = data->v_cmd;
   p_trav = 0;
@@ -188,7 +189,12 @@ void  pipeline(t_data *data)
     if (pid > 0)
     {
 		  signal(SIGINT, SIG_IGN);
-		  waitpid(pid, 0, 0);
+		  waitpid(pid, &status, 0);
+      printf("%d\n", status);
+		  exit_status(&data->chk_dolla, status);
+      //status = errno;
+      //printf("%d\n", status);
+      //printf("%d\n", errno);
       //now just exit status $?
       //fix cat 
       //wait(0);

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 02:54:40 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/03 10:35:44 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 17:46:44 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ int	only_accepted_char(char *cmd, int hold)
 		return (1);
 	while (i < hold)
 	{
-		if (!ft_isdigit(cmd[i]) && !ft_isalnum(cmd[i]))
+		if (!ft_isdigit(cmd[i]) && !ft_isalnum(cmd[i]) \
+				&& cmd[i] != '+' && cmd[i] != '_')
 			return (1);
 		i++;
 	}

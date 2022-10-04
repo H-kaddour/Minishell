@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 17:15:30 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/28 10:26:40 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 13:22:23 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int	lexer_redirect_helper(t_data *data, int typ)
 
 int	lexer_pt1(t_data *data, t_types typ)
 {
+	//data->chk_dolla = 258;
 	if (typ == PIPE)
 	{
 		if (pipe_lexer(data))
@@ -117,5 +118,6 @@ int	lexer_pt1(t_data *data, t_types typ)
 	}
 	if (lexer_redirect_helper(data, typ) == 1)
 		return (1);
+	//data->chk_dolla = 0;
 	return (0);
 }

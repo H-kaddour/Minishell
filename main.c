@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 10:51:38 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 23:11:43 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	prompt_changer(t_data *data)
 	int		len;
 	int		i;
 	char	*clr1;
-	char	*clr2 = " \e[0m\e[34m \e[0m";
+	char	*clr2 = " \e[0m\e[34m\e[0m ";
 	char	*tmp;
 
 	if (data->prompt)
@@ -200,9 +200,39 @@ void	free_all(t_data *data)
 	}
 }
 
+int	hrdoc_with_no_cmd(t_data *data)
+{
+	int		i;
+	t_cmd	*cmd;
+	t_red	*red;
+
+	i = 0;
+	cmd = data->v_cmd;
+	while (cmd)
+	{
+		if (!cmd->cmd[0])
+		{
+			red = cmd->redirect;
+			while (red)
+			{
+				if (red->typ == I_APEND)
+				{
+					close(data->hrdoc_fd[0]);
+					return (1);
+				}
+				red = red->next;
+			}
+		}
+		cmd = cmd->next;
+	}
+	return (0);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_data	data;
+	t_cmd		*cmd;
+	t_red		*red;
 	int	i = 0;
 
 	if (ac == 1)
@@ -216,7 +246,7 @@ int	main(int ac, char **av, char **envp)
 			signal(SIGQUIT, SIG_IGN);
 			prompt_changer(&data);
 			data.line = readline(data.prompt);
-			//data.line = readline("cool> ");
+			//data.line = readline("Minishell> ");
 			if (!data.line)
 			{
 				printf(MOVE_UP_RIGHRT "\t\texit\n");
@@ -227,12 +257,40 @@ int	main(int ac, char **av, char **envp)
 			else
 			{
 				tokenizer(&data);
+				//redirection problem in parsing it don't enter arg of redirection
+				//cmd = data.v_cmd;
+				//while (cmd)
+				//{
+				//	if (cmd->redirect)
+				//	{
+				//		printf("%s\n", cmd->cmd[0]);
+				//		red = cmd->redirect;
+				//		while (red)
+				//		{
+				//			printf("%d	%s\n", red->typ, red->file);
+				//			red = red->next;
+				//		}
+				//	}
+				//	cmd = cmd->next;
+				//}
 				if (!data.error_lexer)
 					execution(&data);
+
+				//hrdoc_with_no_cmd(&data);
+				//if (hrdoc_with_no_cmd(&data))
+				//{
+				//	printf("jdl\n");
+				//	close(data.hrdoc_fd[0]);
+				//}
 			}
 			add_shell_history(&data);
+			//close(data.hrdoc_fd[0]);
 			free(data.line);
-			free_all(&data);
+			//here double free error in ;;
+			//and lexer error exit status 258 change it 
+			//free_all(&data);
+			//
+			//fix echo $? get the current cmd exit not the old one
 		}
 		//and here program end should free all shiit
 	}

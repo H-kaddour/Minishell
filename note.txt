@@ -286,3 +286,26 @@ Todo:
 - add * in tokenizer and and parsing and builtin too maybe
 prompt changer if didn't find HOME it print and the path
 norminette of libft
+init pipe ptr in cmd with zero in parsing
+
+signal dial heredoc exit fork
+unset error handling smae as export
+export _ and error number in middle
+cat
+redirection << > <<
+env head ptr unseted
+cmd not found in pipes
+exit arg number should be between 256 range if not devision
+lexer $?
+cd double free
+close pipe heredoc if there's no cmd
+any cmd in the pipe failed exit the pipeline
+protect malloc to the main not in just the function
+
+
+unset and export error:
+number in first
+plus sign
+equal
+miness
+hashtag
