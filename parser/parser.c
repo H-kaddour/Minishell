@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 10:32:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 23:10:00 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 02:23:40 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static void allocate_cmd_node(t_data *data)
   head->f_in = 0;
   head->f_out = 1;
   head->redirect = 0;
+  head->tab_pipe = 0;
   head->next = 0;
   data->v_cmd = head;
   while (i < len)
@@ -54,6 +55,7 @@ static void allocate_cmd_node(t_data *data)
     node->f_in = 0;
     node->f_out = 1;
     node->redirect = 0;
+    node->tab_pipe = 0;
     node->next = 0;
     head->next = node;
     head = node;

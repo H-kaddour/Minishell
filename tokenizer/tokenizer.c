@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/09/29 14:30:08 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 00:28:27 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,7 @@ void	tokenizer(t_data *data)
 		{
 			if (add_node(data, data->typ))
 			{
+				data->chk_dolla = 258;
 				data->error_lexer = 1;
 				return ;
 			}
@@ -194,6 +195,7 @@ void	tokenizer(t_data *data)
 	}
 	if (lexer_pt2(data))
 	{
+		data->chk_dolla = 258;
 		data->error_lexer = 1;
 		return ;
 	}

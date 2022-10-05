@@ -291,7 +291,7 @@ init pipe ptr in cmd with zero in parsing
 signal dial heredoc exit fork
 unset error handling smae as export
 export _ and error number in middle
-cat
+cat ^M
 redirection << > <<
 env head ptr unseted
 cmd not found in pipes
@@ -301,6 +301,13 @@ cd double free
 close pipe heredoc if there's no cmd
 any cmd in the pipe failed exit the pipeline
 protect malloc to the main not in just the function
+malloc make a function in the main if any malloc got error exit it the program
+env | grep OLD get all env print it out 
+echo hey | grep y not working
+history still fucked up
+ls > nari | grep a < nari
+still exit status number
+cat << l << d << z
 
 
 unset and export error:

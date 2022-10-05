@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 00:39:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 04:06:00 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 04:14:19 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,16 @@ static void	env_double_ptr_helper(t_data *data, int i)
 			data->env_exec[i][j++] = trav->sec[k++];
 		data->env_exec[i][j++] = '=';
 		k = 0;
-		while (trav->value[k])
-			data->env_exec[i][j++] = trav->value[k++];
+		//printf("%s\n", trav->sec);
+		//printf("%s\n", trav->value);
+		if (trav->value[0])
+		{
+			while (trav->value[k])
+				data->env_exec[i][j++] = trav->value[k++];
+		}
 		data->env_exec[i][j] = 0;
 		i++;
+		//printf("nana %p, %s, %s, %d\n", trav, trav->sec, &trav->value[0], i);
 		trav = trav->next;
 	}
 	data->env_exec[i] = 0;

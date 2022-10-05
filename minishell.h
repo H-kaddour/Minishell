@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 10:19:25 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 05:40:09 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,8 @@ typedef struct s_data
 	char		**env_exec;
 	//len of tokenizer value
 	int			tok_len;
+	//malloc error var
+	int			malloc_errno;
 }	t_data;
 
 /******* Function of tokenizer *********/

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 09:42:35 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/04 23:56:58 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	execution(t_data *data)
 	if (data->size_cmd == 1)
 	{
 		if (!check_redirection(data, data->v_cmd))
-			run_one_cmd(data);
+		{
+			if (data->v_cmd->cmd[0])
+				run_one_cmd(data);
+		}
 		if (data->chk_redct_exist == 1)
 		{
 			if (data->v_cmd->f_in > 0)

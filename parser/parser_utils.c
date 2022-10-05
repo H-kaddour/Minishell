@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:12:08 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 17:16:12 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 00:03:22 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,8 @@ static char	*fill_data(t_data *data, char *str)
 void	heredoc_sig(int c)
 {
 	printf("\n");
-	exit(2);
+	exit(1);
+
 }
 
 void	heredoc_process(t_data *data, char *det)
@@ -127,26 +128,21 @@ void	heredoc_process(t_data *data, char *det)
 	char	*buff;
 
 	buff = ft_strdup("");
-	//signal(SIGINT, heredoc_sig);
+	signal(SIGINT, heredoc_sig);
 	while (1)
 	{
-		signal(SIGINT, heredoc_sig);
 		heredoc = readline("> ");
 		if (!heredoc)
 			exit(0);
 		if (!ft_strcmp(heredoc, det))
-		{
-			close(data->hrdoc_fd[1]);
-			exit(1);
-		}
-			//break ;
+			exit(0);
 		if (data->chk_q_hrdoc == 0)
 			heredoc = fill_data(data, heredoc);
 		buff = ft_strjoin(buff, ft_strjoin(heredoc, "\n"));
 	}
 	ft_putstr_fd(buff, data->hrdoc_fd[1]);
 	close(data->hrdoc_fd[1]);
-	exit(1);
+	exit(0);
 }
 
 void  error_pipe_heredoc(t_data *data, char *msg)
@@ -169,17 +165,14 @@ void	heredoc_implement(t_data *data, char *det)
 	{
 		close(data->hrdoc_fd[0]);
 		heredoc_process(data, det);
-		//exit(1);
 	}
 	if (pid > 1)
 	{
 		signal(SIGINT, SIG_IGN);
-		//wait(0);
 		waitpid(pid, &status, 0);
-		if (status == 512)
+		if (status == 256)
 			data->chk_hrdoc_exit = 1;
 		close(data->hrdoc_fd[1]);
-		//exit(1);
-		//return ;
+		return ;
 	}
 }

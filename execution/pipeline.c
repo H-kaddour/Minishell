@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 18:05:52 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 06:16:02 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,11 @@ void  pipeline(t_data *data)
       return ;
     }
     trav->tab_pipe = malloc(sizeof(int) * 2);
+    if (!trav->tab_pipe)
+    {
+      printf("malloc error\n");
+      exit(2);
+    }
     trav->tab_pipe[i++] = fd[1];
     trav->tab_pipe[i] = fd[0];
     trav->f_out = fd[1];
@@ -145,6 +150,13 @@ void  pipeline(t_data *data)
     check_redirection(data, trav);
     trav = trav->next;
   }
+  //trav = data->v_cmd;
+  //while (trav)
+  //{
+  //  printf("in = %d == out = %d\n", trav->f_in, trav->f_out);
+  //  trav = trav->next;
+  //}
+
   //printf("hey\n");
 
   //*t_cmd *p_trav;
@@ -170,11 +182,16 @@ void  pipeline(t_data *data)
       //dup2(trav->f_in, STDIN_FILENO);
       //close(trav->tab_pipe[0]);
       //close(trav->tab_pipe[1]);
+
 			if (check_builtin(&trav->cmd[0]))
       {
         //printf("Kid\n");
+        dup2(trav->f_out, STDOUT_FILENO);
 				builtin_cmd(data, trav);
+        close(trav->tab_pipe[0]);
+        close(trav->tab_pipe[1]);
         exit(1);
+        //here depends if it work or not exit with that
       }
       else
       {
@@ -185,12 +202,24 @@ void  pipeline(t_data *data)
         close(trav->tab_pipe[1]);
         execute_sys_cmd(data, trav);
       }
+
+      //dup2(trav->f_out, STDOUT_FILENO);
+      //dup2(trav->f_in, STDIN_FILENO);
+      //close(trav->tab_pipe[0]);
+      //close(trav->tab_pipe[1]);
+			//if (!check_builtin(&trav->cmd[0]))
+      //{
+			//	builtin_cmd(data, trav);
+      //  exit(0);
+      //}
+      //else
+      //  execute_sys_cmd(data, trav);
     }
     if (pid > 0)
     {
 		  signal(SIGINT, SIG_IGN);
 		  waitpid(pid, &status, 0);
-      printf("%d\n", status);
+      //printf("%d\n", status);
 		  exit_status(&data->chk_dolla, status);
       //status = errno;
       //printf("%d\n", status);

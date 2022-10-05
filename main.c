@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 23:11:43 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 06:15:07 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,10 @@ void	init_shell_elem(t_data *data, char **av, char **env)
 	data->args = av;
 	data->old_pwd_make = 0;
 	data->chk_redct_exist = 0;
-		data->chk_dolla = 0;
+	data->chk_dolla = 0;
 	data->old_pwd_value = ft_strdup("");
 	data->prompt = 0;
+	data->malloc_errno = 0;
 	if (!env[0])
 		make_myown_env(data);
 	else
@@ -167,12 +168,29 @@ void	free_all(t_data *data)
 	//always check if the address exist and then free in case tokenizer show error in first of implementing
 	token = data->t_token;
 	parse = data->v_cmd;
+	free(data->line);
+	i = 0;
+	while (data->env_exec[i])
+	{
+		free(data->env_exec[i]);
+		i++;
+	}
+	free(data->env_exec);
+	if (!token)
+		return ;
 	while (token)
 	{
-		free(token->value);
-		free(token);
-		token = token->next;
+		if (token->value)
+			free(token->value);
+		if (token)
+			free(token);
+		if (token->next)
+			token = token->next;
+		else
+			break ;
 	}
+	if (!parse)
+		return ;
 	while (parse)
 	{
 		i = 0;
@@ -195,6 +213,7 @@ void	free_all(t_data *data)
 				red = red->next;
 			}
 		}
+		free(parse->tab_pipe);
 		free(parse);
 		parse = parse->next;
 	}
@@ -228,12 +247,11 @@ int	hrdoc_with_no_cmd(t_data *data)
 	return (0);
 }
 
+
 int	main(int ac, char **av, char **envp)
 {
 	t_data	data;
-	t_cmd		*cmd;
-	t_red		*red;
-	int	i = 0;
+	//int	i;
 
 	if (ac == 1)
 	{
@@ -241,54 +259,41 @@ int	main(int ac, char **av, char **envp)
 		init_shell_elem(&data, av, envp);
 		while (1)
 		{
-			rl_catch_signals = 0;
+			//this var makat5lish ctrl c hrdoc arg ibanou
+			//rl_catch_signals = 0;
 			signal(SIGINT, sig_c);
 			signal(SIGQUIT, SIG_IGN);
 			prompt_changer(&data);
 			data.line = readline(data.prompt);
-			//data.line = readline("Minishell> ");
 			if (!data.line)
 			{
 				printf(MOVE_UP_RIGHRT "\t\texit\n");
 				exit(131);
 			}
+			env_double_ptr(&data);
 			if (data.line[0] == 0)
 				new_prompt();
 			else
 			{
 				tokenizer(&data);
-				//redirection problem in parsing it don't enter arg of redirection
-				//cmd = data.v_cmd;
-				//while (cmd)
-				//{
-				//	if (cmd->redirect)
-				//	{
-				//		printf("%s\n", cmd->cmd[0]);
-				//		red = cmd->redirect;
-				//		while (red)
-				//		{
-				//			printf("%d	%s\n", red->typ, red->file);
-				//			red = red->next;
-				//		}
-				//	}
-				//	cmd = cmd->next;
-				//}
 				if (!data.error_lexer)
 					execution(&data);
-
-				//hrdoc_with_no_cmd(&data);
-				//if (hrdoc_with_no_cmd(&data))
-				//{
-				//	printf("jdl\n");
-				//	close(data.hrdoc_fd[0]);
-				//}
+				hrdoc_with_no_cmd(&data);
 			}
 			add_shell_history(&data);
 			//close(data.hrdoc_fd[0]);
-			free(data.line);
+			//i = 0;
+			//while (data.env_exec[i])
+			//{
+			//	free(data.env_exec[i]);
+			//	i++;
+			//}
+			//free(data.env_exec);
+			//free(data.line);
 			//here double free error in ;;
 			//and lexer error exit status 258 change it 
-			//free_all(&data);
+			//
+			free_all(&data);
 			//
 			//fix echo $? get the current cmd exit not the old one
 		}

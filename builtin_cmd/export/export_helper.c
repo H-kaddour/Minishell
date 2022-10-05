@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 01:44:45 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/03 10:41:19 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 04:13:37 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	dup_opt_wrd(t_data *data, t_env *env, char *cmd)
 		return (0);
 	else
 		env->sec = ft_strdup(cmd);
+		env->value = ft_strdup("");
 	return (1);
 	//while (ft_strcmp(trav->sec, cmd) && trav->next)
 	//	trav = trav->next;

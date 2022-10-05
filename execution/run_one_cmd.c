@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 04:54:30 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 10:21:33 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 05:44:23 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ static void	exec_file(t_data *data, t_cmd *cmd)
 static void	exec_cmd_path(t_data *data, t_cmd *cmd, char **sp)
 {
 	int		i;
+	int		j;
 	char	*path;
 
 	i = 0;
+	j = 0;
 	while (sp[i])
 	{
 		path = ft_strjoin(ft_strjoin(sp[i], "/"), cmd->cmd[0]);
@@ -48,7 +50,17 @@ static void	exec_cmd_path(t_data *data, t_cmd *cmd, char **sp)
 			if (access(path, X_OK) == 0)
 			{
 				signal(SIGQUIT, SIG_DFL);
-				execve(path, cmd->cmd, env_double_ptr(data));
+				//printf("path = %s\n", path);
+				//printf("path = %s\n", data->l_env->sec);
+				//env_double_ptr(data);
+				//while (data->env_exec[j])
+				//{
+				//	printf("%s\n", data->env_exec[j]);
+				//	j++;
+				//}
+				execve(path, cmd->cmd, data->env_exec);
+				//execve(path, cmd->cmd, env_double_ptr(data));
+				//execve(path, cmd->cmd, data->env);
 			}
 			else
 			{

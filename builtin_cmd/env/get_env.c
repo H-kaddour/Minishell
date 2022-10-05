@@ -6,24 +6,45 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 23:17:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 04:17:09 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 03:40:04 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+
+char	*get_sec(char *str)
+{
+	int		i;
+	int		eqal;
+	char	*ptr;
+
+	i = 0;
+	eqal = ft_strcspn(str, "=");
+	ptr = malloc(sizeof(char) * eqal + 1);
+	while (i < eqal)
+	{
+		ptr[i] = str[i];
+		i++;
+	}
+	ptr[i] = 0;
+	return (ptr);
+}
 
 static void	allocate_all_nodes(t_data *data)
 {
 	int		i;
 	t_env	*head;
 	t_env	*next;
+	char	*hold;
 
 	i = 1;
 	head = node_allocate();
 	data->l_env = head;
 	while (data->env[i])
 	{
-		if (!ft_strcmp(data->env[i], "OLDPWD"))
+		hold = get_sec(data->env[i]);
+		if (!ft_strcmp(hold, "OLDPWD"))
 			i++;
 		else
 		{
@@ -32,6 +53,7 @@ static void	allocate_all_nodes(t_data *data)
 			head = head->next;
 			i++;
 		}
+		free(hold);
 	}
 }
 
@@ -81,6 +103,7 @@ static void	fill_nodes_env(t_data *data, t_env **env, int i)
 void	get_env(t_data *data)
 {
 	int		i;
+	char	*hold;
 	t_env	*env;
 
 	allocate_all_nodes(data);
@@ -88,8 +111,10 @@ void	get_env(t_data *data)
 	env = data->l_env;
 	while (data->env[i])
 	{
-		if (ft_strcmp(data->env[i], "OLDPWD"))
+		hold = get_sec(data->env[i]);
+		if (ft_strcmp(hold, "OLDPWD"))
 			fill_nodes_env(data, &env, i);
+		free(hold);
 		i++;
 	}
 	env_shlvl(data);
