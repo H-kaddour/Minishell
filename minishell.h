@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 05:40:09 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 11:51:48 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,13 @@ typedef	struct s_red
 	struct s_red *next;
 } t_red;
 
+//garbage collecter
+typedef	struct s_free
+{
+	void	*running_process;
+	void	*kill_process;
+	struct s_free	*next;
+} t_free;
 
 typedef	struct cmd
 {

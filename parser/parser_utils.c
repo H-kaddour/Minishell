@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:12:08 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 00:03:22 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 11:01:34 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ void	heredoc_process(t_data *data, char *det)
 	signal(SIGINT, heredoc_sig);
 	while (1)
 	{
+		rl_catch_signals = 1;
 		heredoc = readline("> ");
 		if (!heredoc)
 			exit(0);

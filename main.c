@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 06:15:07 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 11:52:06 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	sig_c(int c)
 {
 	printf("\n");
+	//rl_catch_signals = 0;
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -149,13 +150,15 @@ void	add_shell_history(t_data *data)
 	int	i;
 
 	i = 0;
-	if (data->line[0])
-	{
-		while (data->line[i] == ' ' || (data->line[i] >= 9 && data->line[i] <= 13))
-			i++;
-		if (data->line[i])
+	if (data->beg_line)
 			add_history(data->line);
-	}
+	//if (data->line[0])
+	//{
+	//	while (data->line[i] == ' ' || (data->line[i] >= 9 && data->line[i] <= 13))
+	//		i++;
+	//	if (data->line[i])
+	//		add_history(data->line);
+	//}
 }
 
 void	free_all(t_data *data)
@@ -251,7 +254,7 @@ int	hrdoc_with_no_cmd(t_data *data)
 int	main(int ac, char **av, char **envp)
 {
 	t_data	data;
-	//int	i;
+	void	*hold;
 
 	if (ac == 1)
 	{
@@ -259,28 +262,38 @@ int	main(int ac, char **av, char **envp)
 		init_shell_elem(&data, av, envp);
 		while (1)
 		{
-			//this var makat5lish ctrl c hrdoc arg ibanou
-			//rl_catch_signals = 0;
+			rl_catch_signals = 0;
 			signal(SIGINT, sig_c);
 			signal(SIGQUIT, SIG_IGN);
 			prompt_changer(&data);
 			data.line = readline(data.prompt);
+			hold = data.line;
 			if (!data.line)
 			{
 				printf(MOVE_UP_RIGHRT "\t\texit\n");
+				//here too shoul free
+				//while (1);
 				exit(131);
 			}
-			env_double_ptr(&data);
-			if (data.line[0] == 0)
-				new_prompt();
-			else
-			{
-				tokenizer(&data);
-				if (!data.error_lexer)
-					execution(&data);
-				hrdoc_with_no_cmd(&data);
-			}
-			add_shell_history(&data);
+			//tokenizer(&data);
+			//if (!data.beg_line)
+			//{
+			//	data.chk_dolla = 0;
+			//	//free(data.line);
+			//	continue ;
+			//}
+			//if (!data.error_lexer)
+			//{
+			//	//env_double_ptr(&data);
+			//	execution(&data);
+			//}
+			//hrdoc_with_no_cmd(&data);
+			//add_shell_history(&data);
+
+			//free(hold);
+			//free_data_running_process(&data);
+
+			//free_all(&data);
 			//close(data.hrdoc_fd[0]);
 			//i = 0;
 			//while (data.env_exec[i])
@@ -293,7 +306,8 @@ int	main(int ac, char **av, char **envp)
 			//here double free error in ;;
 			//and lexer error exit status 258 change it 
 			//
-			free_all(&data);
+
+			//free_all(&data);
 			//
 			//fix echo $? get the current cmd exit not the old one
 		}
