@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 11:52:06 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 14:08:05 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,20 +275,20 @@ int	main(int ac, char **av, char **envp)
 				//while (1);
 				exit(131);
 			}
-			//tokenizer(&data);
-			//if (!data.beg_line)
-			//{
-			//	data.chk_dolla = 0;
-			//	//free(data.line);
-			//	continue ;
-			//}
-			//if (!data.error_lexer)
-			//{
-			//	//env_double_ptr(&data);
-			//	execution(&data);
-			//}
-			//hrdoc_with_no_cmd(&data);
-			//add_shell_history(&data);
+			tokenizer(&data);
+			if (!data.beg_line)
+			{
+				data.chk_dolla = 0;
+				free(data.line);
+				continue ;
+			}
+			if (!data.error_lexer)
+			{
+				env_double_ptr(&data);
+				execution(&data);
+			}
+			hrdoc_with_no_cmd(&data);
+			add_shell_history(&data);
 
 			//free(hold);
 			//free_data_running_process(&data);

@@ -308,6 +308,7 @@ history still fucked up
 ls > nari | grep a < nari
 still exit status number
 cat << l << d << z
+cd minishell-tester/ show empty pwd
 
 
 unset and export error:
