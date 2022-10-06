@@ -1,35 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer_helper.c                                 :+:      :+:    :+:   */
+/*   lexer_pt1_helper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/06 07:59:26 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/06 08:00:58 by hkaddour         ###   ########.fr       */
+/*   Created: 2022/10/06 08:24:01 by hkaddour          #+#    #+#             */
+/*   Updated: 2022/10/06 08:24:44 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+#include "./../../minishell.h"
 
-void	init_var_tokenizer(t_data *data)
+int	quote_lexer_helper(int s_c, int d, int s, int typ)
 {
-	data->index = 0;
-	data->check = 1;
-	data->error_lexer = 0;
-	data->chk_hrdoc = 0;
-	ft_init_tokenizer(data, data->beg_line, 0, 0);
-}
-
-int	parser_phase(t_data *data)
-{
-	if (lexer_pt2(data))
+	if (s_c >= 2 && typ == WRD)
 	{
-		data->chk_dolla = 258;
-		data->error_lexer = 1;
+		printf("minishell: syntax error near unexpected token ';;'\n");
 		return (1);
 	}
-	parser(data);
-	return (0);
+	if (d % 2 == 0 && s % 2 == 0)
+		return (0);
+	printf("minishell: unclosed quotes\n");
+	return (1);
 }
-

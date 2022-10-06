@@ -6,11 +6,11 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 19:35:09 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 13:22:33 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 08:23:34 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "./../../minishell.h"
 
 static int	pipe_grammar(t_token *trav, int i)
 {
@@ -59,7 +59,7 @@ static int	redirection_grammar(t_token *trav)
 		return (0);
 }
 
-int	lexer_pt2_helper(t_token *trav)
+static int	lexer_pt2_helper(t_token *trav)
 {
 	if (!redirection_grammar(trav))
 	{
@@ -83,7 +83,6 @@ int	lexer_pt2(t_data *data)
 
 	i = 0;
 	trav = data->t_token;
-	//data->chk_dolla = 258;
 	while (trav)
 	{
 		if (trav->type == PIPE)
@@ -103,6 +102,5 @@ int	lexer_pt2(t_data *data)
 		trav = trav->next;
 		i++;
 	}
-	//data->chk_dolla = 0;
 	return (0);
 }

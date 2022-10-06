@@ -1,69 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   allocate_tokens_utils.c                            :+:      :+:    :+:   */
+/*   allocate_tokens_dolla_begin.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/24 13:30:14 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 22:36:09 by hkaddour         ###   ########.fr       */
+/*   Created: 2022/10/06 07:20:58 by hkaddour          #+#    #+#             */
+/*   Updated: 2022/10/06 11:45:08 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "./../../minishell.h"
 
-static void	add_dolla_helper(t_data *data, int len)
-{
-	char	*dolla;
-	t_env	*hold;
-	t_env	*trav_env;
 
-	trav_env = data->l_env;
-	dolla = malloc(sizeof(char) * len + 1);
-	if (!dolla)
-		return ;
-	data->i -= len;
-	len = 0;
-	while (ft_acceptable_char(data->beg_line[data->i]))
-		dolla[len++] = data->beg_line[data->i++];
-	dolla[len] = 0;
-	hold = getenv_addr(data, dolla);
-	free(dolla);
-	if (hold)
-	{
-		len = 0;
-		while (hold->value[len])
-			data->node->value[data->j++] = hold->value[len++];
-	}
-}
-
-void	add_dolla(t_data *data)
-{
-	int	len;
-
-	if (data->beg_line[data->i] == '$' && \
-			ft_acceptable_char(data->beg_line[data->i + 1]))
-	{
-		data->i++;
-		len = 0;
-		while (ft_acceptable_char(data->beg_line[data->i]))
-		{
-			data->i++;
-			len++;
-		}
-		add_dolla_helper(data, len);
-	}
-	else if (data->beg_line[data->i] == '$' && \
-			!ft_acceptable_char(data->beg_line[data->i + 1]))
-	{
-		data->node->value[data->j++] = data->beg_line[data->i++];
-		while (data->beg_line[data->i] && data->beg_line[data->i] != '$' \
-				&& !ft_acceptable_char(data->beg_line[data->i + 1]))
-			data->node->value[data->j++] = data->beg_line[data->i++];
-	}
-}
-
-int	dolla_begin_pt1(t_data *data)
+static int	dolla_begin_pt1(t_data *data)
 {
 	if (data->beg_line[data->i + 1] == ' ')
 	{
@@ -87,7 +37,7 @@ int	dolla_begin_pt1(t_data *data)
 	return (0);
 }
 
-int	dolla_begin_pt2(t_data *data)
+static int	dolla_begin_pt2(t_data *data)
 {
 	int	i;
 
@@ -108,7 +58,7 @@ int	dolla_begin_pt2(t_data *data)
 	return (0);
 }
 
-int	dolla_begin_pt3(t_data *data)
+static int	dolla_begin_pt3(t_data *data)
 {
 	int	i;
 	char	*ptr;
@@ -137,7 +87,6 @@ int	dolla_begin_pt3(t_data *data)
 	return (0);
 }
 
-//void	add_dolla_begin(t_data *data)
 int	add_dolla_begin(t_data *data)
 {
 	if (dolla_begin_pt1(data))

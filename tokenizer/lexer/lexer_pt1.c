@@ -6,24 +6,11 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 17:15:30 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 13:22:23 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 08:24:32 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-
-int	quote_lexer_helper(int s_c, int d, int s, int typ)
-{
-	if (s_c >= 2 && typ == WRD)
-	{
-		printf("minishell: syntax error near unexpected token ';;'\n");
-		return (1);
-	}
-	if (d % 2 == 0 && s % 2 == 0)
-		return (0);
-	printf("minishell: unclosed quotes\n");
-	return (1);
-}
+#include "./../../minishell.h"
 
 static int	quote_lexer(t_data *data, int q1, int q2, int typ)
 {
@@ -77,7 +64,7 @@ static int	redirection_lexer(t_data *data, int c)
 	return (0);
 }
 
-int	lexer_redirect_helper(t_data *data, int typ)
+static int	lexer_redirect_helper(t_data *data, int typ)
 {
 	if (typ == O_APEND || typ == I_APEND)
 	{
@@ -97,7 +84,6 @@ int	lexer_redirect_helper(t_data *data, int typ)
 
 int	lexer_pt1(t_data *data, t_types typ)
 {
-	//data->chk_dolla = 258;
 	if (typ == PIPE)
 	{
 		if (pipe_lexer(data))
@@ -118,6 +104,5 @@ int	lexer_pt1(t_data *data, t_types typ)
 	}
 	if (lexer_redirect_helper(data, typ) == 1)
 		return (1);
-	//data->chk_dolla = 0;
 	return (0);
 }

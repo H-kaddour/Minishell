@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/06 02:37:53 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 11:06:16 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,9 @@
 # include "libft/libft.h"
 # include <errno.h>
 # define MOVE_UP_RIGHRT "\033[1A\033[12C"
-//# include "~/.brew/opt/readline/include/readline"
-//# include "../.brew/opt/readline/include/readline/readline.h"
-//# include "../.brew/opt/readline/include/readline/rlstdc.h"
-//# include "../.brew/opt/readline/include/readline/rlconf.h"
+# define CLR1 "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30m"
+# define CLR1ERR "\e[103m \e[91m \e[40m\e[93m \e[97m \e[44m\e[30m\e[44m \e[30m"
+# define CLR2 " \e[0m\e[34m\e[0m "
 
 typedef enum	types
 {
@@ -169,31 +168,10 @@ typedef struct s_data
 	char		**env_exec;
 	//len of tokenizer value
 	int			tok_len;
+	//count data len of heredoc
+	int			hrdoc_len;
 }	t_data;
 
-/******* Function of tokenizer *********/
-void	free_token_node(t_data *data);
-int		add_dolla_begin(t_data *data);
-//void	add_dolla_begin(t_data *data);
-void	add_dolla(t_data *data);
-int		add_node(t_data *data, t_types typ);
-int		ft_acceptable_char(int c);
-void	is_quote_helper(t_data *data, int c, char *n_line);
-void	ft_init_tokenizer(t_data *data, char *n_line, int i, t_types typ);
-int		is_o_redirection(t_data *data, char *n_line);
-int		is_i_redirection(t_data *data, char *n_line);
-int		is_s_quote(t_data *data, char *n_line);
-int		is_dolla(t_data *data, char *n_line);
-int		is_d_quote(t_data *data, char *n_line);
-void	tokenizer(t_data *data);
-/******* Function of tokenizer count len *********/
-int		get_len(t_data *data);
-int		count_dolla_begin(t_data *data);
-void	count_dolla(t_data *data);
-
-/******* Function of lexer ************/
-int	lexer_pt2(t_data *data);
-int	lexer_pt1(t_data *data, t_types typ);
 
 /******* Function of parser ************/
 void	heredoc_implement(t_data *data, char *det);
@@ -203,27 +181,75 @@ void  parser(t_data *data);
 int		check_builtin(char **cmd);
 //void  builtin_cmd(t_data *data, char *cmd);
 void	builtin_cmd(t_data *data, t_cmd *node);
-//void  cd_cmd(t_data *data);
-//void  pwd_cmd(t_data *data);
-//void  exit_cmd(t_data *data);
-//void  echo_cmd(t_data *data);
-//void  export_cmd(t_data *data);
-//void  unset_cmd(t_data *data);
 void  pipeline(t_data *data);
 
-//this one in the main but should go to cd
-void  prompt_changer(t_data *data);
-void  sig_exec(int c);
-char *take_off_the_lst_slash(char *cmd);
 
 
+/****************************************************************/
+/******* Function of tokenizer *********/
+int		parser_phase(t_data *data);
+void	init_var_tokenizer(t_data *data);
+void	tokenizer(t_data *data);
+
+
+/******* Function of tokenizer allocate node *********/
+int		ft_acceptable_char(int c);
+void	arg_after_hrdoc(t_data *data);
+void	add_dolla(t_data *data);
+int		add_dolla_begin(t_data *data);
+void	node_attach(t_data *data);
+void	add_d_quote_helper(t_data *data);
+int		add_node(t_data *data, t_types typ);
+
+
+/******* Function of tokenizer count len *********/
+void	count_arg_after_hrdoc(t_data *data);
+void	count_dolla(t_data *data);
+int		count_dolla_begin(t_data *data);
+int		get_len(t_data *data);
+
+
+
+/******* Function of tokenizer token identifier *********/
+void	ft_init_tokenizer(t_data *data, char *n_line, int i, t_types typ);
+int		is_o_redirection(t_data *data, char *n_line);
+int		is_i_redirection(t_data *data, char *n_line);
+int		is_dolla(t_data *data, char *n_line);
+void	is_quote_helper(t_data *data, int c, char *n_line);
+int		is_d_quote(t_data *data, char *n_line);
+int		is_s_quote(t_data *data, char *n_line);
+int		is_pipe(t_data *data, char *n_line);
+int		is_space(t_data *data, char *n_line);
+void	is_word_helper(t_data *data, char *n_line, int *typ);
+int		is_word(t_data *data, char *n_line);
+
+
+/******* Function of lexer ************/
+int	quote_lexer_helper(int s_c, int d, int s, int typ);
+int	lexer_pt2(t_data *data);
+int	lexer_pt1(t_data *data, t_types typ);
+
+/****************************************************************/
+
+
+
+/******* Function of parser ************/
+void  parsing_get_len_alloc_cmd_arr(t_data *data, int *len, int *red_len);
+int		count_cmd(t_data *data);
+void	allocate_red_node(t_data *data, int red_len);
+void	allocate_cmd_node(t_data *data);
+//those just for heredoc
+int		len_hrdoc_data(t_data *data, char *ptr);
+void	heredoc_sig(int c);
+void	heredoc_dolla_allocate(t_data *data, char *ptr, char *str);
+void	heredoc_implement(t_data *data, char *det);
 
 
 /**** Function of one_cmd execution ****/
+void	check_if_x_ok(t_data *data, t_cmd *cmd, char *path);
 void  fds_closer(t_cmd *cmd, t_red *red);
 void  run_one_cmd(t_data *data);
 void  exit_status(int *exit_stat, int status);
-void  error_execution(t_data *data, char *msg);
 int		find_slash(char *cmd);
 int		check_redirection(t_data *data, t_cmd *cmd);
 void  run_one_cmd(t_data *data);
@@ -231,14 +257,7 @@ void  execute_sys_cmd(t_data *data, t_cmd *cmd);
 void  execution(t_data *data);
 
 
-
 /**** Function of builtin cmd **********/
-//void  cd_cmd(t_data *data);
-//void  echo_cmd(t_data *data);
-//void 	env_cmd(t_data *data);
-//void  export_cmd(t_data *data);
-//void  unset_cmd(t_data *data);
-//void  exit_cmd(t_data *data);
 void	cd_cmd(t_data *data, t_cmd *node);
 void	echo_cmd(t_data *data, t_cmd *trav);
 void  pwd_cmd(t_data *data);
@@ -275,8 +294,24 @@ int 	check_existence(t_data *data, char *cmd, int hold, t_env *env);
 void  dup_opt_equal_helper(t_env **env, char *cmd, int *hold);
 
 
+/******* Function of free *********/
+void	free_data_running_process(t_data *data);
+void	free_data_die_process(t_data *data);
+void	free_parsing_cmd(t_data *data);
 
 
-void  token_s_quote(t_data *data);
+/******* Function of shell *********/
+void	usage_help_menu(char *option);
+void	process_kill(t_data *data);
+int		hrdoc_with_no_cmd_to_close_fd(t_data *data);
+void	init_shell_elem(t_data *data, char **av, char **env);
+void	prompt_changer(t_data *data);
+void	sig_c(int c);
+
+
+/******* Function of error *********/
+void	error_malloc(void);
+void	error_fork(t_data *data, char *msg);
+void	error_pipe(t_data *data, char *msg);
 
 #endif

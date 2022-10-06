@@ -339,3 +339,8 @@ ls
 cd ~/mishl_util/
 cd minishl/
 double free
+
+count len of data in heredco the data that gonna sign in the file NOW ***
+maybe heredoc child process if malloc failed should exit with a code to exit the parent too
+dup2 should be protect
+heredoc got some problem cat << l

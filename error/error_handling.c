@@ -1,19 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_collector.c                                   :+:      :+:    :+:   */
+/*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/05 11:54:01 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 13:54:12 by hkaddour         ###   ########.fr       */
+/*   Created: 2022/10/06 05:22:11 by hkaddour          #+#    #+#             */
+/*   Updated: 2022/10/06 10:55:54 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	free_collector(void *addr)
+void	error_malloc(void)
 {
-	t_free	*free;
-	
+	printf("Fatal: error in malloc\n");
+	exit(1);
+}
+
+void	error_fork(t_data *data, char *msg)
+{
+	data->chk_dolla = 1;
+	printf("%s\n", msg);
+	exit(1);
+}
+
+void	error_pipe(t_data *data, char *msg)
+{
+	data->chk_dolla = 1;
+	printf("%s\n", msg);
 }

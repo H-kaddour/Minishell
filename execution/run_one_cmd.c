@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 04:54:30 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 21:54:02 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 11:10:00 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,30 +37,16 @@ static void	exec_file(t_data *data, t_cmd *cmd)
 static void	exec_cmd_path(t_data *data, t_cmd *cmd, char **sp)
 {
 	int		i;
-	int		j;
 	char	*path;
 	char	*slash;
 
 	i = 0;
-	j = 0;
 	while (sp[i])
 	{
 		slash = ft_strjoin(sp[i], "/");
 		path = ft_strjoin(slash, cmd->cmd[0]);
-		//path = ft_strjoin(ft_strjoin(sp[i], "/"), cmd->cmd[0]);
 		if (access(path, F_OK) == 0)
-		{
-			if (access(path, X_OK) == 0)
-			{
-				signal(SIGQUIT, SIG_DFL);
-				execve(path, cmd->cmd, data->env_exec);
-			}
-			else
-			{
-				printf("minishell: %s: Permission denied\n", path);
-				exit(126);
-			}
-		}
+			check_if_x_ok(data, cmd, path);
 		free(path);
 		free(slash);
 		free(sp[i]);
@@ -84,7 +70,6 @@ void	execute_sys_cmd(t_data *data, t_cmd *cmd)
 	{
 		data->chk_dolla = 1;
 		printf("minishell: %s: No such file or directory\n", cmd->cmd[0]);
-		//printf("TERM environment variable not set.\n");
 		exit(127);
 	}
 	sp = ft_split(env->value, ':');
@@ -110,7 +95,7 @@ void	run_one_cmd(t_data *data)
 
 	pid = fork();
 	if (pid < 0)
-		error_execution(data, "minishell: fork: error\n");
+		error_fork(data, "minishell: fork: Resource temporarily unavailable");
 	if (pid == 0)
 	{
 		if (data->v_cmd->cmd[0])

@@ -6,119 +6,14 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 10:32:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 02:23:40 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 10:18:16 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int  count_cmd(t_data *data)
-{
-  t_token *trav;
-  int     i;
-  int     j;
-
-  i = 0;
-  j = 0;
-  trav = data->t_token;
-  while (trav)
-  {
-    if (trav->type == PIPE && j != 0 && trav->next)
-      i++;
-    trav = trav->next;
-    j++;
-  }
-  return (i);
-}
-
-static void allocate_cmd_node(t_data *data)
-{
-  int   i;
-  int   len;
-  t_cmd *head;
-  t_cmd *node;
-
-  i = 1;
-  len = count_cmd(data) + 1;
-  head = malloc(sizeof(t_cmd));
-  head->cmd = 0;
-  head->f_in = 0;
-  head->f_out = 1;
-  head->redirect = 0;
-  head->tab_pipe = 0;
-  head->next = 0;
-  data->v_cmd = head;
-  while (i < len)
-  {
-    node = malloc(sizeof(t_cmd));
-    node->cmd = 0;
-    node->f_in = 0;
-    node->f_out = 1;
-    node->redirect = 0;
-    node->tab_pipe = 0;
-    node->next = 0;
-    head->next = node;
-    head = node;
-    i++;
-  }
-}
-
-static void allocate_red_node(t_data *data, int red_len)
-{
-  int i;
-  t_red *head;
-  t_red *node;
-
-  i = 1;
-  if (red_len != 0)
-  {
-    head = malloc(sizeof(t_red));
-    head->typ = 0;
-    head->file = 0;
-    head->determiner = 0;
-    head->next = 0;
-    data->trav_cmd->redirect = head;
-  }
-  while (i < red_len)
-  {
-    node = malloc(sizeof(t_red));
-    node->typ = 0;
-    node->file = 0;
-    node->determiner = 0;
-    node->next = 0;
-    head->next = node;
-    head = node;
-    i++;
-  }
-}
-
-void  parsing_get_len_alloc_cmd_arr(t_data *data, int *len, int *red_len)
-{
-  while (data->trav)
-  {
-    if (data->trav->type == WRD || data->trav->type == D_QUOT \
-        || data->trav->type == S_QUOT || data->trav->type == DOLLA)
-    {
-      *(len) += 1;
-      data->trav = data->trav->next;
-    }
-    else if (data->trav->type == W_SPACE)
-      data->trav = data->trav->next;
-    else if (data->trav->type == O_TRNC || data->trav->type == O_APEND \
-        || data->trav->type == I_TRNC || data->trav->type == I_APEND)
-    {
-      if (data->trav->next->type == W_SPACE)
-        data->trav = data->trav->next->next->next;
-      else
-        data->trav = data->trav->next->next;
-      *(red_len) += 1;
-    }
-    else if (data->trav->type == PIPE)
-      break ;
-  }
-}
-
-t_token *parsing_alloc_red_space(t_data *data, t_token *trav, int *chk, t_red *trav_red)
+t_token *parsing_alloc_red_space(t_data *data, t_token *trav, \
+    int *chk, t_red *trav_red)
 {
   trav_red->typ = trav->type;
   if (trav->type != I_APEND)
@@ -137,7 +32,8 @@ t_token *parsing_alloc_red_space(t_data *data, t_token *trav, int *chk, t_red *t
   return (trav);
 }
 
-t_token *parsing_alloc_red_no_space(t_data *data, t_token *trav, int *chk, t_red *trav_red)
+t_token *parsing_alloc_red_no_space(t_data *data, t_token *trav, \
+    int *chk, t_red *trav_red)
 {
   trav_red->typ = trav->type;
   if (trav->type != I_APEND)
@@ -156,7 +52,8 @@ t_token *parsing_alloc_red_no_space(t_data *data, t_token *trav, int *chk, t_red
   return (trav);
 }
 
-int get_cmd_parsing_helper(t_data *data, t_token **trav, t_red **trav_red, int *i)
+int get_cmd_parsing_helper(t_data *data, t_token **trav, \
+    t_red **trav_red, int *i)
 {
   int chk;
 
@@ -198,6 +95,8 @@ static void get_cmd_parsing(t_data *data)
   trav = data->trav;
   parsing_get_len_alloc_cmd_arr(data, &cmd_len, &red_len);
   data->trav_cmd->cmd = malloc(sizeof(char *) * cmd_len + 1);
+  if (!data->trav_cmd->cmd)
+    error_malloc();
   allocate_red_node(data, red_len);
   trav_red = data->trav_cmd->redirect;
   while (trav)

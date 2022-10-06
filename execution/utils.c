@@ -6,11 +6,25 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 04:58:13 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 05:27:08 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 11:06:06 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	check_if_x_ok(t_data *data, t_cmd *cmd, char *path)
+{
+	if (access(path, X_OK) == 0)
+	{
+		signal(SIGQUIT, SIG_DFL);
+		execve(path, cmd->cmd, data->env_exec);
+	}
+	else
+	{
+		printf("minishell: %s: Permission denied\n", path);
+		exit(126);
+	}
+}
 
 int	find_slash(char *cmd)
 {
@@ -24,13 +38,6 @@ int	find_slash(char *cmd)
 		i++;
 	}
 	return (0);
-}
-
-void	error_execution(t_data *data, char *msg)
-{
-	data->chk_dolla = 1;
-	printf("%s\n", msg);
-	exit(2);
 }
 
 void	exit_status(int *exit_stat, int status)
