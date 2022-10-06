@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:15:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 04:28:10 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 12:38:22 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ void	echo_cmd(t_data *data, t_cmd *trav)
 {
 	int		i;
 	int		chk;
-	//t_cmd	*trav;
 
-	//trav = data->v_cmd;
 	if (trav->cmd[1])
 		chk = check_nline_option(trav->cmd);
 	else

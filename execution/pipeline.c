@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/06 11:50:25 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 12:22:41 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,10 @@ static void child_process_of_pipeline(t_data *data, t_cmd *trav)
   }
 }
 
-void  pipeline_parent_helper(t_data *data, int status, t_cmd *p_trav, t_cmd *trav)
-{
-  exit_status(&data->chk_dolla, status);
-  if (p_trav)
-    close(p_trav->tab_pipe[1]);
-  close(trav->tab_pipe[0]);
-}
-
 void  pipeline(t_data *data)
 {
   int   pid;
   int   status;
-  //int   fd[2];
   t_cmd *trav;
   t_cmd *p_trav;
 
@@ -103,31 +94,11 @@ void  pipeline(t_data *data)
       error_fork(data, "minishell: fork: Resource temporarily unavailable");
     if (pid == 0)
       child_process_of_pipeline(data, trav);
-			//if (check_builtin(&trav->cmd[0]))
-      //{
-      //  dup2(trav->f_out, STDOUT_FILENO);
-			//	builtin_cmd(data, trav);
-      //  close(trav->tab_pipe[0]);
-      //  close(trav->tab_pipe[1]);
-      //  exit(0);
-      //}
-      //else
-      //{
-      //  dup2(trav->f_out, STDOUT_FILENO);
-      //  dup2(trav->f_in, STDIN_FILENO);
-      //  close(trav->tab_pipe[0]);
-      //  close(trav->tab_pipe[1]);
-      //  execute_sys_cmd(data, trav);
-      //}
     if (pid > 0)
     {
 		  signal(SIGINT, SIG_IGN);
 		  waitpid(pid, &status, 0);
       pipeline_parent_helper(data, status, p_trav, trav);
-		  //exit_status(&data->chk_dolla, status);
-      //if (p_trav)
-      //  close(p_trav->tab_pipe[1]);
-      //close(trav->tab_pipe[0]);
       p_trav = trav;
       trav = trav->next;
     }

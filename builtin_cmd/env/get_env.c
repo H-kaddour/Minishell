@@ -6,12 +6,11 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 23:17:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 03:40:04 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 13:56:31 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
 
 char	*get_sec(char *str)
 {

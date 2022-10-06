@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 08:40:06 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/06 11:57:39 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 12:16:03 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ static char	*fill_data(t_data *data, char *str)
 	ptr = malloc(sizeof(char) * len_hrdoc_data(data, str) + 1);
 	if (!ptr)
 		error_malloc();
-	printf("%d\n", data->hrdoc_len);
 	data->i = 0;
 	data->j = 0;
 	while (str[data->i])
@@ -90,14 +89,10 @@ static void	heredoc_process(t_data *data, char *det)
 		if (!heredoc)
 			exit(0);
 		if (!ft_strcmp(heredoc, det))
-		{
-			//close(data->hrdoc_fd[1]);
-			exit(0);
-		}
+			break ;
 		if (data->chk_q_hrdoc == 0)
 			heredoc = fill_data(data, heredoc);
 		buff = ft_strjoin(buff, ft_strjoin(heredoc, "\n"));
-		printf("%s\n", buff);
 	}
 	ft_putstr_fd(buff, data->hrdoc_fd[1]);
 	close(data->hrdoc_fd[1]);

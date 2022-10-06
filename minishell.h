@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/06 11:06:16 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 12:28:04 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,18 +173,6 @@ typedef struct s_data
 }	t_data;
 
 
-/******* Function of parser ************/
-void	heredoc_implement(t_data *data, char *det);
-void  parser(t_data *data);
-
-/**** Function of builtin cmd **********/
-int		check_builtin(char **cmd);
-//void  builtin_cmd(t_data *data, char *cmd);
-void	builtin_cmd(t_data *data, t_cmd *node);
-void  pipeline(t_data *data);
-
-
-
 /****************************************************************/
 /******* Function of tokenizer *********/
 int		parser_phase(t_data *data);
@@ -238,6 +226,7 @@ void  parsing_get_len_alloc_cmd_arr(t_data *data, int *len, int *red_len);
 int		count_cmd(t_data *data);
 void	allocate_red_node(t_data *data, int red_len);
 void	allocate_cmd_node(t_data *data);
+void  parser(t_data *data);
 //those just for heredoc
 int		len_hrdoc_data(t_data *data, char *ptr);
 void	heredoc_sig(int c);
@@ -246,6 +235,8 @@ void	heredoc_implement(t_data *data, char *det);
 
 
 /**** Function of one_cmd execution ****/
+void  pipeline_parent_helper(t_data *data, int status, t_cmd *p_trav, t_cmd *trav);
+void  pipeline(t_data *data);
 void	check_if_x_ok(t_data *data, t_cmd *cmd, char *path);
 void  fds_closer(t_cmd *cmd, t_red *red);
 void  run_one_cmd(t_data *data);
@@ -265,6 +256,8 @@ void	env_cmd(t_data *data, t_cmd *cmd);
 void	export_cmd(t_data *data, t_cmd *trav_c);
 void	unset_cmd(t_data *data, t_cmd *trav_c);
 void	exit_cmd(t_data *data, t_cmd *trav);
+int		check_builtin(char **cmd);
+void	builtin_cmd(t_data *data, t_cmd *node);
 
 
 /**** Function of cd **********/

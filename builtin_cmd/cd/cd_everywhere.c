@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 22:53:53 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/06 04:10:22 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 12:40:52 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 static int	cd_to_home(t_data *data, char **cmd)
 {
-	//char	*home;
 	t_env	*home;
 
-	//home = myown_getenv(data, "HOME", 0);
 	home = getenv_addr(data, "HOME");
 	if (!home)
 	{
@@ -25,7 +23,6 @@ static int	cd_to_home(t_data *data, char **cmd)
 		return (1);
 	}
 	*cmd = ft_strdup(home->value);
-	//free(home);
 	return (0);
 }
 
@@ -44,7 +41,6 @@ static int	join_home_and_path(t_data *data, char **cmd)
 			return (1);
 		}
 		*cmd = ft_strjoin(home, &cmd[0][1]);
-		//free(home);
 		return (0);
 	}
 	*cmd = ft_strjoin(e_home->value, &cmd[0][1]);
@@ -63,13 +59,8 @@ static void	execute_cmd_cd(t_data *data, char *cmd)
 	}
 	path = malloc(sizeof(char) * 1024);
 	getcwd(path, 1024);
-	//printf("path = %s\n", path);
 	if (access(path, F_OK) != 0)
 		printf("cd: error retrieving current directory\n");
-	//if (!path)
-	//{
-	//	printf("oho\n");
-	//}
 	if (data->old_pwd_make == 0)
 		old_pwd_alloc(data);
 	change_pwd(data, path);

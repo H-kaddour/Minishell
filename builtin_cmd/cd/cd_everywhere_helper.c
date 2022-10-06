@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 22:57:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 16:31:17 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 12:41:49 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	change_pwd(t_data *data, char *path)
 	if (!pwd)
 	{
 		free(data->old_pwd_value);
-		//data->old_pwd_value = data->pwd_of_mysys;
 		data->old_pwd_value = ft_strdup(data->pwd_of_mysys);
 		free(data->pwd_of_mysys);
 		data->pwd_of_mysys = ft_strdup(path);

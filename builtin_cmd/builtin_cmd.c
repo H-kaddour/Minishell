@@ -6,13 +6,13 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:54:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 21:17:56 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 12:26:16 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*if_upper_lower_them(char *cmd)
+static char	*if_upper_lower_them(char *cmd)
 {
 	int		i;
 	char	*ptr;
@@ -31,7 +31,7 @@ char	*if_upper_lower_them(char *cmd)
 	return (ptr);
 }
 
-void	free_sp(char **sp)
+static void	free_sp(char **sp)
 {
 	int	i;
 
@@ -44,7 +44,7 @@ void	free_sp(char **sp)
 	free(sp);
 }
 
-int	cmd_only_exec_lower(char *cmd)
+static int	cmd_only_exec_lower(char *cmd)
 {
 	int		i;
 	char	**sp;
