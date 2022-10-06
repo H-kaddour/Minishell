@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 22:53:53 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/03 09:53:52 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 04:10:22 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,13 @@ static void	execute_cmd_cd(t_data *data, char *cmd)
 	}
 	path = malloc(sizeof(char) * 1024);
 	getcwd(path, 1024);
+	//printf("path = %s\n", path);
+	if (access(path, F_OK) != 0)
+		printf("cd: error retrieving current directory\n");
+	//if (!path)
+	//{
+	//	printf("oho\n");
+	//}
 	if (data->old_pwd_make == 0)
 		old_pwd_alloc(data);
 	change_pwd(data, path);

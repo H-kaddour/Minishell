@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 06:11:06 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 10:57:22 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 22:35:40 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	add_dolla_helper(t_data *data, int len)
 {
 	char	*dolla;
-	char	*hold;
+	t_env	*hold;
 	t_env	*trav_env;
 
 	trav_env = data->l_env;
@@ -27,12 +27,10 @@ static void	add_dolla_helper(t_data *data, int len)
 	while (ft_acceptable_char(data->beg_line[data->i]))
 		dolla[len++] = data->beg_line[data->i++];
 	dolla[len] = 0;
-	hold = dolla;
-	dolla = myown_getenv(data, dolla, 0);
-	if (!dolla)
-		dolla = ft_strdup("");
-	free(hold);
-	data->tok_len += ft_strlen(dolla);
+	hold = getenv_addr(data, dolla);
+	free(dolla);
+	if (hold)
+		data->tok_len += ft_strlen(hold->value);
 }
 
 void	count_dolla(t_data *data)

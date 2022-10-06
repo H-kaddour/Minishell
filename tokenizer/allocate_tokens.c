@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:46:07 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 02:22:19 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 01:43:51 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,14 +156,8 @@ int	add_node(t_data *data, t_types typ)
 	t_env	*trav_env;
 
 	trav_env = data->l_env;
-	data->node = 0;
-	//data->node->value = 0;
 	if (lexer_pt1(data, typ))
-	{
-		if (data->check == 1)
-			data->t_token = data->node;
 		return (1);
-	}
 	data->node = (t_token *) malloc(sizeof(t_token));
 	if (!data->node)
 		return (0);

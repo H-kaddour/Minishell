@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 04:54:30 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 11:27:19 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 21:54:02 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,15 @@ static void	exec_cmd_path(t_data *data, t_cmd *cmd, char **sp)
 	int		i;
 	int		j;
 	char	*path;
+	char	*slash;
 
 	i = 0;
 	j = 0;
 	while (sp[i])
 	{
-		path = ft_strjoin(ft_strjoin(sp[i], "/"), cmd->cmd[0]);
+		slash = ft_strjoin(sp[i], "/");
+		path = ft_strjoin(slash, cmd->cmd[0]);
+		//path = ft_strjoin(ft_strjoin(sp[i], "/"), cmd->cmd[0]);
 		if (access(path, F_OK) == 0)
 		{
 			if (access(path, X_OK) == 0)
@@ -59,8 +62,11 @@ static void	exec_cmd_path(t_data *data, t_cmd *cmd, char **sp)
 			}
 		}
 		free(path);
+		free(slash);
+		free(sp[i]);
 		i++;
 	}
+	free(sp);
 	printf("minishell: %s: command not found\n", cmd->cmd[0]);
 	exit(127);
 }
@@ -69,17 +75,19 @@ void	execute_sys_cmd(t_data *data, t_cmd *cmd)
 {
 	int		i;
 	char	**sp;
-	char	*env;
+	t_env	*env;
 
 	i = 0;
 	exec_file(data, cmd);
-	env = myown_getenv(data, "PATH", 0);
+	env = getenv_addr(data, "PATH");
 	if (!env)
 	{
 		data->chk_dolla = 1;
-		printf("TERM environment variable not set.\n");
+		printf("minishell: %s: No such file or directory\n", cmd->cmd[0]);
+		//printf("TERM environment variable not set.\n");
+		exit(127);
 	}
-	sp = ft_split(env, ':');
+	sp = ft_split(env->value, ':');
 	exec_cmd_path(data, cmd, sp);
 }
 

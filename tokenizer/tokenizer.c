@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 10:49:48 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 23:57:40 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	*spaces_first(char *str)
 	return (&str[i]);
 }
 
-char	*spaces_takeoff(char *str)
+char	*spaces_takeoff(t_data *data, char *str)
 {
 	int		len;
 	char	*ptr;
@@ -170,7 +170,7 @@ void	init_var_tokenizer(t_data *data)
 
 void	tokenizer(t_data *data)
 {
-	data->beg_line = spaces_takeoff(data->line);
+	data->beg_line = spaces_takeoff(data, data->line);
 	if (!data->beg_line)
 	{
 		data->error_lexer = 1;

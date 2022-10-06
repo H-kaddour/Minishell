@@ -317,3 +317,25 @@ plus sign
 equal
 miness
 hashtag
+
+
+
+
+
+error rest:
+norminette and files and func names and var
+protect malloc with exit
+exit number modulo and shit
+redirection in pipe first one can read from file but the other output in red and pipe file but only reads from pipe
+and test other error in cd and builtin
+and redline line dial color when i put a lot of char it goes to first
+cd there's a sigfault there maybe in free_data_running_process and double free
+
+**init tab_pipe in parsing
+**don't change the ptr of cd - in till u checked if the file excist or not
+
+**Still error in cd***
+ls
+cd ~/mishl_util/
+cd minishl/
+double free

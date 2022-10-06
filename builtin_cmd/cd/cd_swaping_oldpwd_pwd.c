@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 22:39:52 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 03:57:04 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 04:15:48 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ static void	execute_cd_swap_old_pwd(t_data *data)
 
 	execute_cd_swap_init(data, &pwd, &old);
 	val = old->value;
+	if (access(val, F_OK) != 0)
+	{
+		data->chk_dolla = 1;
+		printf("minishell: cd: %s: No such file or directory\n", val);
+		return ;
+	}
 	if (pwd)
 	{
 		old->value = pwd->value;

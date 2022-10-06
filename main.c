@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/05 14:08:05 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/06 04:39:04 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,12 @@ void	init_shell_elem(t_data *data, char **av, char **env)
 	data->chk_redct_exist = 0;
 	data->chk_dolla = 0;
 	data->old_pwd_value = ft_strdup("");
+	data->pwd_of_mysys = 0;
 	data->prompt = 0;
-	data->malloc_errno = 0;
+	data->env_exec = 0;
+	data->v_cmd = 0;
+	data->t_token = 0;
+	data->env_exec = 0;
 	if (!env[0])
 		make_myown_env(data);
 	else
@@ -161,7 +165,7 @@ void	add_shell_history(t_data *data)
 	//}
 }
 
-void	free_all(t_data *data)
+void	free_data_running_process(t_data *data)
 {
 	t_token	*token;
 	t_cmd		*parse;
@@ -173,18 +177,26 @@ void	free_all(t_data *data)
 	parse = data->v_cmd;
 	free(data->line);
 	i = 0;
-	while (data->env_exec[i])
+	if (data->env_exec)
 	{
-		free(data->env_exec[i]);
-		i++;
+		while (data->env_exec[i])
+		{
+			free(data->env_exec[i]);
+			i++;
+		}
+		free(data->env_exec);
 	}
-	free(data->env_exec);
+	data->env_exec = 0;
 	if (!token)
 		return ;
 	while (token)
 	{
-		if (token->value)
+		//if (token->value[0])
+		//if (token->value)
+		if (token->value[0])
+		{
 			free(token->value);
+		}
 		if (token)
 			free(token);
 		if (token->next)
@@ -192,6 +204,7 @@ void	free_all(t_data *data)
 		else
 			break ;
 	}
+	data->t_token = 0;
 	if (!parse)
 		return ;
 	while (parse)
@@ -220,6 +233,7 @@ void	free_all(t_data *data)
 		free(parse);
 		parse = parse->next;
 	}
+	data->v_cmd = 0;
 }
 
 int	hrdoc_with_no_cmd(t_data *data)
@@ -250,13 +264,86 @@ int	hrdoc_with_no_cmd(t_data *data)
 	return (0);
 }
 
+void	free_data_die_process(t_data *data)
+{
+	t_env *env;
+
+	env = data->l_env;
+	if (data->pwd_of_mysys)
+		free(data->pwd_of_mysys);
+	while (env)
+	{
+		free(env->sec);
+		free(env->value);
+		free(env);
+		env = env->next;
+	}
+
+}
+
+void	usage_help_menu(char *option)
+{
+	if (!ft_strcmp(option, "-h"))
+	{
+		printf("                                                     .....      \n"); 
+		printf("                                                     O O  /     \n"); 
+		printf("                                                    /<   /      \n");
+		printf("                 __   _              ___ __________/_#__=o      \n");
+		printf(" ___ ___  __ _  / /  (_)__          /(- /(\\_\\________   \\    \n");
+		printf("/_ // _ \\/  ' \\/ _ \\/ / -_)         \\ ) \\ )_      \\o     \\  \n");
+		printf("/__/\\___/_/_/_/_.__/_/\\__/          /|\\ /|\\       |'     |    \n");
+		printf("       __       ____                              /o   __\\     \n");
+		printf("  ___ / /  ___ / / /                             / '     |      \n");
+		printf(" (_-</ _ \\/ -_) / /                            /_/\\______|     \n");
+		printf("/___/_//_/\\__/_/_/                            (   _(    <       \n");
+		printf("                                               \\    \\    \\   \n");
+		printf("                                                 \\____\\___\\  \n");
+		printf("Coded by: hkaddour & akouame                     ____\\_\\___\\ \n");
+		printf("                                                |___ |_______|.. \n\n");
+		printf("Usage\n\trun ./minishell with no args\n");
+	}
+	else
+	{
+		printf("minishell: %s: No such argument use -h for help\n", option);
+		exit(127);
+	}
+}
 
 int	main(int ac, char **av, char **envp)
 {
 	t_data	data;
 	void	*hold;
 
-	if (ac == 1)
+	if (ac == 2)
+		usage_help_menu(av[1]);
+	//{
+	//	if (!ft_strcmp(av[1], "-h"))
+	//	{
+	//		printf("                                                     .....      \n"); 
+	//		printf("                                                     O O  /     \n"); 
+	//		printf("                                                    /<   /      \n");
+	//		printf("                 __   _              ___ __________/_#__=o      \n");
+	//		printf(" ___ ___  __ _  / /  (_)__          /(- /(\\_\\________   \\    \n");
+	//		printf("/_ // _ \\/  ' \\/ _ \\/ / -_)         \\ ) \\ )_      \\o     \\  \n");
+	//		printf("/__/\\___/_/_/_/_.__/_/\\__/          /|\\ /|\\       |'     |    \n");
+	//		printf("       __       ____                              /o   __\\     \n");
+	//		printf("  ___ / /  ___ / / /                             / '     |      \n");
+	//		printf(" (_-</ _ \\/ -_) / /                            /_/\\______|     \n");
+	//		printf("/___/_//_/\\__/_/_/                            (   _(    <       \n");
+	//		printf("                                               \\    \\    \\   \n");
+	//		printf("                                                 \\____\\___\\  \n");
+	//		printf("Coded by: hkaddour & akouame                     ____\\_\\___\\ \n");
+	//		printf("                                                |___ |_______|.. \n\n");
+	//		printf("Usage\n");
+	//		printf("\trun ./minishell with no args\n");
+	//	}
+	//	else
+	//	{
+	//		printf("minishell: %s: No such argument use -h for help\n", av[1]);
+	//		exit(127);
+	//	}
+	//}
+	else if (ac == 1)
 	{
 		//make -h for the shell
 		init_shell_elem(&data, av, envp);
@@ -271,8 +358,7 @@ int	main(int ac, char **av, char **envp)
 			if (!data.line)
 			{
 				printf(MOVE_UP_RIGHRT "\t\texit\n");
-				//here too shoul free
-				//while (1);
+				free_data_die_process(&data);
 				exit(131);
 			}
 			tokenizer(&data);
@@ -287,33 +373,16 @@ int	main(int ac, char **av, char **envp)
 				env_double_ptr(&data);
 				execution(&data);
 			}
-			hrdoc_with_no_cmd(&data);
+			if (data.v_cmd)
+				hrdoc_with_no_cmd(&data);
 			add_shell_history(&data);
-
-			//free(hold);
-			//free_data_running_process(&data);
-
-			//free_all(&data);
-			//close(data.hrdoc_fd[0]);
-			//i = 0;
-			//while (data.env_exec[i])
-			//{
-			//	free(data.env_exec[i]);
-			//	i++;
-			//}
-			//free(data.env_exec);
-			//free(data.line);
-			//here double free error in ;;
-			//and lexer error exit status 258 change it 
-			//
-
-			//free_all(&data);
-			//
-			//fix echo $? get the current cmd exit not the old one
+			free_data_running_process(&data);
 		}
-		//and here program end should free all shiit
 	}
 	else
-		return (0);
+	{
+		printf("minishell: %s: No such file or directory\n", av[1]);
+		exit(127);
+	}
 	return (0);
 }

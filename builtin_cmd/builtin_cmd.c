@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:54:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 10:13:42 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 21:17:56 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,10 @@ int	check_builtin(char **cmd)
 	while (!(b_cmd[i] >= 'A' && b_cmd[i] <= 'Z') && b_cmd[i])
 		i++;
 	if (b_cmd[i])
+	{
 		*cmd = if_upper_lower_them(*cmd);
+		free(b_cmd);
+	}
 	b_cmd = "env echo pwd";
 	sp = ft_split(b_cmd, ' ');
 	i = 0;

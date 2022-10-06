@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 13:30:14 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/04 10:54:04 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/05 22:36:09 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	add_dolla_helper(t_data *data, int len)
 {
 	char	*dolla;
-	char	*hold;
+	t_env	*hold;
 	t_env	*trav_env;
 
 	trav_env = data->l_env;
@@ -27,15 +27,14 @@ static void	add_dolla_helper(t_data *data, int len)
 	while (ft_acceptable_char(data->beg_line[data->i]))
 		dolla[len++] = data->beg_line[data->i++];
 	dolla[len] = 0;
-	hold = dolla;
-	dolla = myown_getenv(data, dolla, 0);
-	if (!dolla)
-		dolla = ft_strdup("");
-	free(hold);
-	len = 0;
-	while (dolla[len])
-		data->node->value[data->j++] = dolla[len++];
-	//free(dolla);
+	hold = getenv_addr(data, dolla);
+	free(dolla);
+	if (hold)
+	{
+		len = 0;
+		while (hold->value[len])
+			data->node->value[data->j++] = hold->value[len++];
+	}
 }
 
 void	add_dolla(t_data *data)
@@ -118,10 +117,10 @@ int	dolla_begin_pt3(t_data *data)
 	{
 		data->i += 2;
 		ptr = ft_itoa(data->chk_dolla);
-		free(ptr);
 		i = 0;
 		while (ptr[i])
 			data->node->value[data->j++] = ptr[i++];
+		free(ptr);
 		return (1);
 	}
 	else if (data->beg_line[data->i + 1] == '$')
