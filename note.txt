@@ -346,3 +346,23 @@ dup2 should be protect
 heredoc got some problem cat << l
 fix this ksjk | echo $? should tele3 error msg
 env print me the var that dont have value
+
+cat | ls | cat ls first
+cat << l > f1 | << l > f2 cat
+echo ~
+env -i when unset a var double free
+export if don't have a value don;t show the =""
+old export tst empty when reinit dont show in env only export
+env should not sort only export
+env -i SHLVL +111 free some not allocated
+take of permission to a dir and then run cmd and cd .. should work also if u cd to that dir should get error permission denied
+exit with number
+when i exit i have to free
+if i unset SHLVL and i execute minishell two and i should have and SHLVL=1
+don't free pwd_sys env env -i that i made cuz they are not allocated
+
+
+
+cat << l > f1 | << l > f2 cat
+-->> the promlem is the first hrdoc is closed so the second one the only one is working
+when i unset everything in env segfault happen in new prompt i should check if it null return 

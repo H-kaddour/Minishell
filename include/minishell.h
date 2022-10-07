@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 10:22:04 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/07 13:48:24 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,8 @@ void	heredoc_implement(t_data *data, char *det);
 
 /**** Function of one_cmd execution ****/
 void  pipeline_parent_helper(t_data *data, int status, t_cmd *p_trav, t_cmd *trav);
-void  pipeline(t_data *data);
+//void	pipeline(t_data *data);
+int	pipeline(t_data *data);
 void	check_if_x_ok(t_data *data, t_cmd *cmd, char *path);
 void  fds_closer(t_cmd *cmd, t_red *red);
 void  run_one_cmd(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 05:15:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 11:01:43 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/07 15:44:34 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	add_pwd_if_not_exist(t_data *data)
 
 static void	check_if_env_exist_and_get_it(t_data *data, char **env)
 {
+	//make_myown_env(data);
 	if (!env[0])
 		make_myown_env(data);
 	else

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:18:49 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 10:56:53 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/07 15:41:42 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static void	find_that_element(t_data *data, char *elem)
 			data->l_env = trav->next;
 		else
 			trav_prev->next = trav->next;
+		if (!data->env)
+			return ;
 		free(trav->sec);
 		free(trav->value);
 		free(trav);
@@ -74,4 +76,8 @@ void	unset_cmd(t_data *data, t_cmd *trav_c)
 		}
 		i++;
 	}
+	printf("ok\n");
+	//printf("hey %p\n", data->l_env);
+	//printf("hey %p\n", data->l_env->value);
+	//printf("hey %p\n", data->l_env->sec);
 }
