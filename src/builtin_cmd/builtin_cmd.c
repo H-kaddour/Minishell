@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:54:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 10:57:37 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/07 21:40:26 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static char	*if_upper_lower_them(char *cmd)
 
 	i = 0;
 	ptr = malloc(sizeof(char) * ft_strlen(cmd) + 1);
+	if (!ptr)
+		error_malloc();
 	while (cmd[i])
 	{
 		if (cmd[i] >= 'A' && cmd[i] <= 'Z')

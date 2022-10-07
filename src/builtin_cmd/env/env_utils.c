@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 00:39:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 10:59:04 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/07 21:34:53 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	sort_env(t_data *data)
 	char	*hold_v;
 
 	trav = data->l_env;
+	if (!trav)
+		return ;
 	while (trav->next)
 	{
 		if (compare(trav->sec, trav->next->sec))
@@ -63,7 +65,7 @@ t_env	*node_allocate(void)
 
 	node = (t_env *) malloc(sizeof(t_env));
 	if (!node)
-		return (0);
+		error_malloc();
 	node->sec = 0;
 	node->value = 0;
 	node->next = 0;
@@ -83,7 +85,7 @@ static void	env_double_ptr_helper(t_data *data, int i)
 		data->env_exec[i] = malloc(sizeof(char) * \
 			ft_strlen(trav->sec) + ft_strlen(trav->value) + 1);
 		if (!data->env_exec[i])
-			return ;
+			error_malloc();
 		j = 0;
 		k = 0;
 		while (trav->sec[k])
@@ -113,7 +115,7 @@ char	**env_double_ptr(t_data *data)
 	}
 	data->env_exec = malloc(sizeof(char *) * i + 1);
 	if (!data->env_exec)
-		return (0);
+		error_malloc();
 	env_double_ptr_helper(data, i);
 	return (data->env_exec);
 }

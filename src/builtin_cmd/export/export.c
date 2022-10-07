@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 13:52:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 10:58:43 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/07 21:48:47 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_env_of_export(t_env *env)
 {
 	while (env)
 	{
-		if (!env->value)
+		if (!env->value[0])
 			printf("declare -x %s\n", env->sec);
 		else
 			printf("declare -x %s=\"%s\"\n", env->sec, env->value);
@@ -37,12 +37,12 @@ int	dup_opt_equal(t_data *data, t_env *env, char *cmd)
 		return (0);
 	env->sec = malloc(sizeof(char) * hold + 1);
 	if (!env->sec)
-		return (0);
+		error_malloc();
 	dup_opt_equal_helper(&env, cmd, &hold);
 	i = 0;
 	env->value = malloc(sizeof(char) * ft_strlen(&cmd[hold]) + 1);
 	if (!env->value)
-		return (0);
+		error_malloc();
 	while (cmd[hold])
 		env->value[i++] = cmd[hold++];
 	env->value[i] = 0;
@@ -66,8 +66,16 @@ void	export_cmd_helper(t_data *data, t_env **trav_e, t_cmd *trav_c, int i)
 			chk = dup_opt_equal(data, head, trav_c->cmd[i]);
 		if (chk == 1)
 		{
-			trav_e[0]->next = head;
-			trav_e[0] = trav_e[0]->next;
+			if (trav_e[0])
+			{
+				trav_e[0]->next = head;
+				trav_e[0] = trav_e[0]->next;
+			}
+			else
+			{
+				data->l_env = head;
+				trav_e[0] = head;
+			}
 		}
 	}
 	else
@@ -89,8 +97,11 @@ void	export_cmd(t_data *data, t_cmd *trav_c)
 		print_env_of_export(trav_e);
 	else
 	{
-		while (trav_e->next)
-			trav_e = trav_e->next;
+		if (trav_e)
+		{
+			while (trav_e->next)
+				trav_e = trav_e->next;
+		}
 		while (trav_c->cmd[i])
 		{
 			data->chk_export_plus = 0;

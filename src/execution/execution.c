@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 15:44:06 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/07 20:59:31 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,12 @@ void	execution(t_data *data)
 		}
 	}
 	else
+	{
 		if (pipeline(data) == -3)
 		{
-			int status;
-			kill(waitpid(-1, &status, 0), 9);
+			//int status;
+			//kill(waitpid(-1, &status, 0), 9);
 			return ;
 		}
+	}
 }

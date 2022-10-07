@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 12:11:41 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 10:58:55 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/07 20:55:41 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ t_env	*getenv_addr(t_data *data, char *sec)
 {
 	t_env	*env;
 
+	if (!data->l_env)
+		return (0);
 	env = data->l_env;
 	while (ft_strcmp(env->sec, sec) && env->next)
 		env = env->next;
