@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 04:54:30 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 15:32:58 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/08 10:04:37 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	run_one_cmd(t_data *data)
 
 	pid = fork();
 	if (pid < 0)
-		error_fork(data, "minishell: fork: Resource temporarily unavailable");
+		error_fork(data);
 	if (pid == 0)
 	{
 		if (data->v_cmd->cmd[0])

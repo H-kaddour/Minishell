@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 23:17:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 22:03:28 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/08 10:24:54 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,10 @@ static void	env_shlvl(t_data *data)
 {
 	t_env	*env;
 	t_env	*shlvl;
-	char	*hold;
 
 	env = getenv_addr(data, "SHLVL");
 	if (env)
-	{
-		hold = env->value;
-		env->value = ft_itoa(ft_atoi(env->value) + 1);
-		free(hold);
-	}
+		env_shlvl_helper(env);
 	else
 	{
 		shlvl = node_allocate();
@@ -82,6 +77,7 @@ static void	env_shlvl(t_data *data)
 			while (env->next)
 				env = env->next;
 			env->next = shlvl;
+			sort_env(data);
 		}
 		else
 			data->l_env = shlvl;

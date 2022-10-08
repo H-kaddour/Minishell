@@ -6,13 +6,13 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 13:52:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 21:48:47 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/08 11:30:34 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-void	print_env_of_export(t_env *env)
+static void	print_env_of_export(t_env *env)
 {
 	while (env)
 	{
@@ -24,7 +24,7 @@ void	print_env_of_export(t_env *env)
 	}
 }
 
-int	dup_opt_equal(t_data *data, t_env *env, char *cmd)
+static int	dup_opt_equal(t_data *data, t_env *env, char *cmd)
 {
 	int	i;
 	int	hold;
@@ -49,7 +49,27 @@ int	dup_opt_equal(t_data *data, t_env *env, char *cmd)
 	return (1);
 }
 
-void	export_cmd_helper(t_data *data, t_env **trav_e, t_cmd *trav_c, int i)
+//void	attach_export_node(t_data *data, t_env *head, t_env **trav_e)
+//{
+//	t_env	*hlp;
+//
+//	hlp = *trav_e;
+//	//if (trav_e)
+//	if (hlp)
+//	{
+//		//trav_e->next = head;
+//		//trav_e = trav_e->next;
+//	}
+//	else
+//	{
+//		data->l_env = head;
+//		hlp = head;
+//		//data->l_env = head;
+//		//trav_e = head;
+//	}
+//}
+
+static void	export_cmd_helper(t_data *data, t_env **trav_e, t_cmd *trav_c, int i)
 {
 	int		chk;
 	t_env	*head;

@@ -364,6 +364,7 @@ don't free pwd_sys env env -i that i made cuz they are not allocated
 
 
 still need to protect malloc of alloc
+Makefile
 cat << l > f1 | << l > f2 cat
 -->> the promlem is the first hrdoc is closed so the second one the only one is working
 when i unset everything in env segfault happen in new prompt i should check if it null return 

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 05:15:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 21:51:19 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/08 11:53:36 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,22 @@ static void	add_pwd_if_not_exist(t_data *data)
 		env = env->next;
 	env->next = node_allocate();
 	env = env->next;
-	env->sec = "PWD";
+	env->sec = ft_strdup("PWD");
 	env->value = data->pwd_of_mysys;
 }
 
 static void	check_if_env_exist_and_get_it(t_data *data, char **env)
 {
+	t_env	*trav;
+
 	if (!env[0])
 		make_myown_env(data);
 	else
 	{
 		data->env = env;
 		get_env(data);
-		data->pwd_of_mysys = myown_getenv(data, "PWD", &data->status_of_oldpwd);
-		if (!data->pwd_of_mysys)
+		trav = getenv_addr(data, "PWD");
+		if (!trav)
 		{
 			data->pwd_of_mysys = malloc(sizeof(char) * 1024);
 			if (!data->pwd_of_mysys)
@@ -56,6 +58,7 @@ static void	check_if_env_exist_and_get_it(t_data *data, char **env)
 			getcwd(data->pwd_of_mysys, 1024);
 			add_pwd_if_not_exist(data);
 		}
+		sort_env(data);
 	}
 }
 

@@ -6,17 +6,45 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 12:22:17 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 11:00:29 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/08 10:10:49 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	pipeline_parent_helper(t_data *data, int status, t_cmd *p_trav, \
-		t_cmd *trav)
+void	pipeline_helper(t_data *data)
 {
-	exit_status(&data->chk_dolla, status);
-	if (p_trav)
-		close(p_trav->tab_pipe[1]);
-	close(trav->tab_pipe[0]);
+	error_fork(data);
+	error_close_pipes(data);
+}
+
+void	error_close_pipes(t_data *data)
+{
+	t_cmd	*cmd;
+
+	cmd = data->v_cmd;
+	while (cmd)
+	{
+		if (cmd->tab_pipe)
+		{
+			close(cmd->tab_pipe[0]);
+			close(cmd->tab_pipe[1]);
+		}
+		else
+			break ;
+		cmd = cmd->next;
+	}
+}
+
+void	pipeline_parent(t_data *data)
+{
+	int		status;
+
+	while (1)
+	{
+		signal(SIGINT, SIG_IGN);
+		if (waitpid(-1, &status, 0) == -1)
+			break ;
+		exit_status(&data->chk_dolla, status);
+	}
 }

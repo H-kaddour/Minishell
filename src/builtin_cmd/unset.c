@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:18:49 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 21:27:54 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/08 10:15:21 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ static void	find_that_element(t_data *data, char *elem)
 		free(trav->value);
 		free(trav);
 	}
-	else
-		return ;
 }
 
 int	unset_error_checking(t_data *data, char *cmd)

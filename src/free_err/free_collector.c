@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 04:51:31 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 11:01:17 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/08 09:26:45 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ void	free_data_die_process(t_data *data)
 	t_env	*env;
 
 	env = data->l_env;
-	if (data->pwd_of_mysys)
-		free(data->pwd_of_mysys);
 	while (env)
 	{
 		free(env->sec);

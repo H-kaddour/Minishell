@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 04:58:13 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 11:00:55 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/08 12:01:44 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	exit_status(int *exit_stat, int status)
 		*exit_stat = 1;
 	else if (status == 32256)
 		*exit_stat = 126;
-	else if (status == 32512)
+	else if (status == 32512 || status == 13)
 		*exit_stat = 127;
 	else
 		*exit_stat = 0;

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 14:35:53 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/08 10:11:04 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void	init_tab_pipe(t_cmd *trav, int *fd)
 	trav->tab_pipe[1] = fd[0];
 }
 
-//static void	plug_pipes_in_node(t_data *data)
 static int	plug_pipes_in_node(t_data *data)
 {
 	t_cmd	*trav;
@@ -29,10 +28,9 @@ static int	plug_pipes_in_node(t_data *data)
 	{
 		if (pipe(fd))
 		{
-			ft_putstr_fd("error in fork no resources\n", 2);
+			error_fork(data);
 			return (1);
 		}
-			//error_pipe(data, "minishell: pipe: error in pipe");
 		trav->tab_pipe = malloc(sizeof(int) * 2);
 		if (!trav->tab_pipe)
 			error_malloc();
@@ -81,92 +79,29 @@ static void	child_process_of_pipeline(t_data *data, t_cmd *trav)
 	}
 }
 
-void	error_close_pipes(t_data *data)
-{
-	t_cmd	*cmd;
-
-	cmd = data->v_cmd;
-	while (cmd)
-	{
-		if (cmd->tab_pipe)
-		{
-			close(cmd->tab_pipe[0]);
-			close(cmd->tab_pipe[1]);
-		}
-		else
-			break ;
-		cmd = cmd->next;
-	}
-}
-
-void	print(t_data *data)
-{
-	t_cmd	*cmd;
-
-	cmd = data->v_cmd;
-	while (cmd)
-	{
-		printf("in= %d   --   out=%d\n", cmd->f_in, cmd->f_out);
-		cmd = cmd->next;
-	}
-}
-
-
-//void	pipeline(t_data *data)
-int	pipeline(t_data *data)
+void	pipeline(t_data *data)
 {
 	int		pid;
-	//int		status;
 	t_cmd	*trav;
 	t_cmd	*p_trav;
 
 	if (plug_pipes_in_node(data))
-	{
-		ft_putstr_fd("error in fork and pipe\n", 2);
-		error_close_pipes(data);
-		return (-3);
-	}
+		pipeline_helper(data);
 	plug_redirection_in_node(data);
-	//print(data);
-	//while (1);
 	trav = data->v_cmd;
 	p_trav = 0;
 	while (trav)
 	{
 		pid = fork();
 		if (pid < 0)
-		{
-			ft_putstr_fd("error in fork no resources\n", 2);
-			return (-3);
-		}
-			//error_fork(data, "minishell: fork: Resource temporarily \
-			//		unavailable");
+			error_fork(data);
 		if (pid == 0)
 			child_process_of_pipeline(data, trav);
-		//if (pid > 0)
-		//{
-		//	signal(SIGINT, SIG_IGN);
-		//	waitpid(pid, &status, 0);
-		//	pipeline_parent_helper(data, status, p_trav, trav);
-			if (p_trav)
-				close(p_trav->tab_pipe[1]);
-			close(trav->tab_pipe[0]);
-			p_trav = trav;
-			trav = trav->next;
-		//}
-		//p_trav = trav;
-		//trav = trav->next;
+		if (p_trav)
+			close(p_trav->tab_pipe[1]);
+		close(trav->tab_pipe[0]);
+		p_trav = trav;
+		trav = trav->next;
 	}
-	while (1)
-	{
-		signal(SIGINT, SIG_IGN);
-		if (waitpid(-1, 0, 0) == -1)
-		{
-			//if (p_trav)
-			//	close(p_trav->tab_pipe[1]);
-			//close(trav->tab_pipe[0]);
-			break ;
-		}
-	}
-	return (0);
+	pipeline_parent(data);
 }

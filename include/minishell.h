@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 13:48:24 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/08 12:56:22 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 # define MOVE_UP_RIGHRT "\033[1A\033[12C"
-# define CLR1 "\e[40m \e[97m \e[44m\e[30m\e[44m \e[30m"
-# define CLR1ERR "\e[103m \e[91m \e[40m\e[93m \e[97m \e[44m\e[30m\e[44m \e[30m"
-# define CLR2 " \e[0m\e[34m\e[0m "
+# define CLR1 "\001\e[40m \e[97m \e[44m\e[30m\e[44m \e[30m\002"
+# define CLR1ERR "\001\e[103m \e[91m \e[40m\e[93m \e[97m \e[44m\e[30m\e[44m \e[30m\002"
+# define CLR2 "\001 \e[0m\e[34m\e[0m \002"
 
 typedef enum	types
 {
@@ -115,10 +115,6 @@ typedef struct s_data
 	//parsing
 	t_cmd	*v_cmd;
 	t_cmd	*trav_cmd;
-	//v_cmd		*valid_cmd;
-	//d_cmd		*data_cmd;
-	//char		**split_cmd;
-
 	//error of lexer var
 	int			error_lexer;
 
@@ -130,7 +126,6 @@ typedef struct s_data
 	int			chk_export_plus; //this var is for hey+=kjsdk
 	int			status_of_oldpwd;
 	char		*pwd_of_mysys; //this one keep my pwd in case if i unset pwd
-	//int			chk_o_p_sys;
 	/*end of execution*/
 	//for prompt
 	char		*prompt;
@@ -200,9 +195,10 @@ void	heredoc_implement(t_data *data, char *det);
 
 
 /**** Function of one_cmd execution ****/
-void  pipeline_parent_helper(t_data *data, int status, t_cmd *p_trav, t_cmd *trav);
-//void	pipeline(t_data *data);
-int	pipeline(t_data *data);
+void	pipeline_helper(t_data *data);
+void	error_close_pipes(t_data *data);
+void	pipeline_parent(t_data *data);
+void	pipeline(t_data *data);
 void	check_if_x_ok(t_data *data, t_cmd *cmd, char *path);
 void  fds_closer(t_cmd *cmd, t_red *red);
 void  run_one_cmd(t_data *data);
@@ -237,8 +233,8 @@ void  old_pwd_alloc(t_data *data);
 
 
 /**** Function of env **********/
+void	env_shlvl_helper(t_env *env);
 void  sort_env(t_data *data);
-char	*myown_getenv(t_data *data, char *sec, int *status);
 t_env	*getenv_addr(t_data *data, char *sec);
 t_env	*node_allocate(void);
 char	**env_double_ptr(t_data *data);
@@ -271,7 +267,7 @@ void	sig_c(int c);
 
 /******* Function of error *********/
 void	error_malloc(void);
-void	error_fork(t_data *data, char *msg);
+void	error_fork(t_data *data);
 void	error_pipe(t_data *data, char *msg);
 
 #endif

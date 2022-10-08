@@ -6,31 +6,19 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 12:11:41 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 20:55:41 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/08 11:29:10 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-char	*myown_getenv(t_data *data, char *sec, int *status)
+void	env_shlvl_helper(t_env *env)
 {
-	t_env	*env;
+	char	*hold;
 
-	env = data->l_env;
-	while (ft_strcmp(env->sec, sec) && env->next)
-		env = env->next;
-	if (!ft_strcmp(env->sec, sec))
-	{
-		if (status)
-			*(status) = 1;
-		return (ft_strdup(env->value));
-	}
-	else
-	{
-		if (status)
-			*(status) = 0;
-		return (0);
-	}
+	hold = env->value;
+	env->value = ft_itoa(ft_atoi(env->value) + 1);
+	free(hold);
 }
 
 t_env	*getenv_addr(t_data *data, char *sec)

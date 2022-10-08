@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 08:40:06 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 11:02:45 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/08 10:04:59 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	heredoc_implement(t_data *data, char *det)
 	pipe(data->hrdoc_fd);
 	pid = fork();
 	if (pid < 0)
-		error_fork(data, "minishell: fork: Resource temporarily unavailable");
+		error_fork(data);
 	if (pid == 0)
 	{
 		close(data->hrdoc_fd[0]);
