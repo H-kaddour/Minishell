@@ -362,7 +362,7 @@ if i unset SHLVL and i execute minishell two and i should have and SHLVL=1
 don't free pwd_sys env env -i that i made cuz they are not allocated
 
 
-
+fix cat > f1 | << l
 still need to protect malloc of alloc
 Makefile
 cat << l > f1 | << l > f2 cat

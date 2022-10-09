@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/08 10:00:25 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/09 15:22:08 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static void	size_cmd(t_data *data)
 
 void	execution(t_data *data)
 {
+	t_cmd	*cmd;
+
 	size_cmd(data);
 	if (data->size_cmd == 1)
 	{
@@ -42,5 +44,19 @@ void	execution(t_data *data)
 		}
 	}
 	else
+	{
 		pipeline(data);
+		cmd = data->v_cmd;
+		while (cmd)
+		{
+			if (cmd->f_in > 0)
+				close(cmd->f_in);
+			if (cmd->f_out > 1)
+				close(cmd->f_out);
+			if (cmd->hrdoc_fd > 0)
+				close(cmd->hrdoc_fd);
+			cmd = cmd->next;
+		}
+	}
 }
+//cat > f1 | << l maybe i should close files in pipeline

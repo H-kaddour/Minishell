@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/08 10:11:04 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/09 15:58:55 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	plug_pipes_in_node(t_data *data)
 	trav = data->v_cmd;
 	while (trav->next)
 	{
-		if (pipe(fd))
+		if (pipe(fd) < 0)
 		{
 			error_fork(data);
 			return (1);
@@ -100,6 +100,12 @@ void	pipeline(t_data *data)
 		if (p_trav)
 			close(p_trav->tab_pipe[1]);
 		close(trav->tab_pipe[0]);
+
+		if (trav->f_in > 0)
+			close(trav->f_in);
+		if (trav->f_out > 1)
+			close(trav->f_out);
+
 		p_trav = trav;
 		trav = trav->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 08:40:06 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/08 10:04:59 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/09 14:18:29 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,9 @@ void	heredoc_implement(t_data *data, char *det)
 	int		status;
 	int		pid;
 
-	if (pipe(data->hrdoc_fd))
+	if (pipe(data->hrdoc_fd) < 0)
 		error_pipe(data, "minishell: pipe: error");
-	pipe(data->hrdoc_fd);
+	//pipe(data->hrdoc_fd);
 	pid = fork();
 	if (pid < 0)
 		error_fork(data);

@@ -6,14 +6,14 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 10:32:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 11:02:36 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/09 14:50:39 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 t_token	*parsing_alloc_red_space(t_data *data, t_token *trav, \
-		int *chk, t_red *trav_red)
+		t_red *trav_red)
 {
 	trav_red->typ = trav->type;
 	if (trav->type != I_APEND)
@@ -21,19 +21,19 @@ t_token	*parsing_alloc_red_space(t_data *data, t_token *trav, \
 	else
 	{
 		trav_red->determiner = ft_strdup(trav->next->next->value);
-		if (*chk != 0)
+		if (data->chk_hrdc_cls != 0)
 			close(data->hrdoc_fd[0]);
 		heredoc_implement(data, trav_red->determiner);
 		if (data->chk_hrdoc_exit == 1)
 			return (trav);
-		*(chk) = 1;
+		data->chk_hrdc_cls = 1;
 	}
 	trav = trav->next->next->next;
 	return (trav);
 }
 
 t_token	*parsing_alloc_red_no_space(t_data *data, t_token *trav, \
-		int *chk, t_red *trav_red)
+		t_red *trav_red)
 {
 	trav_red->typ = trav->type;
 	if (trav->type != I_APEND)
@@ -41,12 +41,12 @@ t_token	*parsing_alloc_red_no_space(t_data *data, t_token *trav, \
 	else
 	{
 		trav_red->determiner = ft_strdup(trav->next->value);
-		if (*chk != 0)
+		if (data->chk_hrdc_cls != 0)
 			close(data->hrdoc_fd[0]);
 		heredoc_implement(data, trav_red->determiner);
 		if (data->chk_hrdoc_exit == 1)
 			return (trav);
-		*(chk) = 1;
+		data->chk_hrdc_cls = 1;
 	}
 	trav = trav->next->next;
 	return (trav);
@@ -55,9 +55,6 @@ t_token	*parsing_alloc_red_no_space(t_data *data, t_token *trav, \
 int	get_cmd_parsing_helper(t_data *data, t_token **trav, \
 		t_red **trav_red, int *i)
 {
-	int	chk;
-
-	chk = 0;
 	if (trav[0]->type == WRD || trav[0]->type == D_QUOT \
 			|| trav[0]->type == S_QUOT || trav[0]->type == DOLLA)
 	{
@@ -71,11 +68,14 @@ int	get_cmd_parsing_helper(t_data *data, t_token **trav, \
 			|| trav[0]->type == I_TRNC || trav[0]->type == I_APEND)
 	{
 		if (trav[0]->next->type == W_SPACE)
-			*trav = parsing_alloc_red_space(data, *trav, &chk, *trav_red);
+			*trav = parsing_alloc_red_space(data, *trav, *trav_red);
 		else
-			*trav = parsing_alloc_red_no_space(data, *trav, &chk, *trav_red);
+			*trav = parsing_alloc_red_no_space(data, *trav, *trav_red);
 		if (data->chk_hrdoc_exit == 1)
+		{
+			close(data->hrdoc_fd[0]);
 			return (1);
+		}
 		*trav_red = trav_red[0]->next;
 	}
 	return (0);
@@ -107,6 +107,7 @@ static void	get_cmd_parsing(t_data *data)
 			break ;
 	}
 	data->trav_cmd->cmd[i] = 0;
+	data->trav_cmd->hrdoc_fd = data->hrdoc_fd[0];
 	data->trav_cmd = data->trav_cmd->next;
 }
 

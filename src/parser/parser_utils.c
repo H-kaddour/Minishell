@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:12:08 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 11:02:21 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/09 10:45:06 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	init_cmd_node(t_cmd *node)
 	node->f_out = 1;
 	node->redirect = 0;
 	node->tab_pipe = 0;
+	node->hrdoc_fd = 0;
 	node->next = 0;
 }
 

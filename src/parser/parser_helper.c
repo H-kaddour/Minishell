@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 10:00:06 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 11:02:28 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/09 11:11:51 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_token	*init_var_get_cmd_parsing(t_data *data, int *i, int *red, int *cmd)
 	*(i) = 0;
 	*(red) = 0;
 	*(cmd) = 0;
+	data->chk_hrdc_cls = 0;
+	data->hrdoc_fd[1] = 0;
 	return (data->trav);
 }
 

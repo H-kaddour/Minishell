@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/08 12:56:22 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/09 11:05:07 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef	struct cmd
 	int		f_in;
 	int		f_out;
 	int		*tab_pipe;
+	int		hrdoc_fd;
 	struct cmd	*next;
 } t_cmd;
 
@@ -135,6 +136,8 @@ typedef struct s_data
 	int			tok_len;
 	//count data len of heredoc
 	int			hrdoc_len;
+	//parsing heredoc to close pipes << l << d close the old one
+	int			chk_hrdc_cls;
 }	t_data;
 
 

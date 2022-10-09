@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 04:55:08 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 11:00:41 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/09 15:43:34 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static int	red_o_trnc(t_data *data, t_red *red, t_cmd *cmd, int *fd)
 			return (1);
 		}
 	}
-	*fd = open(red->file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	else
+		*fd = open(red->file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	cmd->f_out = *fd;
 	return (0);
 }
@@ -110,7 +111,8 @@ int	check_redirection(t_data *data, t_cmd *cmd)
 			if (redirection_changer(data, trav, cmd, &fd))
 				return (1);
 			else if (trav->typ == I_APEND)
-				cmd->f_in = data->hrdoc_fd[0];
+				cmd->f_in = cmd->hrdoc_fd;
+				//cmd->f_in = data->hrdoc_fd[0];
 			trav = trav->next;
 			i++;
 		}
