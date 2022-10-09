@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:15:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 10:57:20 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/09 09:52:11 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,29 @@ static int	check_nline_option(char **cmd)
 	return (i);
 }
 
+static void	echo_home_env(t_data *data, t_cmd *trav, int i)
+{
+	char	*home;
+
+	home = getenv("HOME");
+	home = ft_strjoin(home, &trav->cmd[i][1]);
+	ft_putstr_fd(home, trav->f_out);
+	ft_putchar_fd(' ', trav->f_out);
+	free(home);
+}
+
+static void	echo_helper(t_data *data, t_cmd *trav, int i)
+{
+	if (trav->cmd[i][0] == '~' && \
+			(trav->cmd[i][1] == '/' || !trav->cmd[i][1]))
+		echo_home_env(data, trav, i);
+	else
+	{
+		ft_putstr_fd(trav->cmd[i], trav->f_out);
+		ft_putchar_fd(' ', trav->f_out);
+	}
+}
+
 void	echo_cmd(t_data *data, t_cmd *trav)
 {
 	int		i;
@@ -50,8 +73,7 @@ void	echo_cmd(t_data *data, t_cmd *trav)
 	data->chk_dolla = 0;
 	while (trav->cmd[i])
 	{
-		ft_putstr_fd(trav->cmd[i], trav->f_out);
-		ft_putchar_fd(' ', trav->f_out);
+		echo_helper(data, trav, i);
 		i++;
 	}
 	if (chk == 1)

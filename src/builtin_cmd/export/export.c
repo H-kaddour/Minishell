@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 13:52:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/08 11:30:34 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/09 09:56:03 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ static int	dup_opt_equal(t_data *data, t_env *env, char *cmd)
 //	}
 //}
 
-static void	export_cmd_helper(t_data *data, t_env **trav_e, t_cmd *trav_c, int i)
+static void	export_cmd_helper(t_data *data, t_env **trav_e, \
+		t_cmd *trav_c, int i)
 {
 	int		chk;
 	t_env	*head;
