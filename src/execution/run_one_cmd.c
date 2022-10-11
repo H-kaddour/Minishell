@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 04:54:30 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/08 10:04:37 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:48:02 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	execute_sys_cmd(t_data *data, t_cmd *cmd)
 
 static void	child_process_run_one_cmd(t_data *data)
 {
-	if (check_builtin(&data->v_cmd->cmd[0]))
+	if (check_builtin(data, &data->v_cmd->cmd[0]))
 		exit(0);
 	if (data->chk_redct_exist == 1)
 	{
@@ -108,7 +108,7 @@ void	run_one_cmd(t_data *data)
 		exit_status(&data->chk_dolla, status);
 		if (data->v_cmd->cmd[0])
 		{
-			if (check_builtin(&data->v_cmd->cmd[0]))
+			if (check_builtin(data, &data->v_cmd->cmd[0]))
 				builtin_cmd(data, data->v_cmd);
 		}
 		return ;

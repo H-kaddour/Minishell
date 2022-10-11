@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:15:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/09 09:52:11 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:36:50 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	echo_home_env(t_data *data, t_cmd *trav, int i)
 	home = ft_strjoin(home, &trav->cmd[i][1]);
 	ft_putstr_fd(home, trav->f_out);
 	ft_putchar_fd(' ', trav->f_out);
-	free(home);
+	free_implementation(data, home);
 }
 
 static void	echo_helper(t_data *data, t_cmd *trav, int i)

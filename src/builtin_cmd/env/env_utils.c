@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 00:39:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 21:34:53 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 15:56:45 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ static void	env_double_ptr_helper(t_data *data, int i)
 		while (trav->value[k])
 			data->env_exec[i][j++] = trav->value[k++];
 		data->env_exec[i][j] = 0;
+		free_implementation(data, data->env_exec[i]);
 		i++;
 		trav = trav->next;
 	}
@@ -117,5 +118,6 @@ char	**env_double_ptr(t_data *data)
 	if (!data->env_exec)
 		error_malloc();
 	env_double_ptr_helper(data, i);
+	free_implementation(data, data->env_exec);
 	return (data->env_exec);
 }

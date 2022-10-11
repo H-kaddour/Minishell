@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 05:15:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/08 11:53:36 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:20:39 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,7 @@ void	init_shell_elem(t_data *data, char **av, char **env)
 	data->v_cmd = 0;
 	data->t_token = 0;
 	data->env_exec = 0;
+	data->free_ptr = free_add_node();
+	free_implementation(data, data->old_pwd_value);
 	check_if_env_exist_and_get_it(data, env);
 }

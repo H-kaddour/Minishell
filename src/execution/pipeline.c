@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/09 15:58:55 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 12:11:13 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,26 @@ static int	plug_pipes_in_node(t_data *data)
 static void	plug_redirection_in_node(t_data *data)
 {
 	t_cmd	*trav;
+	//int		hld_in;
+	//int		hld_out;
 
 	trav = data->v_cmd;
 	while (trav)
 	{
+		//hld_in = trav->f_in;
+		//hld_out = trav->f_out;
 		check_redirection(data, trav);
+		//if (hld_in > trav->f_in)
+		//	close(hld_in);
+		//if (hld_out > trav->f_out)
+		//	close(hld_out);
 		trav = trav->next;
 	}
 }
 
 static void	child_process_of_pipeline(t_data *data, t_cmd *trav)
 {
-	if (check_builtin(&trav->cmd[0]))
+	if (check_builtin(data, &trav->cmd[0]))
 	{
 		dup2(trav->f_out, STDOUT_FILENO);
 		builtin_cmd(data, trav);
@@ -79,6 +87,21 @@ static void	child_process_of_pipeline(t_data *data, t_cmd *trav)
 	}
 }
 
+void	print_fds(t_data *data)
+{
+	t_cmd *cmd;
+
+	cmd = data->v_cmd;
+	while (cmd)
+	{
+		if (cmd->cmd[0])
+			printf("cmd = %s	f_in = %d	f_out = %d\n", cmd->cmd[0], cmd->f_in, cmd->f_out);
+		else
+			printf("f_in = %d	f_out = %d\n", cmd->f_in, cmd->f_out);
+		cmd = cmd->next;
+	}
+}
+
 void	pipeline(t_data *data)
 {
 	int		pid;
@@ -88,6 +111,8 @@ void	pipeline(t_data *data)
 	if (plug_pipes_in_node(data))
 		pipeline_helper(data);
 	plug_redirection_in_node(data);
+	//print_fds(data);
+	//while (1);
 	trav = data->v_cmd;
 	p_trav = 0;
 	while (trav)
@@ -105,6 +130,9 @@ void	pipeline(t_data *data)
 			close(trav->f_in);
 		if (trav->f_out > 1)
 			close(trav->f_out);
+
+		//if (!trav->cmd[0])
+		//	close(p_trav->f_out);
 
 		p_trav = trav;
 		trav = trav->next;

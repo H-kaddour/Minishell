@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 22:53:53 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 21:37:11 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:31:54 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	execute_cmd_cd(t_data *data, char *cmd)
 		old_pwd_alloc(data);
 	change_pwd(data, path);
 	change_oldpwd(data);
-	free(path);
+	free_implementation(data, path);
 	data->chk_dolla = 0;
 }
 
@@ -92,16 +92,5 @@ void	cd_everywhere_at_once(t_data *data, char *cmd)
 	}
 	execute_cmd_cd(data, cmd);
 	if (chk)
-		free(cmd);
+		free_implementation(data, cmd);
 }
-//here a leak
-//ls
-//cd
-//cd
-//cd ..
-//cd ~
-//cd ..
-//cd ..
-//cd ..
-//cd 
-//clear

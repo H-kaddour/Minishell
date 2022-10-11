@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:54:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 21:40:26 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 16:16:23 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*if_upper_lower_them(char *cmd)
 	return (ptr);
 }
 
-static int	cmd_only_exec_lower(char *cmd)
+static int	cmd_only_exec_lower(t_data *data, char *cmd)
 {
 	int		i;
 	char	**sp;
@@ -46,16 +46,16 @@ static int	cmd_only_exec_lower(char *cmd)
 	{
 		if (!ft_strcmp(sp[i], cmd))
 		{
-			free_sp(sp);
+			free_sp(data, sp);
 			return (1);
 		}
 		i++;
 	}
-	free_sp(sp);
+	free_sp(data, sp);
 	return (0);
 }
 
-static int	check_builtin_helper(char *cmd)
+static int	check_builtin_helper(t_data *data, char *cmd)
 {
 	int		i;
 	char	**sp;
@@ -68,21 +68,21 @@ static int	check_builtin_helper(char *cmd)
 	{
 		if (!ft_strcmp(sp[i], cmd))
 		{
-			free_sp(sp);
+			free_sp(data, sp);
 			return (1);
 		}
 		i++;
 	}
-	free_sp(sp);
+	free_sp(data, sp);
 	return (0);
 }
 
-int	check_builtin(char **cmd)
+int	check_builtin(t_data *data, char **cmd)
 {
 	int		i;
 	char	*b_cmd;
 
-	if (cmd_only_exec_lower(*cmd))
+	if (cmd_only_exec_lower(data, *cmd))
 		return (1);
 	i = 0;
 	b_cmd = *cmd;
@@ -91,9 +91,9 @@ int	check_builtin(char **cmd)
 	if (b_cmd[i])
 	{
 		*cmd = if_upper_lower_them(*cmd);
-		free(b_cmd);
+		free_implementation(data, b_cmd);
 	}
-	if (check_builtin_helper(*cmd))
+	if (check_builtin_helper(data, *cmd))
 		return (1);
 	return (0);
 }

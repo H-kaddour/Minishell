@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:46:07 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 11:09:18 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 12:05:34 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,14 @@ int	add_node(t_data *data, t_types typ)
 	if (lexer_pt1(data, typ))
 		return (1);
 	data->node = (t_token *) malloc(sizeof(t_token));
+	free_implementation(data, data->node);
 	if (!data->node)
 		error_malloc();
 	if (data->check == 1)
 		data->t_token = data->node;
 	data->node->type = typ;
 	data->node->value = malloc(sizeof(char) * get_len(data) + 1);
+	free_implementation(data, data->node->value);
 	if (!data->node->value)
 		error_malloc();
 	data->i = 0;

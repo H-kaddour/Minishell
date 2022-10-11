@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 05:29:55 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 20:55:49 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 13:39:20 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	no_home_path_or_not_in_home(t_data *data, char *clr1, char *path)
 
 	tmp = ft_strjoin(path, CLR2);
 	data->prompt = ft_strjoin(clr1, tmp);
-	free(tmp);
+	free_implementation(data, tmp);
 	return ;
 }
 
@@ -59,6 +59,7 @@ static void	home_path_and_dir_path(t_data *data, char *clr1, \
 	{
 		len = ft_strlen(home);
 		data->prompt = malloc(sizeof(char) * len + 3);
+		free_implementation(data, data->prompt);
 		if (!data->prompt)
 			error_malloc();
 		data->prompt[i++] = '~';
@@ -66,9 +67,9 @@ static void	home_path_and_dir_path(t_data *data, char *clr1, \
 			data->prompt[i++] = pwd[len++];
 		data->prompt[i] = 0;
 		tmp = ft_strjoin(data->prompt, CLR2);
-		free(data->prompt);
+		free_implementation(data, tmp);
 		data->prompt = ft_strjoin(clr1, tmp);
-		free(tmp);
+		free_implementation(data, data->prompt);
 	}
 	else if (ft_strlen(pwd) == ft_strlen(home))
 		no_home_path_or_not_in_home(data, clr1, "~");

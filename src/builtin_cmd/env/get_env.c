@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 23:17:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/08 10:24:54 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 14:39:53 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	allocate_all_nodes(t_data *data)
 			head = head->next;
 			i++;
 		}
-		free(hold);
+		free_implementation(data, hold);
 	}
 }
 
@@ -65,7 +65,7 @@ static void	env_shlvl(t_data *data)
 
 	env = getenv_addr(data, "SHLVL");
 	if (env)
-		env_shlvl_helper(env);
+		env_shlvl_helper(data, env);
 	else
 	{
 		shlvl = node_allocate();
@@ -125,9 +125,9 @@ void	get_env(t_data *data)
 	while (data->env[i])
 	{
 		hold = get_sec(data->env[i]);
+		free_implementation(data, hold);
 		if (ft_strcmp(hold, "OLDPWD"))
 			fill_nodes_env(data, &env, i);
-		free(hold);
 		i++;
 	}
 	env_shlvl(data);

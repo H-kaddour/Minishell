@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 08:40:06 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/09 14:18:29 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 12:00:13 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,13 @@ static void	heredoc_process(t_data *data, char *det)
 	char	*buff;
 
 	buff = ft_strdup("");
+	//free_implementation(data, buff);
 	signal(SIGINT, heredoc_sig);
 	while (1)
 	{
 		rl_catch_signals = 1;
 		heredoc = readline("> ");
+		//free_implementation(data, heredoc);
 		if (!heredoc)
 			exit(0);
 		if (!ft_strcmp(heredoc, det))

@@ -6,19 +6,19 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 12:11:41 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/08 11:29:10 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:38:33 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-void	env_shlvl_helper(t_env *env)
+void	env_shlvl_helper(t_data *data, t_env *env)
 {
 	char	*hold;
 
 	hold = env->value;
 	env->value = ft_itoa(ft_atoi(env->value) + 1);
-	free(hold);
+	free_implementation(data, hold);
 }
 
 t_env	*getenv_addr(t_data *data, char *sec)

@@ -6,11 +6,34 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 04:51:31 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/08 09:26:45 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 15:25:44 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+t_free	*free_add_node(void)
+{
+	t_free	*head;
+
+	head = malloc(sizeof(t_free));
+	head->addr = 0;
+	head->next = 0;
+	return (head);
+}
+
+void	free_implementation(t_data *data, void *addr)
+{
+	t_free	*head;
+	t_free	*node;
+
+	head = data->free_ptr;
+	node = free_add_node();
+	node->addr = addr;
+	while (head->next)
+		head = head->next;
+	head->next = node;
+}
 
 static void	free_exec_env(t_data *data)
 {
@@ -50,17 +73,47 @@ static void	free_token(t_data *data)
 
 void	free_data_running_process(t_data *data)
 {
-	free(data->line);
-	free_exec_env(data);
-	if (!data->t_token)
+	t_free	*node;
+	int	i = 0;
+
+	if (data->free_ptr->next)
+		node = data->free_ptr->next;
+	else
 		return ;
-	free_token(data);
-	if (!data->v_cmd)
-		return ;
-	free_parsing_cmd(data);
-	if (data->prompt)
-		free(data->prompt);
+	while (node)
+	{
+		printf("%d == %s\n", i, node->addr);
+		free(node->addr);
+		free(node);
+		node = node->next;
+		i++;
+	}
+	data->free_ptr->next = 0;
+	//print
+	//if (data->free_ptr->next)
+	//	node = data->free_ptr->next;
+	//else
+	//	return ;
+	//while (node)
+	//{
+	//	printf("%s\n", node->addr);
+	//	node = node->next;
+	//}
 }
+
+//void	free_data_running_process(t_data *data)
+//{
+//	free(data->line);
+//	free_exec_env(data);
+//	if (!data->t_token)
+//		return ;
+//	free_token(data);
+//	if (!data->v_cmd)
+//		return ;
+//	free_parsing_cmd(data);
+//	if (data->prompt)
+//		free(data->prompt);
+//}
 
 void	free_data_die_process(t_data *data)
 {

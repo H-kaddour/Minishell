@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 02:54:40 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 21:39:32 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:44:29 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	if_exist_or_not(t_data *data, char *cmd)
 	}
 	trav = getenv_addr(data, ptr);
 	if (chk)
-		free(ptr);
+		free_implementation(data, ptr);
 	if (trav)
 		return (0);
 	else

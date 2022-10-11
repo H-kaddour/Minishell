@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 04:55:08 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/09 15:43:34 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/10 09:44:17 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ int	check_redirection(t_data *data, t_cmd *cmd)
 				return (1);
 			else if (trav->typ == I_APEND)
 				cmd->f_in = cmd->hrdoc_fd;
-				//cmd->f_in = data->hrdoc_fd[0];
 			trav = trav->next;
 			i++;
 		}

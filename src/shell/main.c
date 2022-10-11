@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/09 15:09:41 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 16:03:48 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 void	running_process_helper(t_data *data)
 {
-	if (data->v_cmd)
-		hrdoc_with_no_cmd_to_close_fd(data);
-	if (data->beg_line)
-		add_history(data->line);
+	//if (data->v_cmd)
+	//	hrdoc_with_no_cmd_to_close_fd(data);
+	//if (data->beg_line)
+	//	add_history(data->line);
+	//free_implementation(data, data->line);
 	free_data_running_process(data);
 }
 
@@ -48,14 +49,6 @@ void	running_process(t_data *data)
 		if (!data->line)
 			process_kill(data);
 		tokenizer(data);
-		//cmd = data->v_cmd;
-		//while (cmd)
-		//{
-		//	printf("%s\n", cmd->cmd[0]);
-		//	printf("%d\n", cmd->hrdoc_fd);
-		//	cmd = cmd->next;
-		//}
-		//printf("hrdc = %d\n", data->hrdoc_fd[1]);
 		if (!data->beg_line)
 		{
 			data->chk_dolla = 0;
@@ -67,7 +60,7 @@ void	running_process(t_data *data)
 			env_double_ptr(data);
 			execution(data);
 		}
-		//running_process_helper(data);
+		running_process_helper(data);
 	}
 }
 

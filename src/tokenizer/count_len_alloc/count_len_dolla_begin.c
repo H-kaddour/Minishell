@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 08:09:06 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 11:08:51 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 12:08:51 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,9 @@ static int	count_dolla_begin_pt3(t_data *data)
 	{
 		data->i += 2;
 		hold = ft_itoa(data->chk_dolla);
+		free_implementation(data, hold);
 		data->tok_len += ft_strlen(hold);
-		free(hold);
+		//free(hold);
 		return (1);
 	}
 	else if (data->beg_line[data->i + 1] == '$')

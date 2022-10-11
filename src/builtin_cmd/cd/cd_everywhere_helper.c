@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 22:57:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 10:59:38 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:35:28 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,22 @@ void	change_pwd(t_data *data, char *path)
 	pwd = getenv_addr(data, "PWD");
 	if (!pwd)
 	{
-		free(data->old_pwd_value);
+		free_implementation(data, data->old_pwd_value);
 		data->old_pwd_value = ft_strdup(data->pwd_of_mysys);
-		free(data->pwd_of_mysys);
+		free_implementation(data, data->pwd_of_mysys);
 		data->pwd_of_mysys = ft_strdup(path);
 	}
 	else
 	{
-		free(data->old_pwd_value);
+		free_implementation(data, data->old_pwd_value);
 		data->old_pwd_value = ft_strdup(pwd->value);
 		if (!ft_strcmp(pwd->value, path))
 			return ;
 		else
 		{
-			free(pwd->value);
+			free_implementation(data, pwd->value);
 			pwd->value = ft_strdup(path);
-			free(data->pwd_of_mysys);
+			free_implementation(data, data->pwd_of_mysys);
 			data->pwd_of_mysys = ft_strdup(path);
 		}
 	}
@@ -63,7 +63,7 @@ void	change_oldpwd(t_data *data)
 	old = getenv_addr(data, "OLDPWD");
 	if (old)
 	{
-		free(old->value);
+		free_implementation(data, old->value);
 		old->value = ft_strdup(data->old_pwd_value);
 	}
 }

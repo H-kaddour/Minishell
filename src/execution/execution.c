@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 10:01:19 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/09 15:22:08 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 10:34:13 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,6 @@ void	execution(t_data *data)
 		cmd = data->v_cmd;
 		while (cmd)
 		{
-			if (cmd->f_in > 0)
-				close(cmd->f_in);
-			if (cmd->f_out > 1)
-				close(cmd->f_out);
 			if (cmd->hrdoc_fd > 0)
 				close(cmd->hrdoc_fd);
 			cmd = cmd->next;
