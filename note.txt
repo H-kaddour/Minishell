@@ -368,3 +368,4 @@ Makefile
 cat << l > f1 | << l > f2 cat
 -->> the promlem is the first hrdoc is closed so the second one the only one is working
 when i unset everything in env segfault happen in new prompt i should check if it null return 
+i will not add address of exec fork child in free implementation

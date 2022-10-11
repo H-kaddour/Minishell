@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/09 11:05:07 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:38:11 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@
 # define CLR1 "\001\e[40m \e[97m \e[44m\e[30m\e[44m \e[30m\002"
 # define CLR1ERR "\001\e[103m \e[91m \e[40m\e[93m \e[97m \e[44m\e[30m\e[44m \e[30m\002"
 # define CLR2 "\001 \e[0m\e[34m\e[0m \002"
+# define INT_MAX 2147483647
+# define INT_MIN -2147483648
+# define LL_MAX "9223372036854775807"
+# define LL_MIN "-9223372036854775808"
 
 typedef enum	types
 {
@@ -74,6 +78,12 @@ typedef	struct cmd
 	int		hrdoc_fd;
 	struct cmd	*next;
 } t_cmd;
+
+typedef struct s_free
+{
+	void	*addr;
+	struct s_free *next;
+} t_free;
 
 typedef struct s_data
 {
@@ -138,6 +148,8 @@ typedef struct s_data
 	int			hrdoc_len;
 	//parsing heredoc to close pipes << l << d close the old one
 	int			chk_hrdc_cls;
+	//dial free
+	t_free	*free_ptr;
 }	t_data;
 
 
@@ -214,7 +226,8 @@ void  execution(t_data *data);
 
 
 /**** Function of builtin cmd **********/
-void	free_sp(char **sp);
+//void	free_sp(char **sp);
+void	free_sp(t_data *data, char **sp);
 void	cd_cmd(t_data *data, t_cmd *node);
 void	echo_cmd(t_data *data, t_cmd *trav);
 void  pwd_cmd(t_data *data);
@@ -222,7 +235,8 @@ void	env_cmd(t_data *data, t_cmd *cmd);
 void	export_cmd(t_data *data, t_cmd *trav_c);
 void	unset_cmd(t_data *data, t_cmd *trav_c);
 void	exit_cmd(t_data *data, t_cmd *trav);
-int		check_builtin(char **cmd);
+//int		check_builtin(char **cmd);
+int		check_builtin(t_data *data, char **cmd);
 void	builtin_cmd(t_data *data, t_cmd *node);
 
 
@@ -236,7 +250,8 @@ void  old_pwd_alloc(t_data *data);
 
 
 /**** Function of env **********/
-void	env_shlvl_helper(t_env *env);
+//void	env_shlvl_helper(t_env *env);
+void	env_shlvl_helper(t_data *data, t_env *env);
 void  sort_env(t_data *data);
 t_env	*getenv_addr(t_data *data, char *sec);
 t_env	*node_allocate(void);
@@ -257,6 +272,9 @@ void  dup_opt_equal_helper(t_env **env, char *cmd, int *hold);
 void	free_data_running_process(t_data *data);
 void	free_data_die_process(t_data *data);
 void	free_parsing_cmd(t_data *data);
+//new free collector
+t_free	*free_add_node(void);
+void	free_implementation(t_data *data, void *addr);
 
 
 /******* Function of shell *********/

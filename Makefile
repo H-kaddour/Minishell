@@ -6,21 +6,18 @@
 #    By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/09 11:07:05 by hkaddour          #+#    #+#              #
-#    Updated: 2022/09/28 15:22:30 by hkaddour         ###   ########.fr        #
+#    Updated: 2022/10/11 12:51:11 by hkaddour         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
 HEADER = minishell.h
-#FLAGS = -Wall -Wextra -Werror
 FLAGS = -g
-#R_LINE = -L/usr/local/lib -I/usr/local/include -lreadline
-#R_LINE = -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include -lreadline -L/usr/local/lib -I/usr/local/include
 LIB = libft.a
 READLINE = $(shell brew --prefix  readline)
 OFILES = objdir
-SRC = main.c \
+SRC = src/shell/main.c \
 			tokenizer/allocate_tokens.c \
 			tokenizer/allocate_tokens_utils.c \
 			tokenizer/tokenizer.c \
