@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 22:39:52 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 10:59:46 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/12 17:19:33 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static void	execute_cd_swap_old_pwd(t_data *data)
 	{
 		old->value = pwd->value;
 		pwd->value = val;
+		free_implementation(data, data->pwd_of_mysys);
 		data->pwd_of_mysys = ft_strdup(val);
 	}
 	else

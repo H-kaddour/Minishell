@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 16:03:48 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/12 16:08:25 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,17 @@ void	running_process_helper(t_data *data)
 	//if (data->beg_line)
 	//	add_history(data->line);
 	//free_implementation(data, data->line);
+
 	free_data_running_process(data);
+
+	//t_free	*trav;
+
+	//trav = data->free_ptr;
+	//while (trav)
+	//{
+	//	printf("%s\n", trav->addr);
+	//	trav = trav->next;
+	//}
 }
 
 //void	close_nodes_fds(t_data *data)
@@ -60,7 +70,8 @@ void	running_process(t_data *data)
 			env_double_ptr(data);
 			execution(data);
 		}
-		running_process_helper(data);
+		//running_process_helper(data);
+		//data->free_ptr->next = 0;
 	}
 }
 

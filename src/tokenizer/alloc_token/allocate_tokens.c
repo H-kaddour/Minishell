@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:46:07 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 12:05:34 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/12 13:04:38 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int	add_node(t_data *data, t_types typ)
 		data->t_token = data->node;
 	data->node->type = typ;
 	data->node->value = malloc(sizeof(char) * get_len(data) + 1);
-	free_implementation(data, data->node->value);
 	if (!data->node->value)
 		error_malloc();
 	data->i = 0;
@@ -112,6 +111,7 @@ int	add_node(t_data *data, t_types typ)
 	loop_for_the_arg(data);
 	data->beg_line = &data->beg_line[data->i];
 	data->node->value[data->j] = 0;
+	free_implementation(data, data->node->value);
 	data->node->next = NULL;
 	node_attach(data);
 	return (0);

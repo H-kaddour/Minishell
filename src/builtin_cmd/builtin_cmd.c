@@ -6,13 +6,13 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:54:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 16:16:23 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/12 12:42:21 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static char	*if_upper_lower_them(char *cmd)
+static char	*if_upper_lower_them(t_data *data, char *cmd)
 {
 	int		i;
 	char	*ptr;
@@ -30,6 +30,7 @@ static char	*if_upper_lower_them(char *cmd)
 		i++;
 	}
 	ptr[i] = 0;
+	free_implementation(data, ptr);
 	return (ptr);
 }
 
@@ -42,16 +43,24 @@ static int	cmd_only_exec_lower(t_data *data, char *cmd)
 	b_cmd = "cd export unset exit";
 	i = 0;
 	sp = ft_split(b_cmd, ' ');
+	free_sp(data, sp);
+	//free_implementation(data, sp);
+	//while (sp[i])
+	//{
+	//	free_implementation(data, sp[i]);
+	//	i++;
+	//}
+	//i = 0;
 	while (sp[i])
 	{
 		if (!ft_strcmp(sp[i], cmd))
 		{
-			free_sp(data, sp);
+			//free_sp(data, sp);
 			return (1);
 		}
 		i++;
 	}
-	free_sp(data, sp);
+	//free_sp(data, sp);
 	return (0);
 }
 
@@ -61,19 +70,27 @@ static int	check_builtin_helper(t_data *data, char *cmd)
 	char	**sp;
 	char	*b_cmd;
 
+	i = 0;
 	b_cmd = "env echo pwd";
 	sp = ft_split(b_cmd, ' ');
-	i = 0;
+	free_sp(data, sp);
+	//free_implementation(data, sp);
+	//while (sp[i])
+	//{
+	//	free_implementation(data, sp[i]);
+	//	i++;
+	//}
+	//i = 0;
 	while (sp[i])
 	{
 		if (!ft_strcmp(sp[i], cmd))
 		{
-			free_sp(data, sp);
+			//free_sp(data, sp);
 			return (1);
 		}
 		i++;
 	}
-	free_sp(data, sp);
+	//free_sp(data, sp);
 	return (0);
 }
 
@@ -86,12 +103,14 @@ int	check_builtin(t_data *data, char **cmd)
 		return (1);
 	i = 0;
 	b_cmd = *cmd;
+	//free_implementation(data, *cmd);
 	while (!(b_cmd[i] >= 'A' && b_cmd[i] <= 'Z') && b_cmd[i])
 		i++;
 	if (b_cmd[i])
 	{
-		*cmd = if_upper_lower_them(*cmd);
-		free_implementation(data, b_cmd);
+		//free_implementation(data, b_cmd);
+		*cmd = if_upper_lower_them(data, *cmd);
+		//free_implementation(data, *cmd);
 	}
 	if (check_builtin_helper(data, *cmd))
 		return (1);

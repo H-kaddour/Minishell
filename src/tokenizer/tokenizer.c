@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 14:52:42 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/12 15:11:27 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static char	*spaces_takeoff(t_data *data, char *str)
 	len = ft_strlen(str) - 1;
 	if (str[len] == ' ' || (str[len] >= 9 && str[len] <= 13))
 		len = loop_reversely(str, len);
-	else
+	else if ((str[len] != ' ' || !(str[len] >= 9 && str[len] <= 13)) \
+			&& &str[0] == &data->line[0])
 		return (str);
 	ptr = malloc(sizeof(char) * len + 2);
 	if (!ptr)
@@ -57,6 +58,7 @@ static char	*spaces_takeoff(t_data *data, char *str)
 		i++;
 	}
 	ptr[i] = 0;
+	free_implementation(data, data->line);
 	return (ptr);
 }
 

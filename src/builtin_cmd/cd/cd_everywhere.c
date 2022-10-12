@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 22:53:53 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 11:31:54 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/12 17:40:03 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static void	execute_cmd_cd(t_data *data, char *cmd)
 	data->chk_dolla = 0;
 }
 
+int	ll = 0;
 void	cd_everywhere_at_once(t_data *data, char *cmd)
 {
 	int	i;
@@ -93,4 +94,7 @@ void	cd_everywhere_at_once(t_data *data, char *cmd)
 	execute_cmd_cd(data, cmd);
 	if (chk)
 		free_implementation(data, cmd);
+	ll++;
+	//if (ll == 2)
+	//	while (1);
 }

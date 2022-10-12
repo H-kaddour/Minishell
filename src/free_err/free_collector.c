@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 04:51:31 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 15:25:44 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/12 14:06:53 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	free_data_running_process(t_data *data)
 		return ;
 	while (node)
 	{
-		printf("%d == %s\n", i, node->addr);
+		//printf("%d == %s\n", i, node->addr);
 		free(node->addr);
 		free(node);
 		node = node->next;

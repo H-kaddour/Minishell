@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 10:32:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 15:01:36 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/12 13:08:18 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ static void	get_cmd_parsing(t_data *data)
 	trav = init_var_get_cmd_parsing(data, &i, &red_len, &cmd_len);
 	parsing_get_len_alloc_cmd_arr(data, &cmd_len, &red_len);
 	data->trav_cmd->cmd = malloc(sizeof(char *) * cmd_len + 1);
-	free_implementation(data, data->trav_cmd->cmd);
 	if (!data->trav_cmd->cmd)
 		error_malloc();
 	allocate_red_node(data, red_len);
@@ -117,6 +116,7 @@ static void	get_cmd_parsing(t_data *data)
 			break ;
 	}
 	data->trav_cmd->cmd[i] = 0;
+	free_implementation(data, data->trav_cmd->cmd);
 	data->trav_cmd->hrdoc_fd = data->hrdoc_fd[0];
 	data->trav_cmd = data->trav_cmd->next;
 }
