@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 08:12:06 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 12:40:34 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:35:38 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static void	count_dolla_helper(t_data *data, int len)
 	t_env	*trav_env;
 
 	trav_env = data->l_env;
-	dolla = malloc(sizeof(char) * len + 1);
-	free_implementation(data, dolla);
+	dolla = ft_calloc(len + 1, sizeof(char));
 	if (!dolla)
-		error_malloc();
+		error_alloc();
+	free_implementation(data, dolla);
 	data->i -= len;
 	len = 0;
 	while (ft_acceptable_char(data->beg_line[data->i]))

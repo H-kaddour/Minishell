@@ -6,7 +6,7 @@
 /*   By: hkaddour <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 12:31:35 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/02 01:13:43 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 09:14:20 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include "../include/minishell.h"
 
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 05:29:55 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 13:39:20 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:30:30 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ static void	no_home_path_or_not_in_home(t_data *data, char *clr1, char *path)
 	char	*tmp;
 
 	tmp = ft_strjoin(path, CLR2);
-	data->prompt = ft_strjoin(clr1, tmp);
 	free_implementation(data, tmp);
+	data->prompt = ft_strjoin(clr1, tmp);
+	free_implementation(data, data->prompt);
 	return ;
 }
 
@@ -58,10 +59,10 @@ static void	home_path_and_dir_path(t_data *data, char *clr1, \
 	if (ft_strlen(pwd) > ft_strlen(home))
 	{
 		len = ft_strlen(home);
-		data->prompt = malloc(sizeof(char) * len + 3);
-		free_implementation(data, data->prompt);
+		data->prompt = ft_calloc(len + 3, sizeof(char));
 		if (!data->prompt)
-			error_malloc();
+			error_alloc();
+		free_implementation(data, data->prompt);
 		data->prompt[i++] = '~';
 		while (pwd[len])
 			data->prompt[i++] = pwd[len++];

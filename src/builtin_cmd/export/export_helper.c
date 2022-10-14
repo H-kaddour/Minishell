@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 01:44:45 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 11:43:37 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 09:58:57 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ int	check_existence(t_data *data, char *cmd, int hold, t_env *env)
 	char	*chk;
 
 	i = 0;
-	chk = malloc(sizeof(char) * hold + 1);
+	chk = ft_calloc(hold + 1, sizeof(char));
 	if (!chk)
-		error_malloc();
+		error_alloc();
 	while (i < hold)
 	{
 		chk[i] = cmd[i];

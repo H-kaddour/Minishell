@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 09:38:44 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/12 12:01:56 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 09:42:42 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,7 @@ void	free_sp(t_data *data, char **sp)
 	free_implementation(data, sp);
 	while (sp[i])
 	{
-		//free(sp[i]);
 		free_implementation(data, sp[i]);
 		i++;
 	}
-	//free(sp);
-	//unset kldsjfkds still leak
-	//free_implementation(data, sp);
 }

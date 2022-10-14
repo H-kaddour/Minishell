@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 08:40:06 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 12:00:13 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:07:40 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ static char	*fill_data(t_data *data, char *str)
 {
 	char	*ptr;
 
-	ptr = malloc(sizeof(char) * len_hrdoc_data(data, str) + 1);
+	ptr = ft_calloc(len_hrdoc_data(data, str) + 1, sizeof(char));
 	if (!ptr)
-		error_malloc();
+		error_alloc();
 	data->i = 0;
 	data->j = 0;
 	while (str[data->i])
@@ -79,27 +79,30 @@ static char	*fill_data(t_data *data, char *str)
 static void	heredoc_process(t_data *data, char *det)
 {
 	char	*heredoc;
-	char	*buff;
+	char	*hold;
 
-	buff = ft_strdup("");
-	//free_implementation(data, buff);
+	data->buff = ft_strdup("");
 	signal(SIGINT, heredoc_sig);
 	while (1)
 	{
 		rl_catch_signals = 1;
 		heredoc = readline("> ");
-		//free_implementation(data, heredoc);
 		if (!heredoc)
 			exit(0);
 		if (!ft_strcmp(heredoc, det))
 			break ;
+		hold = heredoc;
 		if (data->chk_q_hrdoc == 0)
 			heredoc = fill_data(data, heredoc);
-		buff = ft_strjoin(buff, ft_strjoin(heredoc, "\n"));
+		free(hold);
+		hold = ft_strjoin(heredoc, "\n");
+		free(heredoc);
+		heredoc = data->buff;
+		data->buff = ft_strjoin(data->buff, hold);
+		free(heredoc);
+		free(hold);
 	}
-	ft_putstr_fd(buff, data->hrdoc_fd[1]);
-	close(data->hrdoc_fd[1]);
-	exit(0);
+	ft_putstr_fd(data->buff, data->hrdoc_fd[1]);
 }
 
 void	heredoc_implement(t_data *data, char *det)
@@ -109,7 +112,6 @@ void	heredoc_implement(t_data *data, char *det)
 
 	if (pipe(data->hrdoc_fd) < 0)
 		error_pipe(data, "minishell: pipe: error");
-	//pipe(data->hrdoc_fd);
 	pid = fork();
 	if (pid < 0)
 		error_fork(data);
@@ -117,6 +119,8 @@ void	heredoc_implement(t_data *data, char *det)
 	{
 		close(data->hrdoc_fd[0]);
 		heredoc_process(data, det);
+		close(data->hrdoc_fd[1]);
+		exit(0);
 	}
 	if (pid > 1)
 	{
@@ -125,6 +129,5 @@ void	heredoc_implement(t_data *data, char *det)
 		if (status == 256)
 			data->chk_hrdoc_exit = 1;
 		close(data->hrdoc_fd[1]);
-		return ;
 	}
 }

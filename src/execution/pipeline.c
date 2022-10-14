@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 12:11:13 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:03:10 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	plug_pipes_in_node(t_data *data)
 		}
 		trav->tab_pipe = malloc(sizeof(int) * 2);
 		if (!trav->tab_pipe)
-			error_malloc();
+			error_alloc();
 		init_tab_pipe(trav, fd);
 		trav->f_out = fd[1];
 		trav = trav->next;
@@ -41,7 +41,7 @@ static int	plug_pipes_in_node(t_data *data)
 	}
 	trav->tab_pipe = malloc(sizeof(int) * 2);
 	if (!trav->tab_pipe)
-		error_malloc();
+		error_alloc();
 	init_tab_pipe(trav, fd);
 	trav = data->v_cmd;
 	return (0);

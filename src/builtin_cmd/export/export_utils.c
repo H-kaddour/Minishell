@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 02:54:40 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 11:44:29 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:00:32 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ char	*before_equal(char *cmd)
 	hold = ft_strcspn(cmd, "=");
 	if (cmd[hold - 1] == '+')
 		hold--;
-	chk = malloc(sizeof(char) * hold + 1);
+	chk = ft_calloc(hold + 1, sizeof(char));
 	if (!chk)
-		error_malloc();
+		error_alloc();
 	while (i < hold)
 	{
 		chk[i] = cmd[i];

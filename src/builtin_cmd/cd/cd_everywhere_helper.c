@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 22:57:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/12 15:49:43 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/12 21:23:29 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	old_pwd_alloc(t_data *data)
 	while (trav->next)
 		trav = trav->next;
 	trav->next = node;
-	//free_implementation(data, node);
 	sort_env(data);
 	data->old_pwd_make = 1;
 }
@@ -60,7 +59,6 @@ void	change_oldpwd(t_data *data)
 {
 	t_env	*old;
 
-	old = data->l_env;
 	old = getenv_addr(data, "OLDPWD");
 	if (old)
 	{

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 22:53:53 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/12 17:40:03 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 09:43:34 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ static void	execute_cmd_cd(t_data *data, char *cmd)
 		printf("minishell: cd: %s: No such file or directory\n", cmd);
 		return ;
 	}
-	path = malloc(sizeof(char) * 1024);
+	path = ft_calloc(1024, sizeof(char));
 	if (!path)
-		error_malloc();
+		error_alloc();
+	free_implementation(data, path);
 	getcwd(path, 1024);
 	if (access(path, F_OK) != 0)
 		printf("cd: error retrieving current directory\n");
@@ -67,11 +68,9 @@ static void	execute_cmd_cd(t_data *data, char *cmd)
 		old_pwd_alloc(data);
 	change_pwd(data, path);
 	change_oldpwd(data);
-	free_implementation(data, path);
 	data->chk_dolla = 0;
 }
 
-int	ll = 0;
 void	cd_everywhere_at_once(t_data *data, char *cmd)
 {
 	int	i;
@@ -94,7 +93,4 @@ void	cd_everywhere_at_once(t_data *data, char *cmd)
 	execute_cmd_cd(data, cmd);
 	if (chk)
 		free_implementation(data, cmd);
-	ll++;
-	//if (ll == 2)
-	//	while (1);
 }

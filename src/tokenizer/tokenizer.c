@@ -6,67 +6,18 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/12 15:11:27 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:33:11 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	*spaces_first(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == 0)
-		return (0);
-	return (&str[i]);
-}
-
-static int	loop_reversely(char *str, int len)
-{
-	while (str[len] == ' ' || (str[len] >= 9 && str[len] <= 13))
-		len--;
-	return (len);
-}
-
-static char	*spaces_takeoff(t_data *data, char *str)
-{
-	int		len;
-	char	*ptr;
-	int		i;
-
-	str = spaces_first(str);
-	if (!str)
-		return (0);
-	len = ft_strlen(str) - 1;
-	if (str[len] == ' ' || (str[len] >= 9 && str[len] <= 13))
-		len = loop_reversely(str, len);
-	else if ((str[len] != ' ' || !(str[len] >= 9 && str[len] <= 13)) \
-			&& &str[0] == &data->line[0])
-		return (str);
-	ptr = malloc(sizeof(char) * len + 2);
-	if (!ptr)
-		error_malloc();
-	i = 0;
-	while (i <= len)
-	{
-		ptr[i] = str[i];
-		i++;
-	}
-	ptr[i] = 0;
-	free_implementation(data, data->line);
-	return (ptr);
-}
-
 static int	tokenizer_init(t_data *data)
 {
-	data->beg_line = spaces_takeoff(data, data->line);
+	free_implementation(data, data->line);
+	data->beg_line = ft_strtrim(data->line, "\t\v\r\f ");
 	free_implementation(data, data->beg_line);
-	if (!data->beg_line)
+	if (!data->beg_line[0])
 	{
 		data->error_lexer = 1;
 		return (1);

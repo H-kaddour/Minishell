@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:54:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/12 12:42:21 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 09:13:14 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ static char	*if_upper_lower_them(t_data *data, char *cmd)
 	char	*ptr;
 
 	i = 0;
-	ptr = malloc(sizeof(char) * ft_strlen(cmd) + 1);
+	ptr = ft_calloc(ft_strlen(cmd) + 1, sizeof(char));
 	if (!ptr)
-		error_malloc();
+		error_alloc();
 	while (cmd[i])
 	{
 		if (cmd[i] >= 'A' && cmd[i] <= 'Z')
@@ -44,23 +44,12 @@ static int	cmd_only_exec_lower(t_data *data, char *cmd)
 	i = 0;
 	sp = ft_split(b_cmd, ' ');
 	free_sp(data, sp);
-	//free_implementation(data, sp);
-	//while (sp[i])
-	//{
-	//	free_implementation(data, sp[i]);
-	//	i++;
-	//}
-	//i = 0;
 	while (sp[i])
 	{
 		if (!ft_strcmp(sp[i], cmd))
-		{
-			//free_sp(data, sp);
 			return (1);
-		}
 		i++;
 	}
-	//free_sp(data, sp);
 	return (0);
 }
 
@@ -74,23 +63,12 @@ static int	check_builtin_helper(t_data *data, char *cmd)
 	b_cmd = "env echo pwd";
 	sp = ft_split(b_cmd, ' ');
 	free_sp(data, sp);
-	//free_implementation(data, sp);
-	//while (sp[i])
-	//{
-	//	free_implementation(data, sp[i]);
-	//	i++;
-	//}
-	//i = 0;
 	while (sp[i])
 	{
 		if (!ft_strcmp(sp[i], cmd))
-		{
-			//free_sp(data, sp);
 			return (1);
-		}
 		i++;
 	}
-	//free_sp(data, sp);
 	return (0);
 }
 
@@ -103,15 +81,10 @@ int	check_builtin(t_data *data, char **cmd)
 		return (1);
 	i = 0;
 	b_cmd = *cmd;
-	//free_implementation(data, *cmd);
 	while (!(b_cmd[i] >= 'A' && b_cmd[i] <= 'Z') && b_cmd[i])
 		i++;
 	if (b_cmd[i])
-	{
-		//free_implementation(data, b_cmd);
 		*cmd = if_upper_lower_them(data, *cmd);
-		//free_implementation(data, *cmd);
-	}
 	if (check_builtin_helper(data, *cmd))
 		return (1);
 	return (0);

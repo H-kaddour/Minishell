@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 10:32:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/12 13:08:18 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:06:11 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ static void	get_cmd_parsing(t_data *data)
 
 	trav = init_var_get_cmd_parsing(data, &i, &red_len, &cmd_len);
 	parsing_get_len_alloc_cmd_arr(data, &cmd_len, &red_len);
-	data->trav_cmd->cmd = malloc(sizeof(char *) * cmd_len + 1);
+	data->trav_cmd->cmd = ft_calloc(cmd_len + 1, sizeof(char *));
 	if (!data->trav_cmd->cmd)
-		error_malloc();
+		error_alloc();
 	allocate_red_node(data, red_len);
 	trav_red = data->trav_cmd->redirect;
 	while (trav)

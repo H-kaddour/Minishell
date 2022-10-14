@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 23:17:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 14:39:53 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/14 17:35:04 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ char	*get_sec(char *str)
 
 	i = 0;
 	eqal = ft_strcspn(str, "=");
-	ptr = malloc(sizeof(char) * eqal + 1);
+	ptr = ft_calloc(eqal + 1, sizeof(char));
 	if (!ptr)
-		error_malloc();
+		error_alloc();
 	while (i < eqal)
 	{
 		ptr[i] = str[i];
@@ -35,9 +35,9 @@ char	*get_sec(char *str)
 static void	allocate_all_nodes(t_data *data)
 {
 	int		i;
+	char	*hold;
 	t_env	*head;
 	t_env	*next;
-	char	*hold;
 
 	i = 1;
 	head = node_allocate();
@@ -92,9 +92,9 @@ static void	fill_nodes_env(t_data *data, t_env **env, int i)
 	j = 0;
 	while (data->env[i][j] && data->env[i][j] != '=')
 		j++;
-	env[0]->sec = malloc(sizeof(char) * j + 1);
+	env[0]->sec = ft_calloc(j + 1, sizeof(char));
 	if (!env[0]->sec)
-		error_malloc();
+		error_alloc();
 	j = 0;
 	while (data->env[i][j] && data->env[i][j] != '=')
 	{
@@ -103,9 +103,9 @@ static void	fill_nodes_env(t_data *data, t_env **env, int i)
 	}
 	env[0]->sec[j] = 0;
 	j++;
-	env[0]->value = malloc(sizeof(char) * (ft_strlen(data->env[i]) + 1) - j);
+	env[0]->value = ft_calloc((ft_strlen(data->env[i]) + 1) - j, sizeof(char));
 	if (!env[0]->value)
-		error_malloc();
+		error_alloc();
 	k = 0;
 	while (data->env[i][j] && data->env[i][j] != 0)
 		env[0]->value[k++] = data->env[i][j++];

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 00:39:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 15:56:45 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/14 16:47:39 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,10 @@ t_env	*node_allocate(void)
 {
 	t_env	*node;
 
-	node = (t_env *) malloc(sizeof(t_env));
+	//node = (t_env *) malloc(sizeof(t_env));
+	node = ft_calloc(1, sizeof(t_env));
 	if (!node)
-		error_malloc();
+		error_alloc();
 	node->sec = 0;
 	node->value = 0;
 	node->next = 0;
@@ -82,10 +83,10 @@ static void	env_double_ptr_helper(t_data *data, int i)
 	trav = data->l_env;
 	while (trav)
 	{
-		data->env_exec[i] = malloc(sizeof(char) * \
-			ft_strlen(trav->sec) + ft_strlen(trav->value) + 1);
+		data->env_exec[i] = ft_calloc(ft_strlen(trav->sec) + \
+				ft_strlen(trav->value) + 1, sizeof(char));
 		if (!data->env_exec[i])
-			error_malloc();
+			error_alloc();
 		j = 0;
 		k = 0;
 		while (trav->sec[k])
@@ -114,9 +115,9 @@ char	**env_double_ptr(t_data *data)
 		trav = trav->next;
 		i++;
 	}
-	data->env_exec = malloc(sizeof(char *) * i + 1);
+	data->env_exec = ft_calloc(i + 1, sizeof(char *));
 	if (!data->env_exec)
-		error_malloc();
+		error_alloc();
 	env_double_ptr_helper(data, i);
 	free_implementation(data, data->env_exec);
 	return (data->env_exec);

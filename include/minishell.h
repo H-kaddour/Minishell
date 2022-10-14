@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 11:38:11 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:53:13 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,26 +81,19 @@ typedef	struct cmd
 
 typedef struct s_free
 {
-	void	*addr;
+	void	*value;
 	struct s_free *next;
 } t_free;
 
 typedef struct s_data
 {
-	char		**path;
 	char		*line;
 	char		**env;
 	char		**args;
-  char  	*w_path;
-	char		**split;
-	char		**cmd;
-	char		*abs_path;
 	char		*beg_line;
 	char		*n_line;
 	int			i_line;
 	int			index;
-	char		*var;
-	char		*cd_path;
 	int			check;
 	int			i;
 	int			j;
@@ -112,23 +105,15 @@ typedef struct s_data
 	int			chk_hrdoc_exit; //this one check if heredoc got exit with ctrl c so to not finish the other hrdoc << l << d
 	t_token	*node;
   t_token *trav;
-	t_env		*shlvl_ptr;
-	t_env		*var_exist;
 	t_env		*l_env;
-	//of derection
-	t_token	*built_cmd;
 	t_types	typ;
-	//dial pipe
-	t_token	*trav_p;
-	//dial redirection
-	t_token	*trav_r;
 	t_token	*t_token;
 	//parsing
 	t_cmd	*v_cmd;
 	t_cmd	*trav_cmd;
+	char 	*buff;
 	//error of lexer var
 	int			error_lexer;
-
 	/*var of execution*/
 	int			size_cmd;
 	char		*old_pwd_value; //this one is for cd env oldpwd to dup the old path of cd
@@ -226,7 +211,6 @@ void  execution(t_data *data);
 
 
 /**** Function of builtin cmd **********/
-//void	free_sp(char **sp);
 void	free_sp(t_data *data, char **sp);
 void	cd_cmd(t_data *data, t_cmd *node);
 void	echo_cmd(t_data *data, t_cmd *trav);
@@ -235,14 +219,12 @@ void	env_cmd(t_data *data, t_cmd *cmd);
 void	export_cmd(t_data *data, t_cmd *trav_c);
 void	unset_cmd(t_data *data, t_cmd *trav_c);
 void	exit_cmd(t_data *data, t_cmd *trav);
-//int		check_builtin(char **cmd);
 int		check_builtin(t_data *data, char **cmd);
 void	builtin_cmd(t_data *data, t_cmd *node);
 
 
 /**** Function of cd **********/
 void  cd_between_pwd_and_oldpwd(t_data *data, char *cmd);
-void  error_cd(t_data *data, char *msg);
 void  cd_everywhere_at_once(t_data *data, char *cmd);
 void  change_oldpwd(t_data *data);
 void  change_pwd(t_data *data, char *path);
@@ -250,7 +232,6 @@ void  old_pwd_alloc(t_data *data);
 
 
 /**** Function of env **********/
-//void	env_shlvl_helper(t_env *env);
 void	env_shlvl_helper(t_data *data, t_env *env);
 void  sort_env(t_data *data);
 t_env	*getenv_addr(t_data *data, char *sec);
@@ -269,12 +250,10 @@ void  dup_opt_equal_helper(t_env **env, char *cmd, int *hold);
 
 
 /******* Function of free *********/
-void	free_data_running_process(t_data *data);
-void	free_data_die_process(t_data *data);
-void	free_parsing_cmd(t_data *data);
-//new free collector
 t_free	*free_add_node(void);
 void	free_implementation(t_data *data, void *addr);
+void	free_data_die_process(t_data *data);
+void	free_data_running_process(t_data *data);
 
 
 /******* Function of shell *********/
@@ -287,8 +266,9 @@ void	sig_c(int c);
 
 
 /******* Function of error *********/
-void	error_malloc(void);
+void	error_alloc(void);
 void	error_fork(t_data *data);
 void	error_pipe(t_data *data, char *msg);
+void  error_cd(t_data *data, char *msg);
 
 #endif

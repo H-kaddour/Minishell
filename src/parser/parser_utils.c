@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 15:12:08 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/12 13:55:48 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:07:20 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	allocate_red_node(t_data *data, int red_len)
 	{
 		head = malloc(sizeof(t_red));
 		if (!head)
-			error_malloc();
+			error_alloc();
 		free_implementation(data, head);
 		init_red_node(head);
 		data->trav_cmd->redirect = head;
@@ -51,7 +51,7 @@ void	allocate_red_node(t_data *data, int red_len)
 	{
 		node = malloc(sizeof(t_red));
 		if (!node)
-			error_malloc();
+			error_alloc();
 		free_implementation(data, node);
 		init_red_node(node);
 		head->next = node;
@@ -71,7 +71,7 @@ void	allocate_cmd_node(t_data *data)
 	len = count_cmd(data) + 1;
 	head = malloc(sizeof(t_cmd));
 	if (!head)
-		error_malloc();
+		error_alloc();
 	free_implementation(data, head);
 	init_cmd_node(head);
 	data->v_cmd = head;
@@ -79,7 +79,7 @@ void	allocate_cmd_node(t_data *data)
 	{
 		node = malloc(sizeof(t_cmd));
 		if (!node)
-			error_malloc();
+			error_alloc();
 		free_implementation(data, node);
 		init_cmd_node(node);
 		head->next = node;

@@ -369,4 +369,18 @@ cat << l > f1 | << l > f2 cat
 -->> the promlem is the first hrdoc is closed so the second one the only one is working
 when i unset everything in env segfault happen in new prompt i should check if it null return 
 i will not add address of exec fork child in free implementation
-*** also strdup protect and itoa if 0 exit the program
+*** also strdup protect and itoa if 0 exit the program and free too
+
+**ERRORs:
+export hey coo=l hey+=ll
+
+
+leaks implementation :
+free in loop:
+  token
+  parsing cmd
+free in end of program:
+  env
+  pwd_of_mysys
+
+i will add a check for calloc that show if i will add the node to garbage collector or not

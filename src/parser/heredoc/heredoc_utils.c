@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 08:44:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 11:02:52 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:08:16 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	heredoc_dolla_allocate(t_data *data, char *ptr, char *str)
 			data->i++;
 			len++;
 		}
-		dolla = malloc(sizeof(char) * len + 1);
+		dolla = ft_calloc(len + 1, sizeof(char));
 		if (!dolla)
-			error_malloc();
+			error_alloc();
 		data->i -= len;
 		len = 0;
 		while (ft_acceptable_char(str[data->i]))

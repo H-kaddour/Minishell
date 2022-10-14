@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 08:04:36 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 11:08:57 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:20:51 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	count_d_quote(t_data *data)
 		}
 		while (data->beg_line[data->i] != '$' && \
 				data->beg_line[data->i] != '\"' && data->beg_line[data->i])
-			data->node->value[data->j++] = data->beg_line[data->i++];
+			data->i++;
 	}
 	count_d_quote_helper(data);
 }

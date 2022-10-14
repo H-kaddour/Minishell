@@ -6,17 +6,11 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:22:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/07 10:59:23 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:53:28 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
-
-void	error_cd(t_data *data, char *msg)
-{
-	data->chk_dolla = 1;
-	printf("%s\n", msg);
-}
 
 void	cd_cmd(t_data *data, t_cmd *node)
 {

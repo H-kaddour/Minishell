@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 07:23:50 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 12:06:35 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:34:24 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ static void	add_dolla_helper(t_data *data, int len)
 	t_env	*trav_env;
 
 	trav_env = data->l_env;
-	dolla = malloc(sizeof(char) * len + 1);
-	free_implementation(data, dolla);
+	dolla = ft_calloc(len + 1, sizeof(char));
 	if (!dolla)
-		error_malloc();
+		error_alloc();
+	free_implementation(data, dolla);
 	if (!dolla)
 		return ;
 	data->i -= len;
