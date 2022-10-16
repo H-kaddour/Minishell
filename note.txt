@@ -384,3 +384,6 @@ free in end of program:
   pwd_of_mysys
 
 i will add a check for calloc that show if i will add the node to garbage collector or not
+still have leaks
+cd .
+

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 10:32:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 10:06:11 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 12:20:31 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,10 @@ t_token	*parsing_alloc_red_space(t_data *data, t_token *trav, \
 {
 	trav_red->typ = trav->type;
 	if (trav->type != I_APEND)
-	{
-		trav_red->file = ft_strdup(trav->next->next->value);
-		free_implementation(data, trav_red->file);
-	}
+		trav_red->file = add_dup(data, trav->next->next->value, 1);
 	else
 	{
-		trav_red->determiner = ft_strdup(trav->next->next->value);
-		free_implementation(data, trav_red->determiner);
+		trav_red->determiner = add_dup(data, trav->next->next->value, 1);
 		if (data->chk_hrdc_cls != 0)
 			close(data->hrdoc_fd[0]);
 		heredoc_implement(data, trav_red->determiner);
@@ -41,14 +37,10 @@ t_token	*parsing_alloc_red_no_space(t_data *data, t_token *trav, \
 {
 	trav_red->typ = trav->type;
 	if (trav->type != I_APEND)
-	{
-		trav_red->file = ft_strdup(trav->next->value);
-		free_implementation(data, trav_red->file);
-	}
+		trav_red->file = add_dup(data, trav->next->value, 1);
 	else
 	{
-		trav_red->determiner = ft_strdup(trav->next->value);
-		free_implementation(data, trav_red->determiner);
+		trav_red->determiner = add_dup(data, trav->next->value, 1);
 		if (data->chk_hrdc_cls != 0)
 			close(data->hrdoc_fd[0]);
 		heredoc_implement(data, trav_red->determiner);
@@ -66,8 +58,7 @@ int	get_cmd_parsing_helper(t_data *data, t_token **trav, \
 	if (trav[0]->type == WRD || trav[0]->type == D_QUOT \
 			|| trav[0]->type == S_QUOT || trav[0]->type == DOLLA)
 	{
-		data->trav_cmd->cmd[*i] = ft_strdup(trav[0]->value);
-		free_implementation(data, data->trav_cmd->cmd[*i]);
+		data->trav_cmd->cmd[*i] = add_dup(data, trav[0]->value, 1);
 		*trav = trav[0]->next;
 		*(i) += 1;
 	}
@@ -100,9 +91,7 @@ static void	get_cmd_parsing(t_data *data)
 
 	trav = init_var_get_cmd_parsing(data, &i, &red_len, &cmd_len);
 	parsing_get_len_alloc_cmd_arr(data, &cmd_len, &red_len);
-	data->trav_cmd->cmd = ft_calloc(cmd_len + 1, sizeof(char *));
-	if (!data->trav_cmd->cmd)
-		error_alloc();
+	data->trav_cmd->cmd = allocation(data, cmd_len + 1, sizeof(char *), 1);
 	allocate_red_node(data, red_len);
 	trav_red = data->trav_cmd->redirect;
 	while (trav)
@@ -115,8 +104,6 @@ static void	get_cmd_parsing(t_data *data)
 		else if (trav->type == PIPE)
 			break ;
 	}
-	data->trav_cmd->cmd[i] = 0;
-	free_implementation(data, data->trav_cmd->cmd);
 	data->trav_cmd->hrdoc_fd = data->hrdoc_fd[0];
 	data->trav_cmd = data->trav_cmd->next;
 }

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 14:53:13 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 11:24:17 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,17 @@ typedef	struct cmd
 	struct cmd	*next;
 } t_cmd;
 
-typedef struct s_free
+typedef struct die_p
 {
 	void	*value;
-	struct s_free *next;
-} t_free;
+	struct die_p *next;
+} d_free;
+
+typedef struct running_p
+{
+	void	*value;
+	struct running_p *next;
+} r_free;
 
 typedef struct s_data
 {
@@ -134,7 +140,8 @@ typedef struct s_data
 	//parsing heredoc to close pipes << l << d close the old one
 	int			chk_hrdc_cls;
 	//dial free
-	t_free	*free_ptr;
+	d_free	*p_die;
+	r_free	*p_running;
 }	t_data;
 
 
@@ -250,10 +257,10 @@ void  dup_opt_equal_helper(t_env **env, char *cmd, int *hold);
 
 
 /******* Function of free *********/
-t_free	*free_add_node(void);
-void	free_implementation(t_data *data, void *addr);
-void	free_data_die_process(t_data *data);
-void	free_data_running_process(t_data *data);
+//t_free	*free_add_node(void);
+//void	free_implementation(t_data *data, void *addr);
+//void	free_data_die_process(t_data *data);
+//void	free_data_running_process(t_data *data);
 
 
 /******* Function of shell *********/
@@ -270,5 +277,12 @@ void	error_alloc(void);
 void	error_fork(t_data *data);
 void	error_pipe(t_data *data, char *msg);
 void  error_cd(t_data *data, char *msg);
+
+
+void	*allocation(t_data *data, size_t count, size_t size, int chk);
+void	add_node_p_running(t_data *data, void *addr);
+void	add_node_p_die(t_data *data, void *addr);
+char	*add_dup(t_data *data, char *s, int chk);
+char	*add_join(t_data *data, char *s, char *s1, int chk);
 
 #endif

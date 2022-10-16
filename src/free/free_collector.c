@@ -6,68 +6,94 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 04:51:31 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 15:05:27 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 10:09:21 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_free	*free_add_node(void)
+void	add_node_p_die(t_data *data, void *addr)
 {
-	t_free	*head;
+	d_free	*head;
 
-	head = malloc(sizeof(t_free));
+	head = data->p_die;
 	if (!head)
-		error_alloc();
-	head->value = 0;
-	head->next = 0;
-	return (head);
-}
-
-void	free_implementation(t_data *data, void *addr)
-{
-	t_free	*head;
-	t_free	*node;
-
-	head = data->free_ptr;
-	node = free_add_node();
-	node->value = addr;
+		return ;
 	while (head->next)
 		head = head->next;
-	head->next = node;
+	head->next = ft_calloc(1, sizeof(d_free));
+	head->next->value = addr;
 }
 
-void	free_data_running_process(t_data *data)
+void	add_node_p_running(t_data *data, void *addr)
 {
-	t_free	*node;
+	r_free	*head;
 
-	if (data->free_ptr->next)
-		node = data->free_ptr->next;
-	else
+	head = data->p_running;
+	if (!head)
 		return ;
-	while (node)
-	{
-		free(node->value);
-		free(node);
-		node = node->next;
-	}
-	data->free_ptr->next = 0;
+	while (head->next)
+		head = head->next;
+	head->next = ft_calloc(1, sizeof(r_free));
+	head->next->value = addr;
 }
 
-void	free_data_die_process(t_data *data)
-{
-	t_env	*env;
+//t_free	*free_add_node(void)
+//{
+//	t_free	*head;
+//
+//	head = malloc(sizeof(t_free));
+//	if (!head)
+//		error_alloc();
+//	head->value = 0;
+//	head->next = 0;
+//	return (head);
+//}
+//
+//void	free_implementation(t_data *data, void *addr)
+//{
+//	t_free	*head;
+//	t_free	*node;
+//
+//	head = data->free_ptr;
+//	node = free_add_node();
+//	node->value = addr;
+//	while (head->next)
+//		head = head->next;
+//	head->next = node;
+//}
 
-	env = data->l_env;
-	while (env)
-	{
-		if (env->sec)
-			free(env->sec);
-		if (env->value)
-			free(env->value);
-		free(env);
-		env = env->next;
-	}
-	if (data->pwd_of_mysys)
-		free(data->pwd_of_mysys);
-}
+//void	free_data_running_process(t_data *data)
+//{
+//	t_free	*node;
+//
+//	if (data->free_ptr->next)
+//		node = data->free_ptr->next;
+//	else
+//		return ;
+//	while (node)
+//	{
+//		free(node->value);
+//		free(node);
+//		node = node->next;
+//	}
+//	data->free_ptr->next = 0;
+//}
+
+//void	free_data_die_process(t_data *data)
+//{
+//	t_env	*env;
+//
+//	env = data->l_env;
+//	while (env)
+//	{
+//		if (env->sec)
+//			free(env->sec);
+//		if (env->value)
+//			free(env->value);
+//		free(env);
+//		env = env->next;
+//	}
+//	if (data->pwd_of_mysys)
+//		free(data->pwd_of_mysys);
+//}

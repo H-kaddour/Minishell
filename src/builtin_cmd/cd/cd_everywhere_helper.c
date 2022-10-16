@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 22:57:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/12 21:23:29 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 14:13:01 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	old_pwd_alloc(t_data *data)
 	t_env	*trav;
 
 	trav = data->l_env;
-	node = node_allocate();
-	node->sec = ft_strdup("OLDPWD");
+	node = allocation(data, 1, sizeof(t_env), 0);
+	node->sec = add_dup(data, "OLDPWD", 0);
 	while (trav->next)
 		trav = trav->next;
 	trav->next = node;
@@ -34,23 +34,18 @@ void	change_pwd(t_data *data, char *path)
 	pwd = getenv_addr(data, "PWD");
 	if (!pwd)
 	{
-		free_implementation(data, data->old_pwd_value);
-		data->old_pwd_value = ft_strdup(data->pwd_of_mysys);
-		free_implementation(data, data->pwd_of_mysys);
-		data->pwd_of_mysys = ft_strdup(path);
+		data->old_pwd_value = add_dup(data, data->pwd_of_mysys, 0);
+		data->pwd_of_mysys = add_dup(data, path, 0);
 	}
 	else
 	{
-		free_implementation(data, data->old_pwd_value);
-		data->old_pwd_value = ft_strdup(pwd->value);
+		data->old_pwd_value = add_dup(data, pwd->value, 0);
 		if (!ft_strcmp(pwd->value, path))
 			return ;
 		else
 		{
-			free_implementation(data, pwd->value);
-			pwd->value = ft_strdup(path);
-			free_implementation(data, data->pwd_of_mysys);
-			data->pwd_of_mysys = ft_strdup(path);
+			pwd->value = add_dup(data, path, 0);
+			data->pwd_of_mysys = add_dup(data, path, 0);
 		}
 	}
 }
@@ -61,8 +56,5 @@ void	change_oldpwd(t_data *data)
 
 	old = getenv_addr(data, "OLDPWD");
 	if (old)
-	{
-		free_implementation(data, old->value);
-		old->value = ft_strdup(data->old_pwd_value);
-	}
+		old->value = add_dup(data, data->old_pwd_value, 0);
 }

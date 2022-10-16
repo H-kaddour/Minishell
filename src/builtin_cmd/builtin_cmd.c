@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:54:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 09:13:14 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 12:35:56 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ static char	*if_upper_lower_them(t_data *data, char *cmd)
 	char	*ptr;
 
 	i = 0;
-	ptr = ft_calloc(ft_strlen(cmd) + 1, sizeof(char));
-	if (!ptr)
-		error_alloc();
+	ptr = allocation(data, ft_strlen(cmd) + 1, sizeof(char), 1);
 	while (cmd[i])
 	{
 		if (cmd[i] >= 'A' && cmd[i] <= 'Z')
@@ -29,8 +27,6 @@ static char	*if_upper_lower_them(t_data *data, char *cmd)
 			ptr[i] = cmd[i];
 		i++;
 	}
-	ptr[i] = 0;
-	free_implementation(data, ptr);
 	return (ptr);
 }
 

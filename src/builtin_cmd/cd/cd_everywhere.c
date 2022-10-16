@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 22:53:53 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 09:43:34 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 13:59:33 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	cd_to_home(t_data *data, char **cmd)
 		error_cd(data, "minishell: cd: HOME not set");
 		return (1);
 	}
-	*cmd = ft_strdup(home->value);
+	*cmd = add_dup(data, home->value, 1);
 	return (0);
 }
 
@@ -40,10 +40,10 @@ static int	join_home_and_path(t_data *data, char **cmd)
 			error_cd(data, "minishell: cd: HOME not set");
 			return (1);
 		}
-		*cmd = ft_strjoin(home, &cmd[0][1]);
+		*cmd = add_join(data, home, &cmd[0][1], 1);
 		return (0);
 	}
-	*cmd = ft_strjoin(e_home->value, &cmd[0][1]);
+	*cmd = add_join(data, e_home->value, &cmd[0][1], 1);
 	return (0);
 }
 
@@ -57,10 +57,7 @@ static void	execute_cmd_cd(t_data *data, char *cmd)
 		printf("minishell: cd: %s: No such file or directory\n", cmd);
 		return ;
 	}
-	path = ft_calloc(1024, sizeof(char));
-	if (!path)
-		error_alloc();
-	free_implementation(data, path);
+	path = allocation(data, 1024, sizeof(char), 1);
 	getcwd(path, 1024);
 	if (access(path, F_OK) != 0)
 		printf("cd: error retrieving current directory\n");
@@ -74,23 +71,17 @@ static void	execute_cmd_cd(t_data *data, char *cmd)
 void	cd_everywhere_at_once(t_data *data, char *cmd)
 {
 	int	i;
-	int	chk;
 
 	i = 0;
-	chk = 0;
 	if (!cmd)
 	{
 		if (cd_to_home(data, &cmd))
 			return ;
-		chk = 1;
 	}
 	else if (cmd[0] == '~')
 	{
 		if (join_home_and_path(data, &cmd))
 			return ;
-		chk = 1;
 	}
 	execute_cmd_cd(data, cmd);
-	if (chk)
-		free_implementation(data, cmd);
 }

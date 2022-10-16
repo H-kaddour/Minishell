@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 01:44:45 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 09:58:57 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 15:31:07 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,13 @@ int	check_existence_helper(t_data *data, char *cmd, char *chk, int hold)
 		{
 			hold += 2;
 			n_cmd = &cmd[hold];
-			trav->value = ft_strjoin(trav->value, n_cmd);
+			trav->value = add_join(data, trav->value, n_cmd, 0);
 		}
 		else
 		{
 			n_cmd = &cmd[++hold];
-			trav->value = ft_strdup(n_cmd);
+			trav->value = add_dup(data, n_cmd, 0);
 		}
-		free_implementation(data, hld);
 		return (1);
 	}
 	return (0);
@@ -62,21 +61,10 @@ int	check_existence(t_data *data, char *cmd, int hold, t_env *env)
 	char	*chk;
 
 	i = 0;
-	chk = ft_calloc(hold + 1, sizeof(char));
-	if (!chk)
-		error_alloc();
-	while (i < hold)
-	{
-		chk[i] = cmd[i];
-		i++;
-	}
-	chk[i] = 0;
+	chk = allocation(data, hold + 1, sizeof(char), 1);
+	ft_strlcpy(chk, cmd, hold + 1);
 	if (check_existence_helper(data, cmd, chk, hold))
-	{
-		free_implementation(data, chk);
 		return (1);
-	}
-	free_implementation(data, chk);
 	return (0);
 }
 
@@ -89,8 +77,10 @@ int	dup_opt_wrd(t_data *data, t_env *env, char *cmd)
 	if (trav)
 		return (0);
 	else
-		env->sec = ft_strdup(cmd);
-		env->value = ft_strdup("");
+	{
+		env->sec = add_dup(data, cmd, 0);
+		env->value = add_dup(data, "", 0);
+	}
 	return (1);
 }
 

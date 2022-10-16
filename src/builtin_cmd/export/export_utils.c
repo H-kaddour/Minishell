@@ -6,13 +6,14 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 02:54:40 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 10:00:32 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 15:31:23 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-char	*before_equal(char *cmd)
+//this one is duplicated
+char	*before_equal(t_data *data, char *cmd)
 {
 	int		i;
 	int		hold;
@@ -22,15 +23,8 @@ char	*before_equal(char *cmd)
 	hold = ft_strcspn(cmd, "=");
 	if (cmd[hold - 1] == '+')
 		hold--;
-	chk = ft_calloc(hold + 1, sizeof(char));
-	if (!chk)
-		error_alloc();
-	while (i < hold)
-	{
-		chk[i] = cmd[i];
-		i++;
-	}
-	chk[i] = 0;
+	chk = allocation(data, hold + 1, sizeof(char), 1);
+	ft_strlcpy(chk, cmd, hold + 1);
 	return (chk);
 }
 
@@ -38,22 +32,14 @@ int	if_exist_or_not(t_data *data, char *cmd)
 {
 	t_env	*trav;
 	char	*ptr;
-	int		chk;
 
-	chk = 0;
 	ptr = cmd;
 	if (check_if_equal_or_wrd(cmd))
-	{
-		ptr = before_equal(cmd);
-		chk = 1;
-	}
+		ptr = before_equal(data, cmd);
 	trav = getenv_addr(data, ptr);
-	if (chk)
-		free_implementation(data, ptr);
 	if (trav)
 		return (0);
-	else
-		return (1);
+	return (1);
 }
 
 int	only_accepted_char(char *cmd, int hold)

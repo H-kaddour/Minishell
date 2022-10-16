@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 05:29:55 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 10:30:30 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 11:34:50 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,9 @@ static void	get_me_env_addresses(t_data *data, char **path_h, char **path_pw)
 		*path_h = getenv("HOME");
 }
 
-static void	no_home_path_or_not_in_home(t_data *data, char *clr1, char *path)
-{
-	char	*tmp;
-
-	tmp = ft_strjoin(path, CLR2);
-	free_implementation(data, tmp);
-	data->prompt = ft_strjoin(clr1, tmp);
-	free_implementation(data, data->prompt);
-	return ;
-}
-
 static void	home_path_and_dir_path(t_data *data, char *clr1, \
 		char *home, char *pwd)
 {
-	char	*tmp;
 	int		len;
 	int		i;
 
@@ -59,21 +47,16 @@ static void	home_path_and_dir_path(t_data *data, char *clr1, \
 	if (ft_strlen(pwd) > ft_strlen(home))
 	{
 		len = ft_strlen(home);
-		data->prompt = ft_calloc(len + 3, sizeof(char));
-		if (!data->prompt)
-			error_alloc();
-		free_implementation(data, data->prompt);
+		data->prompt = allocation(data, len + 3, sizeof(char), 1);
 		data->prompt[i++] = '~';
 		while (pwd[len])
 			data->prompt[i++] = pwd[len++];
-		data->prompt[i] = 0;
-		tmp = ft_strjoin(data->prompt, CLR2);
-		free_implementation(data, tmp);
-		data->prompt = ft_strjoin(clr1, tmp);
-		free_implementation(data, data->prompt);
+		data->prompt = add_join(data, clr1, add_join(data, \
+					data->prompt, CLR2, 1), 1);
 	}
 	else if (ft_strlen(pwd) == ft_strlen(home))
-		no_home_path_or_not_in_home(data, clr1, "~");
+		data->prompt = add_join(data, clr1, add_join(data, \
+					"~", CLR2, 1), 1);
 }
 
 void	prompt_changer(t_data *data)
@@ -86,11 +69,13 @@ void	prompt_changer(t_data *data)
 	get_me_env_addresses(data, &path_h, &path_pw);
 	if (!path_h)
 	{
-		no_home_path_or_not_in_home(data, clr1, path_pw);
+		data->prompt = add_join(data, clr1, add_join(data,\
+					path_pw, CLR2, 1), 1);
 		return ;
 	}
 	if (!ft_strncmp(path_pw, path_h, ft_strlen(path_h)))
 		home_path_and_dir_path(data, clr1, path_h, path_pw);
 	else
-		no_home_path_or_not_in_home(data, clr1, path_pw);
+		data->prompt = add_join(data, clr1, add_join(data,\
+					path_pw, CLR2, 1), 1);
 }

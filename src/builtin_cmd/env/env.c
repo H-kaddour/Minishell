@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 12:11:41 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/14 16:58:52 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 10:55:56 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	env_shlvl_helper(t_data *data, t_env *env)
 
 	hold = env->value;
 	env->value = ft_itoa(ft_atoi(env->value) + 1);
-	free_implementation(data, hold);
+	add_node_p_die(data, env->value);
 }
 
 t_env	*getenv_addr(t_data *data, char *sec)

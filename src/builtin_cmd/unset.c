@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:18:49 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/11 11:46:03 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 12:41:23 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@ static void	find_that_element(t_data *data, char *elem)
 			trav_prev->next = trav->next;
 		if (!data->env)
 			return ;
-		free_implementation(data, trav->sec);
-		free_implementation(data, trav->value);
-		free_implementation(data, trav);
 	}
 }
 

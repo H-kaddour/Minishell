@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 11:38:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 15:29:28 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 14:16:45 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	exit_stat(t_data *data, char *cmd, int stat, int chk)
 	printf("exit\n");
 	if (chk == 1)
 		printf("minishell: exit: %s: numeric argument required\n", cmd);
-	free_data_die_process(data);
+	//free_data_die_process(data);
 	exit(stat);
 }
 

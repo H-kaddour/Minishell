@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 13:52:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 09:57:17 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 13:47:07 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,14 @@ static int	dup_opt_equal(t_data *data, t_env *env, char *cmd)
 		hold = ft_strcspn(cmd, "=");
 	if (check_existence(data, cmd, hold, env))
 		return (0);
-	env->sec = ft_calloc(hold + 1, sizeof(char));
-	if (!env->sec)
-		error_alloc();
+	env->sec = allocation(data, hold + 1, sizeof(char), 0);;
 	dup_opt_equal_helper(&env, cmd, &hold);
 	i = 0;
 	env->value = ft_calloc(ft_strlen(&cmd[hold]) + 1, sizeof(char));
-	if (!env->value)
-		error_alloc();
+	env->value = allocation(data, ft_strlen(&cmd[hold]) + 1, \
+			sizeof(char), 0);
 	while (cmd[hold])
 		env->value[i++] = cmd[hold++];
-	env->value[i] = 0;
 	return (1);
 }
 
@@ -80,7 +77,7 @@ static void	export_cmd_helper(t_data *data, t_env **trav_e, \
 	{
 		chk = if_exist_or_not(data, trav_c->cmd[i]);
 		if (chk == 1)
-			head = node_allocate();
+			head = allocation(data, 1, sizeof(t_env), 0);
 		if (!check_if_equal_or_wrd(trav_c->cmd[i]))
 			chk = dup_opt_wrd(data, head, trav_c->cmd[i]);
 		else

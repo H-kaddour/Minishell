@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 05:11:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 10:46:47 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 11:36:41 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ void	usage_help_menu(char *option)
 void	process_kill(t_data *data)
 {
 	printf(MOVE_UP_RIGHRT "\t\texit\n");
-	free_data_die_process(data);
+	//free_data_die_process(data);
 	exit(131);
 }
 
+//i don't need it anymore
 int	hrdoc_with_no_cmd_to_close_fd(t_data *data)
 {
 	int		i;

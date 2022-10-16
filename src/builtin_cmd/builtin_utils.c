@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 09:38:44 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 09:42:42 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 12:34:48 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@ void	free_sp(t_data *data, char **sp)
 	int	i;
 
 	i = 0;
-	free_implementation(data, sp);
+	add_node_p_running(data, sp);
 	while (sp[i])
-	{
-		free_implementation(data, sp[i]);
-		i++;
-	}
+		add_node_p_running(data, sp[i++]);
 }

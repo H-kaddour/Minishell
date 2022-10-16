@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 05:22:11 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 15:02:58 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 14:17:02 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	error_fork(t_data *data)
 void	error_pipe(t_data *data, char *msg)
 {
 	data->chk_dolla = 1;
-	free_data_running_process(data);
+	//free_data_running_process(data);
 	printf("%s\n", msg);
 }
 

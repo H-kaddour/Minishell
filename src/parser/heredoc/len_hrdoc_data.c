@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 09:05:56 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 10:09:03 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 12:24:03 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ static void	hrdoc_dolla_count(t_data *data, char *ptr)
 			len++;
 		}
 		dolla = ft_calloc(len + 1, sizeof(char));
-		if (!dolla)
-			error_alloc();
 		data->i -= len;
 		len = 0;
 		while (ft_acceptable_char(ptr[data->i]))

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:45:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 15:33:11 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 11:42:41 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int	tokenizer_init(t_data *data)
 {
-	free_implementation(data, data->line);
+	add_node_p_running(data, data->line);
 	data->beg_line = ft_strtrim(data->line, "\t\v\r\f ");
-	free_implementation(data, data->beg_line);
+	add_node_p_running(data, data->beg_line);
 	if (!data->beg_line[0])
 	{
 		data->error_lexer = 1;

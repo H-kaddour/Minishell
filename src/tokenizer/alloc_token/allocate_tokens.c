@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:46:07 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 10:33:30 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 11:51:26 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,24 +95,18 @@ int	add_node(t_data *data, t_types typ)
 	trav_env = data->l_env;
 	if (lexer_pt1(data, typ))
 		return (1);
-	data->node = (t_token *) malloc(sizeof(t_token));
-	if (!data->node)
-		error_alloc();
-	free_implementation(data, data->node);
+	data->node = allocation(data, 1, sizeof(t_token), 1);
 	if (data->check == 1)
 		data->t_token = data->node;
 	data->node->type = typ;
-	data->node->value = ft_calloc(get_len(data) + 1, sizeof(char));
-	if (!data->node->value)
-		error_alloc();
+	data->node->value = allocation(data, get_len(data) + 1, sizeof(char), 1);
 	data->i = 0;
 	data->j = 0;
 	data->chk_q_hrdoc = 0;
 	loop_for_the_arg(data);
 	data->beg_line = &data->beg_line[data->i];
-	data->node->value[data->j] = 0;
-	free_implementation(data, data->node->value);
-	data->node->next = NULL;
+	//data->node->value[data->j] = 0;
+	//data->node->next = 0;
 	node_attach(data);
 	return (0);
 }

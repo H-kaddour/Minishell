@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 00:39:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/14 16:47:39 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 11:08:21 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	sort_env(t_data *data)
 	}
 }
 
+//i don't need it anymore
 t_env	*node_allocate(void)
 {
 	t_env	*node;
@@ -83,10 +84,8 @@ static void	env_double_ptr_helper(t_data *data, int i)
 	trav = data->l_env;
 	while (trav)
 	{
-		data->env_exec[i] = ft_calloc(ft_strlen(trav->sec) + \
-				ft_strlen(trav->value) + 1, sizeof(char));
-		if (!data->env_exec[i])
-			error_alloc();
+		data->env_exec[i] = allocation(data, ft_strlen(trav->sec) + \
+				ft_strlen(trav->value) + 1, sizeof(char), 1);
 		j = 0;
 		k = 0;
 		while (trav->sec[k])
@@ -95,12 +94,9 @@ static void	env_double_ptr_helper(t_data *data, int i)
 		k = 0;
 		while (trav->value[k])
 			data->env_exec[i][j++] = trav->value[k++];
-		data->env_exec[i][j] = 0;
-		free_implementation(data, data->env_exec[i]);
 		i++;
 		trav = trav->next;
 	}
-	data->env_exec[i] = 0;
 }
 
 char	**env_double_ptr(t_data *data)
@@ -115,10 +111,7 @@ char	**env_double_ptr(t_data *data)
 		trav = trav->next;
 		i++;
 	}
-	data->env_exec = ft_calloc(i + 1, sizeof(char *));
-	if (!data->env_exec)
-		error_alloc();
+	data->env_exec = allocation(data, i + 1, sizeof(char *), 1);
 	env_double_ptr_helper(data, i);
-	free_implementation(data, data->env_exec);
 	return (data->env_exec);
 }

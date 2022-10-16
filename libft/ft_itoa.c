@@ -6,7 +6,7 @@
 /*   By: hkaddour <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 17:53:30 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 09:24:47 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 10:54:17 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
@@ -26,8 +26,6 @@ static void	ft_alloc(int n, int i, char **ptr)
 		*ptr = ft_calloc(i + 1, sizeof(char));
 	if (n < 0)
 		*ptr = ft_calloc(i + 2, sizeof(char));
-	if (!*ptr)
-		error_alloc();
 }
 
 static int	ft_nbrlen(int n)
@@ -62,7 +60,6 @@ char	*ft_itoa(int n)
 		n = -n;
 		ptr[0] = '-';
 	}
-	ptr[i] = '\0';
 	i--;
 	while (n > 9)
 	{

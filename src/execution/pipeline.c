@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 22:02:51 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/13 10:03:10 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 12:32:42 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,13 @@ static int	plug_pipes_in_node(t_data *data)
 			error_fork(data);
 			return (1);
 		}
-		trav->tab_pipe = malloc(sizeof(int) * 2);
-		if (!trav->tab_pipe)
-			error_alloc();
+		trav->tab_pipe = allocation(data, 2, sizeof(int), 1);
 		init_tab_pipe(trav, fd);
 		trav->f_out = fd[1];
 		trav = trav->next;
 		trav->f_in = fd[0];
 	}
-	trav->tab_pipe = malloc(sizeof(int) * 2);
-	if (!trav->tab_pipe)
-		error_alloc();
+	trav->tab_pipe = allocation(data, 2, sizeof(int), 1);
 	init_tab_pipe(trav, fd);
 	trav = data->v_cmd;
 	return (0);

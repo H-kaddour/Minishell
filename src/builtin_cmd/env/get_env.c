@@ -6,13 +6,13 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 23:17:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/14 17:35:04 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/16 15:24:43 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-char	*get_sec(char *str)
+static char	*get_sec(t_data *data, char *str)
 {
 	int		i;
 	int		eqal;
@@ -20,15 +20,14 @@ char	*get_sec(char *str)
 
 	i = 0;
 	eqal = ft_strcspn(str, "=");
-	ptr = ft_calloc(eqal + 1, sizeof(char));
-	if (!ptr)
-		error_alloc();
-	while (i < eqal)
-	{
-		ptr[i] = str[i];
-		i++;
-	}
-	ptr[i] = 0;
+	ptr = allocation(data, eqal + 1, sizeof(char), 1);
+	//maybe here add one to eqal
+	ft_strlcpy(ptr, str, eqal + 1);
+	//while (i < eqal)
+	//{
+	//	ptr[i] = str[i];
+	//	i++;
+	//}
 	return (ptr);
 }
 
@@ -40,21 +39,20 @@ static void	allocate_all_nodes(t_data *data)
 	t_env	*next;
 
 	i = 1;
-	head = node_allocate();
+	head = allocation(data, 1, sizeof(t_env), 0);
 	data->l_env = head;
 	while (data->env[i])
 	{
-		hold = get_sec(data->env[i]);
+		hold = get_sec(data, data->env[i]);
 		if (!ft_strcmp(hold, "OLDPWD"))
 			i++;
 		else
 		{
-			next = node_allocate();
+			next = allocation(data, 1, sizeof(t_env), 0);
 			head->next = next;
 			head = head->next;
 			i++;
 		}
-		free_implementation(data, hold);
 	}
 }
 
@@ -68,9 +66,9 @@ static void	env_shlvl(t_data *data)
 		env_shlvl_helper(data, env);
 	else
 	{
-		shlvl = node_allocate();
-		shlvl->sec = ft_strdup("SHLVL");
-		shlvl->value = ft_strdup("1");
+		shlvl = allocation(data, 1, sizeof(t_env), 0);
+		shlvl->sec = add_dup(data, "SHLVL", 0);
+		shlvl->value = add_dup(data, "1", 0);
 		if (data->l_env)
 		{
 			env = data->l_env;
@@ -92,24 +90,19 @@ static void	fill_nodes_env(t_data *data, t_env **env, int i)
 	j = 0;
 	while (data->env[i][j] && data->env[i][j] != '=')
 		j++;
-	env[0]->sec = ft_calloc(j + 1, sizeof(char));
-	if (!env[0]->sec)
-		error_alloc();
+	env[0]->sec = allocation(data, j + 1, sizeof(char), 0);
 	j = 0;
 	while (data->env[i][j] && data->env[i][j] != '=')
 	{
 		env[0]->sec[j] = data->env[i][j];
 		j++;
 	}
-	env[0]->sec[j] = 0;
 	j++;
-	env[0]->value = ft_calloc((ft_strlen(data->env[i]) + 1) - j, sizeof(char));
-	if (!env[0]->value)
-		error_alloc();
+	env[0]->value = allocation(data, (ft_strlen(data->env[i]) + 1) - j,\
+			sizeof(char), 0);
 	k = 0;
 	while (data->env[i][j] && data->env[i][j] != 0)
 		env[0]->value[k++] = data->env[i][j++];
-	env[0]->value[k] = 0;
 	env[0] = env[0]->next;
 }
 
@@ -124,8 +117,7 @@ void	get_env(t_data *data)
 	env = data->l_env;
 	while (data->env[i])
 	{
-		hold = get_sec(data->env[i]);
-		free_implementation(data, hold);
+		hold = get_sec(data, data->env[i]);
 		if (ft_strcmp(hold, "OLDPWD"))
 			fill_nodes_env(data, &env, i);
 		i++;
