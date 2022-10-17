@@ -6,22 +6,22 @@
 #    By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/09 11:07:05 by hkaddour          #+#    #+#              #
-#    Updated: 2022/10/17 11:37:21 by hkaddour         ###   ########.fr        #
+#    Updated: 2022/10/17 13:59:54 by hkaddour         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
-HEADER = minishell.h
+HEADER = include/minishell.h
 FLAGS = -Wall -Wextra -Werror
-LIB = libft.a
+LIB = libft/libft.a
+OFILE = ofiles
 READLINE = $(shell brew --prefix  readline)
-OFILES = objdir
 SRC = src/shell/main.c \
 			src/shell/init.c \
 			src/shell/prompt.c \
 			src/shell/signals.c \
-			src/shell/utils.c \
+			src/shell/shell_utils.c \
 			src/tokenizer/tokenizer.c \
 			src/tokenizer/tokenizer_helper.c \
 			src/tokenizer/alloc_token/allocate_token_helper.c \
@@ -49,12 +49,12 @@ SRC = src/shell/main.c \
 			src/execution/pipeline_helper.c \
 			src/execution/redirection.c \
 			src/execution/run_one_cmd.c \
-			src/execution/utils.c \
+			src/execution/exec_utils.c \
 			src/builtin_cmd/builtin_cmd.c \
 			src/builtin_cmd/cd/cd.c \
 			src/builtin_cmd/cd/cd_everywhere.c \
 			src/builtin_cmd/cd/cd_everywhere_helper.c \
-			src/builtin_cmd/cd/cd_swaping_oldpwd_pwd.c\ 
+			src/builtin_cmd/cd/cd_swaping_oldpwd_pwd.c \
 			src/builtin_cmd/echo.c \
 			src/builtin_cmd/env/env.c \
 			src/builtin_cmd/env/env_utils.c \
@@ -70,36 +70,28 @@ SRC = src/shell/main.c \
 			src/error/error_handling.c \
 			src/builtin_cmd/builtin_utils.c
 
-#../libft/libft.a
-#-lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include -lreadline -L/usr/local/lib -I/usr/local/include -o minishell -g
 OBJS = $(SRC:.c=.o)
-#move *.o to a build file
+
 all: $(NAME)
-#flag shows where the sigfault happen and force to check everything -fsanitize=address
-#$(NAME): $(LIB) $(OFILES) $(OBJS)
+
 $(NAME): $(LIB) $(OBJS)
-	$(CC) $(OBJS) $(LIB) -o $(NAME) -L $(READLINE)/lib -lreadline $(FLAGS)
+	mkdir $(OFILE)
+	mv *.o $(OFILE)
+	$(CC) $(OFILE)/* $(LIB) -o $(NAME) -L $(READLINE)/lib -lreadline
 
-#$(OBJFILES)/%.o: %.c
 %.o: %.c
-	$(CC) -I $(READLINE)/include -I ./include $(HEADER) -c $(OBJS) -g
-#$(CC) -I $(READLINE)/include -I./include $(HEADER) $(FLAGS) -o $@ -c $^ -g
+	$(CC) -I $(READLINE)/include -c $< -I $(HEADER)
 
-#$(OFILES):
-#	@mkdir -p $(@)
-	
 $(LIB):
-	@make -C ./libft
-	@mv libft/$(LIB) .
+	make -C ./libft
 
 clean:
-	@make clean -C ./libft
-	@rm -rf *.o
+	@make fclean -C ./libft
+	@rm -rf $(OFILE)
 
 fclean:
 	@make fclean -C ./libft
-	@rm -rf $(NAME) $(LIB) $(OBJS) *.dSYM
-#@make fclean -C ./libft
+	@rm -rf $(NAME) $(OFILE) *.dSYM
 
 re: fclean all
 
