@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:54:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/16 12:35:56 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/17 09:19:47 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static int	cmd_only_exec_lower(t_data *data, char *cmd)
 	char	**sp;
 	char	*b_cmd;
 
-	b_cmd = "cd export unset exit";
 	i = 0;
+	b_cmd = "cd export unset exit";
 	sp = ft_split(b_cmd, ' ');
 	free_sp(data, sp);
 	while (sp[i])

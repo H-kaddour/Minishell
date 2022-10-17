@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 05:15:39 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/16 15:25:17 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/17 10:18:51 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ static void	check_if_env_exist_and_get_it(t_data *data, char **env)
 			getcwd(data->pwd_of_mysys, 1024);
 			add_pwd_if_not_exist(data);
 		}
+		else
+			data->pwd_of_mysys = add_dup(data, trav->value, 0);
 		sort_env(data);
 	}
 }
@@ -64,7 +66,6 @@ void	init_shell_elem(t_data *data, char **av, char **env)
 	data->old_pwd_make = 0;
 	data->chk_redct_exist = 0;
 	data->chk_dolla = 0;
-	data->pwd_of_mysys = 0;
 	data->prompt = 0;
 	data->env_exec = 0;
 	data->v_cmd = 0;
@@ -72,7 +73,6 @@ void	init_shell_elem(t_data *data, char **av, char **env)
 	data->env_exec = 0;
 	data->p_die = allocation(data, 1, sizeof(d_free), 0);
 	data->p_running = allocation(data, 1, sizeof(r_free), 1);
-	add_node_p_die(data, data->p_running);
 	data->old_pwd_value = add_dup(data, "", 0);
 	check_if_env_exist_and_get_it(data, env);
 }

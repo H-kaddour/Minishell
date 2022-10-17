@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 12:46:07 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/16 11:51:26 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/17 09:07:47 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,6 @@ int	add_node(t_data *data, t_types typ)
 	data->chk_q_hrdoc = 0;
 	loop_for_the_arg(data);
 	data->beg_line = &data->beg_line[data->i];
-	//data->node->value[data->j] = 0;
-	//data->node->next = 0;
 	node_attach(data);
 	return (0);
 }

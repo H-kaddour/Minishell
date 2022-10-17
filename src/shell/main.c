@@ -6,53 +6,17 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/16 18:32:22 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/17 10:57:44 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	*allocation(t_data *data, size_t count, size_t size, int chk)
-{
-	void		*ptr;
-
-	ptr = ft_calloc(count, size);
-	if (chk)
-		add_node_p_running(data, ptr);
-	else
-		add_node_p_die(data, ptr);
-	return (ptr);
-}
-
-char	*add_dup(t_data *data, char *s, int chk)
-{
-	char	*ptr;
-
-	ptr = ft_strdup(s);
-	if (chk)
-		add_node_p_running(data, ptr);
-	else
-		add_node_p_die(data, ptr);
-	return (ptr);
-}
-
-char	*add_join(t_data *data, char *s, char *s1, int chk)
-{
-	char	*ptr;
-
-	ptr = ft_strjoin(s, s1);
-	if (chk)
-		add_node_p_running(data, ptr);
-	else
-		add_node_p_die(data, ptr);
-	return (ptr);
-}
-
 void	running_process_helper(t_data *data)
 {
 	if (data->beg_line)
 		add_history(data->line);
-	//free_data_running_process(data);
+	free_data_running_process(data, 1);
 }
 
 void	running_process(t_data *data)
@@ -67,15 +31,11 @@ void	running_process(t_data *data)
 		prompt_changer(data);
 		data->line = readline(data->prompt);
 		if (!data->line)
-		{
-			//while (1);
 			process_kill(data);
-		}
 		tokenizer(data);
 		if (!data->beg_line)
 		{
-			//here don't free the line free all node of running process
-			//free(data->line);
+			free_data_running_process(data, 1);
 			continue ;
 		}
 		if (!data->error_lexer)
@@ -85,7 +45,6 @@ void	running_process(t_data *data)
 		}
 		running_process_helper(data);
 	}
-	//while (1);
 }
 
 int	main(int ac, char **av, char **envp)

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 13:52:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/16 13:47:07 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/17 10:32:42 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,9 @@ static int	dup_opt_equal(t_data *data, t_env *env, char *cmd)
 		hold = ft_strcspn(cmd, "=");
 	if (check_existence(data, cmd, hold, env))
 		return (0);
-	env->sec = allocation(data, hold + 1, sizeof(char), 0);;
+	env->sec = allocation(data, hold + 1, sizeof(char), 0);
 	dup_opt_equal_helper(&env, cmd, &hold);
 	i = 0;
-	env->value = ft_calloc(ft_strlen(&cmd[hold]) + 1, sizeof(char));
 	env->value = allocation(data, ft_strlen(&cmd[hold]) + 1, \
 			sizeof(char), 0);
 	while (cmd[hold])

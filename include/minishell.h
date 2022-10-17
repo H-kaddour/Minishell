@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 10:24:18 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/16 11:24:17 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/17 10:41:56 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,8 +242,7 @@ void  old_pwd_alloc(t_data *data);
 void	env_shlvl_helper(t_data *data, t_env *env);
 void  sort_env(t_data *data);
 t_env	*getenv_addr(t_data *data, char *sec);
-t_env	*node_allocate(void);
-char	**env_double_ptr(t_data *data);
+void	env_double_ptr(t_data *data);
 void  get_env(t_data *data);
 
 
@@ -256,11 +255,15 @@ int 	check_existence(t_data *data, char *cmd, int hold, t_env *env);
 void  dup_opt_equal_helper(t_env **env, char *cmd, int *hold);
 
 
+/**** Function of exit *************/
+int	check_if_llong_helper(char *nbr, int *index, char **ll);
+
+
 /******* Function of free *********/
-//t_free	*free_add_node(void);
-//void	free_implementation(t_data *data, void *addr);
-//void	free_data_die_process(t_data *data);
-//void	free_data_running_process(t_data *data);
+void	free_data_running_process(t_data *data, int chk);
+void	free_data_die_process(t_data *data);
+void	add_node_p_running(t_data *data, void *addr);
+void	add_node_p_die(t_data *data, void *addr);
 
 
 /******* Function of shell *********/
@@ -268,6 +271,9 @@ void	usage_help_menu(char *option);
 void	process_kill(t_data *data);
 int		hrdoc_with_no_cmd_to_close_fd(t_data *data);
 void	init_shell_elem(t_data *data, char **av, char **env);
+void	*allocation(t_data *data, size_t count, size_t size, int chk);
+char	*add_join(t_data *data, char *s, char *s1, int chk);
+char	*add_dup(t_data *data, char *s, int chk);
 void	prompt_changer(t_data *data);
 void	sig_c(int c);
 
@@ -277,12 +283,5 @@ void	error_alloc(void);
 void	error_fork(t_data *data);
 void	error_pipe(t_data *data, char *msg);
 void  error_cd(t_data *data, char *msg);
-
-
-void	*allocation(t_data *data, size_t count, size_t size, int chk);
-void	add_node_p_running(t_data *data, void *addr);
-void	add_node_p_die(t_data *data, void *addr);
-char	*add_dup(t_data *data, char *s, int chk);
-char	*add_join(t_data *data, char *s, char *s1, int chk);
 
 #endif

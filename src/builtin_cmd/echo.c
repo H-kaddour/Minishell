@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:15:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/16 12:37:06 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/17 09:31:56 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ static void	echo_home_env(t_data *data, t_cmd *trav, int i)
 	char	*home;
 
 	home = getenv("HOME");
-	home = add_join(data, home, &trav->cmd[i][1], 1);
+	if (home)
+		home = add_join(data, home, &trav->cmd[i][1], 1);
+	else
+		home = add_dup(data, &trav->cmd[i][1], 1);
 	ft_putstr_fd(home, trav->f_out);
 	ft_putchar_fd(' ', trav->f_out);
 }

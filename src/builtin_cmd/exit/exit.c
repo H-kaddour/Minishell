@@ -6,18 +6,18 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 11:38:38 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/16 14:16:45 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/17 10:28:15 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 static void	exit_stat(t_data *data, char *cmd, int stat, int chk)
 {
 	printf("exit\n");
 	if (chk == 1)
 		printf("minishell: exit: %s: numeric argument required\n", cmd);
-	//free_data_die_process(data);
+	free_data_die_process(data);
 	exit(stat);
 }
 
@@ -32,26 +32,6 @@ static int	check_nbr(char *arg)
 		arg++;
 	}
 	return (1);
-}
-
-int	check_if_llong_helper(char *nbr, int *index, char **ll)
-{
-	int	j;
-	int	i;
-
-	i = *(index);
-	if (nbr[i] < '9')
-		return (0);
-	i++;
-	j = i;
-	while (nbr[i])
-	{
-		if (nbr[i] < *(ll)[j])
-			return (0);
-		else if (nbr[i++] > *(ll)[j++])
-			return (1);
-	}
-	return (0);
 }
 
 static int	check_if_llong(char *nbr)
@@ -81,18 +61,6 @@ static int	check_if_llong(char *nbr)
 		return (1);
 	else
 		return (0);
-	//if (nbr[i] < '9')
-	//	return (0);
-	//i++;
-	//j = i;
-	//while (nbr[i])
-	//{
-	//	if (nbr[i] < ll[j])
-	//		return (0);
-	//	else if (nbr[i++] > ll[j++])
-	//		return (1);
-	//}
-	//return (0);
 }
 
 static void	exit_number(t_data *data, char *nbr)

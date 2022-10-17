@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 04:51:31 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/16 10:09:21 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/17 09:52:30 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,62 +38,33 @@ void	add_node_p_running(t_data *data, void *addr)
 	head->next->value = addr;
 }
 
-//t_free	*free_add_node(void)
-//{
-//	t_free	*head;
-//
-//	head = malloc(sizeof(t_free));
-//	if (!head)
-//		error_alloc();
-//	head->value = 0;
-//	head->next = 0;
-//	return (head);
-//}
-//
-//void	free_implementation(t_data *data, void *addr)
-//{
-//	t_free	*head;
-//	t_free	*node;
-//
-//	head = data->free_ptr;
-//	node = free_add_node();
-//	node->value = addr;
-//	while (head->next)
-//		head = head->next;
-//	head->next = node;
-//}
+void	free_data_running_process(t_data *data, int chk)
+{
+	r_free	*node;
 
-//void	free_data_running_process(t_data *data)
-//{
-//	t_free	*node;
-//
-//	if (data->free_ptr->next)
-//		node = data->free_ptr->next;
-//	else
-//		return ;
-//	while (node)
-//	{
-//		free(node->value);
-//		free(node);
-//		node = node->next;
-//	}
-//	data->free_ptr->next = 0;
-//}
+	node = data->p_running;
+	if (chk)
+		node = data->p_running->next;
+	while (node)
+	{
+		free(node->value);
+		free(node);
+		node = node->next;
+	}
+	if (chk)
+		data->p_running->next = 0;
+}
 
-//void	free_data_die_process(t_data *data)
-//{
-//	t_env	*env;
-//
-//	env = data->l_env;
-//	while (env)
-//	{
-//		if (env->sec)
-//			free(env->sec);
-//		if (env->value)
-//			free(env->value);
-//		free(env);
-//		env = env->next;
-//	}
-//	if (data->pwd_of_mysys)
-//		free(data->pwd_of_mysys);
-//}
+void	free_data_die_process(t_data *data)
+{
+	d_free	*node;
+
+	node = data->p_die;
+	free_data_running_process(data, 0);
+	while (node)
+	{
+		free(node->value);
+		free(node);
+		node = node->next;
+	}
+}

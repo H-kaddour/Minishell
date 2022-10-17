@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 23:17:12 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/16 15:24:43 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/17 10:31:21 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,18 @@
 
 static char	*get_sec(t_data *data, char *str)
 {
-	int		i;
 	int		eqal;
 	char	*ptr;
 
-	i = 0;
 	eqal = ft_strcspn(str, "=");
 	ptr = allocation(data, eqal + 1, sizeof(char), 1);
-	//maybe here add one to eqal
 	ft_strlcpy(ptr, str, eqal + 1);
-	//while (i < eqal)
-	//{
-	//	ptr[i] = str[i];
-	//	i++;
-	//}
 	return (ptr);
 }
 
 static void	allocate_all_nodes(t_data *data)
 {
 	int		i;
-	char	*hold;
 	t_env	*head;
 	t_env	*next;
 
@@ -43,8 +34,7 @@ static void	allocate_all_nodes(t_data *data)
 	data->l_env = head;
 	while (data->env[i])
 	{
-		hold = get_sec(data, data->env[i]);
-		if (!ft_strcmp(hold, "OLDPWD"))
+		if (!ft_strcmp(get_sec(data, data->env[i]), "OLDPWD"))
 			i++;
 		else
 		{
@@ -87,9 +77,7 @@ static void	fill_nodes_env(t_data *data, t_env **env, int i)
 	int	j;
 	int	k;
 
-	j = 0;
-	while (data->env[i][j] && data->env[i][j] != '=')
-		j++;
+	j = ft_strcspn(data->env[i], "=");
 	env[0]->sec = allocation(data, j + 1, sizeof(char), 0);
 	j = 0;
 	while (data->env[i][j] && data->env[i][j] != '=')
@@ -98,7 +86,7 @@ static void	fill_nodes_env(t_data *data, t_env **env, int i)
 		j++;
 	}
 	j++;
-	env[0]->value = allocation(data, (ft_strlen(data->env[i]) + 1) - j,\
+	env[0]->value = allocation(data, (ft_strlen(data->env[i]) + 1) - j, \
 			sizeof(char), 0);
 	k = 0;
 	while (data->env[i][j] && data->env[i][j] != 0)
@@ -109,7 +97,6 @@ static void	fill_nodes_env(t_data *data, t_env **env, int i)
 void	get_env(t_data *data)
 {
 	int		i;
-	char	*hold;
 	t_env	*env;
 
 	allocate_all_nodes(data);
@@ -117,8 +104,7 @@ void	get_env(t_data *data)
 	env = data->l_env;
 	while (data->env[i])
 	{
-		hold = get_sec(data, data->env[i]);
-		if (ft_strcmp(hold, "OLDPWD"))
+		if (ft_strcmp(get_sec(data, data->env[i]), "OLDPWD"))
 			fill_nodes_env(data, &env, i);
 		i++;
 	}

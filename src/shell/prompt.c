@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 05:29:55 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/16 11:34:50 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/17 10:23:19 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ void	prompt_changer(t_data *data)
 	get_me_env_addresses(data, &path_h, &path_pw);
 	if (!path_h)
 	{
-		data->prompt = add_join(data, clr1, add_join(data,\
+		data->prompt = add_join(data, clr1, add_join(data, \
 					path_pw, CLR2, 1), 1);
 		return ;
 	}
 	if (!ft_strncmp(path_pw, path_h, ft_strlen(path_h)))
 		home_path_and_dir_path(data, clr1, path_h, path_pw);
 	else
-		data->prompt = add_join(data, clr1, add_join(data,\
+		data->prompt = add_join(data, clr1, add_join(data, \
 					path_pw, CLR2, 1), 1);
 }

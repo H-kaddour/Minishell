@@ -6,13 +6,12 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 02:54:40 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/16 15:31:23 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/17 09:38:27 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-//this one is duplicated
 char	*before_equal(t_data *data, char *cmd)
 {
 	int		i;

@@ -6,7 +6,7 @@
 /*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 05:11:04 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/16 11:36:41 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/17 10:22:08 by hkaddour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,35 +43,42 @@ void	usage_help_menu(char *option)
 void	process_kill(t_data *data)
 {
 	printf(MOVE_UP_RIGHRT "\t\texit\n");
-	//free_data_die_process(data);
+	free_data_die_process(data);
 	exit(131);
 }
 
-//i don't need it anymore
-int	hrdoc_with_no_cmd_to_close_fd(t_data *data)
+void	*allocation(t_data *data, size_t count, size_t size, int chk)
 {
-	int		i;
-	t_cmd	*cmd;
-	t_red	*red;
+	void		*ptr;
 
-	i = 0;
-	cmd = data->v_cmd;
-	while (cmd)
-	{
-		if (!cmd->cmd[0])
-		{
-			red = cmd->redirect;
-			while (red)
-			{
-				if (red->typ == I_APEND)
-				{
-					close(data->hrdoc_fd[0]);
-					return (1);
-				}
-				red = red->next;
-			}
-		}
-		cmd = cmd->next;
-	}
-	return (0);
+	ptr = ft_calloc(count, size);
+	if (chk)
+		add_node_p_running(data, ptr);
+	else
+		add_node_p_die(data, ptr);
+	return (ptr);
+}
+
+char	*add_dup(t_data *data, char *s, int chk)
+{
+	char	*ptr;
+
+	ptr = ft_strdup(s);
+	if (chk)
+		add_node_p_running(data, ptr);
+	else
+		add_node_p_die(data, ptr);
+	return (ptr);
+}
+
+char	*add_join(t_data *data, char *s, char *s1, int chk)
+{
+	char	*ptr;
+
+	ptr = ft_strjoin(s, s1);
+	if (chk)
+		add_node_p_running(data, ptr);
+	else
+		add_node_p_die(data, ptr);
+	return (ptr);
 }
