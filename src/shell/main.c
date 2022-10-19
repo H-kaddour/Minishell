@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkaddour <hkaddour@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: akouame <akouame@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 18:34:24 by hkaddour          #+#    #+#             */
-/*   Updated: 2022/10/17 10:57:44 by hkaddour         ###   ########.fr       */
+/*   Updated: 2022/10/19 11:56:29 by akouame          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	running_process(t_data *data)
 		rl_catch_signals = 0;
 		signal(SIGINT, sig_c);
 		signal(SIGQUIT, SIG_IGN);
-		prompt_changer(data);
-		data->line = readline(data->prompt);
+		//prompt_changer(data);
+		data->line = readline("Minishell $: ");
 		if (!data->line)
 			process_kill(data);
 		tokenizer(data);
